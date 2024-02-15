@@ -1,0 +1,98 @@
+@mixin media($break-point) {
+	@if $break-point== $custom_1440 {
+		@media (max-width: $custom_1440) {
+			@content;
+		}
+	}
+	@if $break-point== $custom_1280 {
+		@media (max-width: $custom_1280) {
+			@content;
+		}
+	}
+	@if $break-point== $custom_1279 {
+		@media (max-width: $custom_1279) {
+			@content;
+		}
+	}
+	@if $break-point== $custom_1200 {
+		@media (max-width: $custom_1200) {
+			@content;
+		}
+	}
+	@if $break-point== $custom_699 {
+		@media (max-width: $custom_699) {
+			@content;
+		}
+	}
+	@if $break-point== $custom_992 {
+		@media (max-width: $custom_992) {
+			@content;
+		}
+	}
+	@if $break-point== $custom_500 {
+		@media (max-width: $custom_500) {
+			@content;
+		}
+	}
+	@if $break-point== $custom_375 {
+		@media (max-width: $custom_375) {
+			@content;
+		}
+	}
+	@if $break-point== lg {
+		@media (max-width: $lg) {
+			@content;
+		}
+	}
+	@if $break-point== md {
+		@media (max-width: $md) {
+			@content;
+		}
+	}
+	@if $break-point== sm {
+		@media (max-width: $sm) {
+			@content;
+		}
+	}
+}
+
+@mixin h-1 {
+	font-size: 200px;
+	line-height: 175.5px;
+	font-weight: 500;
+	letter-spacing: -5px;
+}
+
+@mixin h-2 {
+	font-size: 60px;
+	line-height: 53px;
+	font-weight: 500;
+	letter-spacing: -0.6px;
+}
+
+@mixin h-3 {
+	font-size: 50px;
+	font-weight: 400;
+	line-height: 50.654px;
+	letter-spacing: -1.5px;
+}
+
+@mixin h-4 {
+	font-size: 40px;
+	font-weight: 500;
+	line-height: 44.654px;
+}
+
+@mixin p-1 {
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 20.696px;
+	letter-spacing: -0.2px;
+}
+
+@mixin p-2 {
+	font-size: 17px;
+	font-weight: 400;
+	line-height: 25.2px;
+	letter-spacing: -0.36px;
+}

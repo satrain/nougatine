@@ -1,0 +1,40 @@
+// @font-face {
+// 	font-family: "Clash Display Variable";
+// 	src: url("../fonts/ClashDisplay-Variable.woff");
+// }
+
+body {
+	font-family: $font-family;
+}
+
+h1 {
+	@include h-1;
+}
+
+h2 {
+	@include h-2;
+}
+
+h3 {
+	@include h-3;
+}
+
+h4 {
+	@include h-4;
+}
+
+div,
+p {
+	font-size: 18px;
+	font-weight: 400;
+	line-height: 20.696px;
+	letter-spacing: -0.2px;
+}
+
+.p-1 {
+	@include p-1;
+}
+
+.p-2 {
+	@include p-2;
+}

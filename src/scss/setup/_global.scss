@@ -1,0 +1,74 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth; // can mess up with Scroll To Top, also prevents scrolling with mouse3 button, comment it out if needed
+	overflow-x: hidden;
+}
+
+body {
+	color: $text-dark;
+	overflow-x: hidden;
+}
+
+.container {
+	padding: 0 60px;
+	@include media($custom_1440) {
+		padding: 0 56px;
+	}
+	@include media($custom_1279) {
+		padding: 0 20px;
+	}
+}
+
+img {
+	width: 100%;
+	height: auto;
+}
+
+p {
+	font-family: "GeneralSans Regular", sans-serif;
+}
+
+.btn {
+	@include p-2;
+
+	border-radius: $radius-1;
+	border: 1px solid $primary-border;
+
+	text-decoration: none;
+	@include media($custom_1440) {
+		padding: 5px 21px;
+	}
+	@include media(md) {
+		padding: 5px 15px;
+	}
+}
+
+.btn-primary {
+	color: $text-light;
+	padding: 10px 21px;
+}
+
+.btn-secondary {
+	padding: 10px 21px;
+
+	background: $bg;
+	color: $text-dark;
+}
+
+.hide-desktop {
+	display: none;
+	@include media($custom_699) {
+		display: block;
+	}
+}
+
+.hide-mobile {
+	@include media($custom_699) {
+		display: none;
+	}
+}

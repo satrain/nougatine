@@ -1,0 +1,119 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden; }
+
+body {
+  color: #0d0d17;
+  overflow-x: hidden; }
+
+.container {
+  padding: 0 60px; }
+  @media (max-width: 1440px) {
+    .container {
+      padding: 0 56px; } }
+  @media (max-width: 1279px) {
+    .container {
+      padding: 0 20px; } }
+
+img {
+  width: 100%;
+  height: auto; }
+
+p {
+  font-family: "GeneralSans Regular", sans-serif; }
+
+.btn {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 25.2px;
+  letter-spacing: -0.36px;
+  border-radius: 40px;
+  border: 1px solid #ffffff;
+  text-decoration: none; }
+  @media (max-width: 1440px) {
+    .btn {
+      padding: 5px 21px; } }
+  @media (max-width: 768px) {
+    .btn {
+      padding: 5px 15px; } }
+
+.btn-primary {
+  color: #ffffff;
+  padding: 10px 21px; }
+
+.btn-secondary {
+  padding: 10px 21px;
+  background: #ffffff;
+  color: #0d0d17; }
+
+.hide-desktop {
+  display: none; }
+  @media (max-width: 699px) {
+    .hide-desktop {
+      display: block; } }
+
+@media (max-width: 699px) {
+  .hide-mobile {
+    display: none; } }
+
+body {
+  font-family: "Montserrat", sans-serif; }
+
+h1 {
+  font-size: 200px;
+  line-height: 175.5px;
+  font-weight: 500;
+  letter-spacing: -5px; }
+
+h2 {
+  font-size: 60px;
+  line-height: 53px;
+  font-weight: 500;
+  letter-spacing: -0.6px; }
+
+h3 {
+  font-size: 50px;
+  font-weight: 400;
+  line-height: 50.654px;
+  letter-spacing: -1.5px; }
+
+h4 {
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 44.654px; }
+
+div,
+p {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 20.696px;
+  letter-spacing: -0.2px; }
+
+.p-1 {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 20.696px;
+  letter-spacing: -0.2px; }
+
+.p-2 {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 25.2px;
+  letter-spacing: -0.36px; }
+
+header {
+  position: fixed;
+  width: 100vw;
+  z-index: 99;
+  padding: 31px 60px 20px;
+  transition: .3s; }
+  @media (max-width: 992px) {
+    header {
+      padding: 20px 20px 0; } }
+
+/*# sourceMappingURL=theme.css.map */
