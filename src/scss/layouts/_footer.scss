@@ -1,0 +1,204 @@
+footer {
+    padding-top: 100px;
+    padding-bottom: 64px;
+    background: $text-dark;
+    @include media(lg) {
+        padding-top: 72px;
+        padding-bottom: 51px;
+    }
+
+    .container {
+
+        .wrapper {
+            margin-bottom: 62px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 105px;
+            align-items: flex-start;
+            @include media(lg) {
+                flex-direction: column-reverse;
+                gap: 28px;
+                margin-bottom: 0;
+            }
+
+            .info {
+                @include media(lg) {
+                    width: 100%;
+                }
+                
+                img {
+                    width: auto;
+                    margin-bottom: 15px;
+                    @include media(lg) {
+                        max-width: 68px;
+                        display: block;
+                        margin: 0 auto;
+                    }
+                }
+
+                .contact {
+                    display: flex;
+                    flex-direction: column;
+                    @include media(lg) {
+                        display: none;
+                    }
+
+                    a {
+                        display: flex;
+                        margin-bottom: 12px;
+                        color: $text-light;
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: normal;
+
+                        svg {
+                            margin-right: 12px;
+                        }
+                    }
+                    
+                }
+
+            }
+
+            .menus {
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+
+                .footer-menu-3 {
+                    @include media(lg) {
+                        display: none;
+                    }
+                }
+
+                p {
+                    margin-bottom: 24.5px;
+                    color: $text-light;
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: 26.4px; 
+                }
+
+                ul {
+
+                    li {
+                        list-style: none;
+                        margin-bottom: 6px;
+
+                        a {
+                            opacity: .75;
+                            color: $text-light;
+                            font-size: 16px;
+                            font-style: normal;
+                            font-weight: 400;
+                            line-height: normal;
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        .copyright-sm {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            @include media(lg) {
+                margin-top: 18px;
+            }
+
+            p {
+                color: $text-light;
+                text-align: center;
+                font-size: 16px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 26px;
+            }
+
+            .social-media {
+                margin-top: 12px;
+                display: flex;
+                align-items: center;
+                gap: 28px;
+                @include media(lg) {
+                    margin-top: 23px;
+                    gap: 12px;
+                }
+            }
+
+        }
+
+    }
+
+}
+
+.lang-he {
+
+    footer {
+
+        .container {
+
+            .wrapper {
+                flex-direction: row-reverse;
+                @include media(lg) {
+                    flex-direction: column-reverse;
+                }
+
+                .info {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-end;
+                    @include media(lg) {
+                        align-items: center;
+                    }
+
+                    .contact {
+
+                        a {
+                            flex-direction: row-reverse;
+                            text-align: right;
+                            gap: 12px;
+            
+                            svg {
+                                margin-right: 0!important;
+                            }
+                        }
+            
+                    }
+
+                }
+        
+                .menus {
+                    flex-direction: row-reverse;
+        
+                    p {
+                        text-align: right;
+                    }
+        
+                    ul {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-end;
+        
+                        li {
+                            display: flex;
+                        }
+        
+                    }
+        
+                }
+
+            }
+
+        }
+
+    }
+
+}

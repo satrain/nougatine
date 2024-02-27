@@ -1,0 +1,276 @@
+.hero {
+    background: url('/wp-content/uploads/2024/02/homepage_hero_background.png');
+    background-size: cover!important;
+    background-position: center!important;
+    background-repeat: no-repeat!important;
+    padding-top: 267px;
+    padding-bottom: 60px;
+
+    @include media(lg) {
+        background: url('/wp-content/uploads/2024/02/NougatineBGMobile.png')!important;
+        padding-top: 98px;
+        padding-bottom: 69px;
+        background-size: cover!important;
+        background-position: left 100% bottom 0!important;
+        background-color: rgba(11, 19, 22, 0.60)!important;
+        background-blend-mode: multiply!important;
+    }
+
+    .container {
+
+        .hero-copy {
+
+            h1 {
+                max-width: 557px;
+                color: $text-dark;
+                @include media(lg) {
+                    color: $text-light;
+                    text-align: center;
+                }
+            }
+
+            p {
+                max-width: 557px;
+                margin-top: 29px;
+                margin-bottom: 72px;
+                color: $text-dark;
+
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 28px; /* 140% */
+                letter-spacing: 0.2px;
+                @include media(lg) {
+                    color: $text-light;
+                    text-align: center;
+                    margin-top: 14px;
+                    margin-bottom: 67px;
+                    font-weight: 600;
+                }
+            }
+
+            .buttons-wrapper {
+                display: flex;
+                gap: 32px;
+                @include media(lg) {
+                    flex-direction: column;
+                    gap: 26px;
+                }
+
+                a {
+                    min-width: 312px;
+                    &.btn {
+                        padding: 19px 8px;
+                    }
+                    @include media(lg) {
+                        width: 100%;
+                    }
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+.sub-hero {
+    padding-top: 40px;
+    padding-bottom: 40px;
+
+    .container {
+
+        .benefits-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 46px;
+            @include media(lg) {
+                flex-direction: column;
+                gap: 27px;
+            }
+
+            .item {
+                position: relative;
+                display: flex;
+                align-items: flex-start;
+                gap: 16px;
+                @include media(lg) {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 6px;
+                }
+
+                img {
+                    width: auto;
+                    max-width: 41px;
+                }
+
+                .item-copy {
+                    max-width: 248px;
+
+                    h3 {
+                        color: $text-dark;
+                        @include media(lg) {
+                            text-align: center;
+                        }
+                    }
+
+                    p {
+                        margin-top: 6px;
+                        color: $text-secondary;
+                        font-size: 16px;
+                        font-style: normal;
+                        font-weight: 400;
+                        line-height: 18px;
+                        letter-spacing: 0.16px;
+                        @include media(lg) {
+                            text-align: center;
+                        }
+                    }
+                }
+
+                &:nth-child(2) {
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        
+                        top: 0;
+                        left: -36px;
+                        width: 2px;
+                        height: 100%;
+                        background: $primary;
+                        @include media(lg) {
+                            display: none;
+                        }
+                    }
+                }
+
+                &:nth-child(3) {
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        
+                        top: 0;
+                        left: -36px;
+                        width: 2px;
+                        height: 100%;
+                        background: $primary;
+                        @include media(lg) {
+                            display: none;
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+/* Hebrew version style */
+.lang-he {
+    
+    .hero {
+
+        .container {
+            display: flex;
+            flex-direction: row-reverse;
+            @include media(lg) {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .hero-copy {
+                width: fit-content;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                @include media(lg) {
+                    align-items: center;
+                }
+
+                h1 {
+                    max-width: 445px;
+                    text-align: right;
+                    @include media(lg) {
+                        text-align: center;
+                        max-width: 300px;
+                    }
+                }
+
+                p {
+                    text-align: right;
+                    @include media(lg) {
+                        text-align: center;
+                        margin-top: 34px;
+                        margin-bottom: 59px;
+                    }
+                }
+
+                .buttons-wrapper {
+                    display: flex;
+                    flex-direction: row-reverse;
+                    @include media(lg) {
+                        flex-direction: column;
+                    }
+                    @include media(sm) {
+                        width: 100%;
+                    }
+                    
+                    a {
+                        @include media(sm) {
+                            width: 100%;        
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+    }
+
+    .sub-hero {
+        .container {
+
+            .benefits-wrapper {
+
+                .item {
+                    flex-direction: row-reverse;
+                    @include media(lg) {
+                        flex-direction: column;
+                    }
+
+                    h3,
+                    p {
+                        text-align: right;
+                        @include media(lg) {
+                            text-align: center;
+                        }
+                    }
+
+                    &:nth-child(2) {
+                        &::before {
+                            left: -26px;
+                        }
+                    }
+    
+                    &:nth-child(3) {
+                        &::before {
+                            left: -26px;
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+
+    }
+
+}

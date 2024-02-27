@@ -1,3 +1,15 @@
+@keyframes draw {
+	to {
+		stroke-dashoffset: 0;
+	}
+}
+
+@keyframes appear {
+	to {
+		opacity: 1; /* Make the circles visible */
+	}
+}
+
 * {
 	margin: 0;
 	padding: 0;
@@ -14,13 +26,31 @@ body {
 	overflow-x: hidden;
 }
 
-.container {
-	padding: 0 60px;
-	@include media($custom_1440) {
-		padding: 0 56px;
+.lang-he {
+	// transform: scaleX(-1);
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6,
+	p,
+	a,
+	li,
+	label,
+	input,
+	span,
+	img {
+		// transform: scaleX(-1);
 	}
-	@include media($custom_1279) {
-		padding: 0 20px;
+}
+
+.container {
+	padding: 0 16px;
+	max-width: 1280px;
+	margin: 0 auto;
+	@include media(lg) {
+		padding: 0 16px;
 	}
 }
 
@@ -29,35 +59,59 @@ img {
 	height: auto;
 }
 
-p {
-	font-family: "GeneralSans Regular", sans-serif;
-}
-
 .btn {
-	@include p-2;
+	display: inline-block;
+	font-family: "Open Sans", sans-serif;
+	font-size: 18px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 22px;
+	letter-spacing: 0.18px;
+	text-transform: uppercase;
+	text-align: center;
 
 	border-radius: $radius-1;
-	border: 1px solid $primary-border;
+	border: 1px solid $primary;
+	padding: 13px 60px;
 
 	text-decoration: none;
-	@include media($custom_1440) {
-		padding: 5px 21px;
+	@include media(lg) {
+		padding: 13px 35px;
 	}
-	@include media(md) {
-		padding: 5px 15px;
+
+	svg {
+		margin-right: 10px;
+		vertical-align: middle;
 	}
 }
 
 .btn-primary {
 	color: $text-light;
-	padding: 10px 21px;
+	background: $primary;
+	transition: .3s;
+
+	&:hover {
+		color: $primary;
+		background: $bg;
+		border: 1px solid $primary;
+		transition: .3s;
+
+		svg {
+			path {
+				fill: $primary;
+			}
+		}
+	}
 }
 
 .btn-secondary {
-	padding: 10px 21px;
-
 	background: $bg;
-	color: $text-dark;
+	color: $primary;
+	&:hover {
+		color: $text-light;
+		background: $primary;
+		transition: .3s;
+	}
 }
 
 .hide-desktop {
@@ -71,4 +125,205 @@ p {
 	@include media($custom_699) {
 		display: none;
 	}
+}
+
+/* Remove default SwiperJS arrows */
+.swiper-button-prev:after {
+	display: none;
+}
+
+.swiper-button-next:after {
+	display: none;
+}
+
+/* Hide arrows on mobile */
+.swiper-button-prev {
+	@include media(lg) {
+		display: none;
+	}
+}
+
+.swiper-button-next {
+	@include media(lg) {
+		display: none;
+	}
+}
+
+.slick-arrow {
+	width: unset!important;
+	height: unset!important;
+	&:before {
+		display: none!important;
+	}
+}
+
+.slick-prev {
+	left: 0!important;
+}
+
+.slick-next {
+	right: 0!important;
+}
+
+.slick-dots {
+
+	li {
+		margin: 0!important;
+
+		button {
+
+			&:before {
+				color: #C2996F!important;
+				width: 14px!important;
+				height: 14px!important;
+				font-size: 12px!important;
+			}
+
+		}
+
+		&.slick-active {
+
+			button {
+
+				&:before {
+					color: $primary!important;
+				}
+
+			}
+
+		}
+	}
+
+}
+
+/**
+ * Tooltip Styles
+ */
+
+/* Add this attribute to the element that needs a tooltip */
+[data-tooltip] {
+	position: relative;
+	z-index: 2;
+	cursor: pointer;
+  }
+  
+  /* Hide the tooltip content by default */
+  [data-tooltip]:before,
+  [data-tooltip]:after {
+	visibility: hidden;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
+	opacity: 0;
+	pointer-events: none;
+  }
+  
+  /* Position tooltip above the element */
+  [data-tooltip]:before {
+	position: absolute;
+	bottom: 150%;
+	left: 50%;
+	margin-bottom: 5px;
+	margin-left: -25px;
+	padding: 4px 12px;
+	width: auto;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	background-color: #000;
+	background-color: hsla(0, 0%, 20%, 0.9);
+	color: #fff;
+	content: attr(data-tooltip);
+	text-align: center;
+	font-size: 10px;
+	line-height: 1.2;
+  }
+  
+  /* Triangle hack to make tooltip look like a speech bubble */
+  [data-tooltip]:after {
+	position: absolute;
+	bottom: 150%;
+	left: 50%;
+	margin-left: -5px;
+	width: 0;
+	border-top: 5px solid #000;
+	border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+	border-right: 5px solid transparent;
+	border-left: 5px solid transparent;
+	content: " ";
+	font-size: 0;
+	line-height: 0;
+	}
+
+	/* Show tooltip content on hover */
+	[data-tooltip]:hover:before,
+	[data-tooltip]:hover:after {
+	visibility: visible;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
+	opacity: 1;
+  }
+
+  /* Bottom */
+  .tooltip-bottom:after {
+	display: none;
+  }
+.tooltip-bottom:before,
+.tooltip-bottom:after {
+  top: 100%;
+  bottom: auto;
+  left: 50%;
+}
+
+.tooltip-bottom:before {
+  margin-top: -12px;
+  margin-bottom: 0;
+  border-top-color: transparent;
+  border-bottom-color: #000;
+  border-bottom-color: hsla(0, 0%, 20%, 0.9);
+}
+
+.tooltip-bottom:hover:before,
+.tooltip-bottom:hover:after,
+.tooltip-bottom:focus:before,
+.tooltip-bottom:focus:after {
+  -webkit-transform: translateY(12px);
+  -moz-transform:    translateY(12px);
+  transform:         translateY(12px); 
+}
+
+#preloader {
+	position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    background-color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.loader {
+		width: 170px;
+		height: 190px;
+		position: relative;
+		overflow: hidden;
+	
+		.arc {
+			fill: none;
+			stroke: #FDD19C; /* Change color as needed */
+			stroke-width: 2;
+			stroke-dasharray: 530; /* Adjust the length of the arc */
+			stroke-dashoffset: 530;
+			animation: draw 2s linear forwards;
+		}
+
+		.circle {
+			fill: #C2996F;
+			opacity: 0; /* Initially hide the circles */
+			animation: appear 0.5s linear 1s forwards; /* Delay the appearance of circles */
+		}
+
+	}
+	
 }

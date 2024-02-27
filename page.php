@@ -18,7 +18,12 @@ get_header();
     <div id="content" class="site-content" role="main">
 
         <?php
-            the_content();
+            $blocks = function_exists('get_field') ? get_field('blocks') : []; 
+            if(!empty($blocks)) {
+                foreach ($blocks as $value) {
+                    include THEME_FOLDER . "/template-parts/blocks/{$value['acf_fc_layout']}.php";
+                }
+            }
         ?>
 
     </div><!-- #content -->

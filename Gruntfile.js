@@ -20,6 +20,8 @@ module.exports = function (grunt) {
                 files: {
                     'assets/js/script.min.js': [
                         'src/js/app.js',
+                        'src/js/slider.js',
+                        'src/js/preloader-script.js',
                     ],
                 },
             },

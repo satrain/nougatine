@@ -1,0 +1,75 @@
+.about-us-page-container {
+
+    .about-us-hero {
+        @include media(lg) {
+            padding-bottom: 48px;
+        }
+
+        .half-section-background {
+            height: 57%;
+            background: url('/wp-content/uploads/2024/02/about-us-hero-section-background.png');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-color: rgba(11,19,22,.6);
+            background-blend-mode: multiply;
+            @include media(lg) {
+                background: url('/wp-content/uploads/2024/02/about-us-hero-section-background-mobile.png');
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-color: rgba(11,19,22,.6);
+                background-position: center;
+                background-blend-mode: multiply;
+            }
+        }
+
+        .container {
+
+            .box {
+                max-width: 883px;
+                padding: 47px 56px;
+                margin: 240px auto 0;
+                @include media(lg) {
+                    padding: 26px 12px;
+                }
+
+                h1 {
+                    color: $text-dark;
+                    text-align: center;
+                    font-size: 32px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: 40px;
+                    letter-spacing: 0.32px;
+                    text-transform: unset;
+                    @include media(lg) {
+                        line-height: 38px;
+                    }
+                }
+
+                img {
+                    display: block;
+                    width: auto;
+                    max-width: 69px;
+                    margin: 14px auto;
+                    @include media(lg) {
+                        margin: 8px auto;
+                    }
+                }
+
+                p {
+                    margin: 0;
+                    color: $text-dark;
+                    font-size: 18px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 24px;
+                    letter-spacing: 0.18px;
+                }
+
+            }
+
+        }
+
+    }
+
+}

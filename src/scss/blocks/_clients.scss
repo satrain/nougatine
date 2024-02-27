@@ -1,0 +1,42 @@
+.clients {
+    padding-top: 64px;
+    padding-bottom: 127px;
+    @include media(lg) {
+        padding-top: 48px;
+        padding-bottom: 40px;
+    }
+
+    .container {
+        @include media(lg) {
+            padding: 0;
+        }
+
+        .clients-slider {
+            margin-top: 60px;
+            padding: 0 40px;
+            @include media(lg) {
+                padding: 0;
+                padding-left: 16px;
+            }
+            
+            .slick-track {
+                display: flex;
+                align-items: center;
+
+                .slick-slide {
+
+                    img {
+                        width: 100px!important;
+                        display: block!important;
+                        margin: 0 auto!important;
+                    }
+                
+                }
+
+            }
+
+        }
+
+    }
+
+}

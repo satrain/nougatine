@@ -1,7 +1,22 @@
-// @font-face {
-// 	font-family: "Clash Display Variable";
-// 	src: url("../fonts/ClashDisplay-Variable.woff");
-// }
+@font-face {
+	font-family: "Open Sans";
+	src: url("../fonts/OpenSans-VariableFont_wdth,wght.ttf");
+}
+
+@font-face {
+	font-family: "Open Cond Bold";
+	src: url("../fonts/OpenSans-CondBold.ttf");
+}
+
+@font-face {
+	font-family: "Open Cond Bold Hebrew";
+	src: url("../fonts/OpenSansHebrewCondensed-Bold.ttf");
+}
+
+@font-face {
+	font-family: "Assistant";
+	src: url("../fonts/Assistant-VariableFont_wght.ttf");
+}
 
 body {
 	font-family: $font-family;
@@ -20,21 +35,24 @@ h3 {
 }
 
 h4 {
-	@include h-4;
+	@include h-3;
 }
 
 div,
 p {
 	font-size: 18px;
 	font-weight: 400;
-	line-height: 20.696px;
-	letter-spacing: -0.2px;
+	line-height: 24px;
+	letter-spacing: 1%;
 }
 
-.p-1 {
-	@include p-1;
+a {
+	text-decoration: none;
 }
 
-.p-2 {
-	@include p-2;
+.lang-he {
+	h1,
+	h2 {
+		font-family: 'Open Cond Bold Hebrew', sans-serif!important;
+	}
 }

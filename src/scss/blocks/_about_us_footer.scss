@@ -1,0 +1,49 @@
+.about-us-footer {
+    padding-top: 98px;
+    padding-bottom: 73px;
+    @include media(lg) {
+        padding-top: 48px;
+        padding-bottom: 68px;
+    }
+
+    .container {
+
+        .social-media-wrapper {
+
+            p {
+                color: #1D1F22;
+
+                text-align: center;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: normal;
+            }
+
+            .social-media {
+                display: flex;
+                justify-content: center;
+                gap: 30px;
+                align-items: center;
+                margin-top: 39px;
+                @include media(lg) {
+                    margin-top: 0;
+                }
+    
+                a {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: fit-content;
+                    background: rgba(185, 136, 43, 0.15);
+                    border-radius: 2px;
+                    padding: 6px;
+                }
+    
+            }
+
+        }
+        
+    }
+
+}
