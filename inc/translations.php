@@ -29,4 +29,6 @@ add_action('init', function() {
     pll_register_string('alokin', 'עִברִית');
     pll_register_string('alokin', 'Mix tray of pink milky mini desserts');
     pll_register_string('alokin', 'Mini quiche mix tray');
+    pll_register_string('alokin', "Want to see your special event with Nougatine catering on our website? Use hashtag #nougatine on Instagram and Facebook.");
+    pll_register_string('alokin', "Follow Us");
 });

@@ -35,13 +35,9 @@ body {
 	h5,
 	h6,
 	p,
-	a,
-	li,
-	label,
-	input,
-	span,
-	img {
+	a {
 		// transform: scaleX(-1);
+		direction: rtl;
 	}
 }
 
@@ -326,4 +322,31 @@ img {
 
 	}
 	
+}
+
+.lang-he {
+
+	.slick-slider {
+		direction: rtl;
+
+		.slick-list {
+			direction: ltr;
+
+			.slick-track {
+				direction: ltr;
+
+				.slick-slide {
+					float: left;
+				}
+
+			}
+
+		}
+
+	}
+
+}
+
+html .wc-block-components-drawer {
+	left: 100%!important;
 }

@@ -4,6 +4,7 @@ $title = get_field('title');
 $description = get_field('description');
 $button = get_field('button');
 $background = get_field('background');
+$logo = get_field('logo');
 if(!empty($block['className'])): $custom_class = $block['className']; else: $custom_class = ''; endif;
 ?>
 
@@ -12,6 +13,7 @@ if(!empty($block['className'])): $custom_class = $block['className']; else: $cus
     <div class="container">
         <div class="box" data-aos="fade-up" data-aos-duration="500">
             <h2><?= $title ?></h2>
+            <?php if(!empty($logo)): ?> <img src="<?= $logo ?>" alt="Nougatine logo"> <?php endif; ?>
             <p><?= $description ?></p>
             <?php if(!empty($button)): ?> <a href="<?= $button['url'] ?>" class="btn btn-primary"><?= $button['title'] ?></a> <?php endif; ?>
         </div>

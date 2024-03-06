@@ -35,6 +35,7 @@ jQuery(document).ready(function($) {
         ],
     });
 
+
     $('.nougatine-events-slider').slick({
         dots: true,
         arrows: false,

@@ -5,6 +5,7 @@
     .container {
 
         h2 {
+            font-family: 'Open Sans', sans-serif!important;
             font-size: 32px;
             font-style: normal;
             font-weight: 600;
@@ -76,6 +77,14 @@
 
         }
 
+    }
+
+}
+
+.lang-he {
+
+    .dedicated-wrapper  {
+        direction: rtl;
     }
 
 }

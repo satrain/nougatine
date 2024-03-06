@@ -54,6 +54,7 @@ footer {
 
                         svg {
                             margin-right: 12px;
+                            flex-shrink: 0;
                         }
                     }
                     
@@ -165,6 +166,7 @@ footer {
                             flex-direction: row-reverse;
                             text-align: right;
                             gap: 12px;
+                            direction: ltr;
             
                             svg {
                                 margin-right: 0!important;
@@ -193,6 +195,14 @@ footer {
         
                     }
         
+                }
+
+            }
+
+            .copyright-sm {
+
+                p {
+                    direction: ltr;
                 }
 
             }

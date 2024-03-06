@@ -7,9 +7,10 @@ $args = array(
 );
 
 $testimonials_query = new WP_Query($args);
+if(!empty($block['className'])): $custom_class = $block['className']; else: $custom_class = ''; endif;
 ?>
 
-<div class="testimonials">
+<div class="testimonials <?= $custom_class ?>">
     <div class="container">
         <h2 class="hide-mobile"><?= $title ?></h2>
         <h2 class="hide-desktop"><?= $title ?></h2>

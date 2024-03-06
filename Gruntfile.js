@@ -19,8 +19,8 @@ module.exports = function (grunt) {
             dist: {
                 files: {
                     'assets/js/script.min.js': [
-                        'src/js/app.js',
                         'src/js/slider.js',
+                        'src/js/app.js',
                         'src/js/preloader-script.js',
                     ],
                 },

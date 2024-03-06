@@ -8,7 +8,7 @@
 </head>
 <body class="<?php if (get_locale() == 'he_IL') { echo 'lang-he'; } ?>">
     
-    <?php get_template_part('template-parts/preloader'); ?>
+    <?php //get_template_part('template-parts/preloader'); ?>
     
     <header>
         <div class="header-wrapper header-desktop">
@@ -48,7 +48,6 @@
                 </div>
             </div>
         </div>
-        <?php if(wp_is_mobile()): ?>
             <div class="header-wrapper mobile-header-wrapper">
                 <div class="lang-cart">
                     <div class="lang-switcher">
@@ -65,7 +64,7 @@
                 </div>
 
 
-                <a class="logo-mobile" href="<?= get_site_url(); ?>">
+                <a class="logo-mobile" href="<?= pll_home_url(); ?>">
                     <img src="/wp-content/uploads/2024/02/nougatine-logo.svg" alt="Nougatine logo">
                 </a>
 
@@ -86,7 +85,7 @@
 
                 <!-- Mobile Navigation -- toggles on hamburger click -->
                 <div class="nav-mobile-modal menu">
-                    <a class="logo-mobile" href="<?= get_site_url(); ?>">
+                    <a class="logo-mobile" href="<?= pll_home_url(); ?>">
                         <img src="/wp-content/uploads/2024/02/nougatine-logo.svg" alt="Nougatine logo">
                     </a>
                     <nav>
@@ -97,5 +96,4 @@
                 </div>
             </div>
 
-            <?php endif; ?>
     </header>

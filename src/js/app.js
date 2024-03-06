@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
             navMobile.classList.toggle("nav-mobile-active");
             burger.classList.toggle("open");
             document.querySelector('body').classList.toggle("overflow-hidden");
+            if(navMobile.classList.contains("nav-mobile-active")) {
+                document.querySelector('html').style.overflow = "hidden"
+            }
+            else {
+                document.querySelector('html').style.overflow = "auto"
+            }
         }
     }
 
@@ -87,4 +93,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
     // Initial update
     updateSelectedClass();
 
+    let galleryModal = document.querySelector('.gallery-image-modal')
+    let galleryImage = document.querySelectorAll('.gallery-slider-wrapper .item img')
+
+    for(let i = 0; i < galleryImage.length; i++) {
+        galleryImage[i].addEventListener('click', () => {
+            galleryModal.classList.add("active");
+            galleryModal.querySelector('img').src = galleryImage[i].src;
+            document.querySelector('html').style.overflow = "hidden"
+        })
+    }
+
+    closePopup.addEventListener('click', (event) => {
+        event.stopPropagation();
+        galleryModal.classList.remove('active')
+        document.querySelector('html').style.overflow = "auto"
+    })
+
+    // Close popup when clicking outside of the video
+    document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('modal-close-area')) {
+        galleryModal.classList.remove('active');
+        document.querySelector('html').style.overflow = "auto"
+    }
+    });
 })

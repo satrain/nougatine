@@ -128,5 +128,45 @@ function nougatine_acf_init() {
             'keywords'        => array('page'),
         ));
 
+        acf_register_block(array(
+            'name' => 'faq',
+            'title' => __('FAQ'),
+            'Description' => __('Block for FAQs'),
+            'render_callback' => 'nougatine_acf_block_render_callback',
+            'category'        => 'custom',
+            'icon'            => 'slides',
+            'keywords'        => array('page'),
+        ));
+
+        acf_register_block(array(
+            'name' => 'customers-gallery',
+            'title' => __("Customer's Gallery"),
+            'Description' => __("Block for Customer's Gallery Images"),
+            'render_callback' => 'nougatine_acf_block_render_callback',
+            'category'        => 'custom',
+            'icon'            => 'slides',
+            'keywords'        => array('page'),
+        ));
+
+        acf_register_block(array(
+            'name' => 'four-items-grid',
+            'title' => __("Four Items Grid"),
+            'Description' => __("Four items grid block"),
+            'render_callback' => 'nougatine_acf_block_render_callback',
+            'category'        => 'custom',
+            'icon'            => 'slides',
+            'keywords'        => array('page'),
+        ));
+
+        acf_register_block(array(
+            'name' => 'video-with-title',
+            'title' => __("Video with Title"),
+            'Description' => __("Video with title block"),
+            'render_callback' => 'nougatine_acf_block_render_callback',
+            'category'        => 'custom',
+            'icon'            => 'slides',
+            'keywords'        => array('page'),
+        ));
+
     }
 }

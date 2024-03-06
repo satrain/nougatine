@@ -20,11 +20,12 @@ require_once 'inc/constants.php';
  */
 require_once 'inc/testimonials-cpt.php';
 require_once 'inc/faq-cpt.php';
+require_once 'inc/gallery-cpt.php';
 
 /**
- * include acf import (flexible content)
+ * include acf import (ACF Blocks)
  */
-// require_once 'inc/setup-custom-fields.php';
+require_once 'inc/setup-custom-fields.php';
 
 /**
  * include acf blocks
@@ -130,6 +131,8 @@ function alokin_enqueue_assets() {
     wp_enqueue_style('slick_theme_style');
     wp_register_style('slick_style', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.css');
     wp_enqueue_style('slick_style');
+    
+    wp_enqueue_style('lightbox-style', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css');
 
     wp_register_style('aos_style', 'https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css');
     wp_enqueue_style('aos_style');
@@ -145,6 +148,8 @@ function alokin_enqueue_assets() {
 
     wp_register_script('aos_script', 'https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js');
     wp_enqueue_script('aos_script');
+
+    wp_enqueue_script('lightbox-script', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js', array('jquery'), '', true);
 
     wp_enqueue_script( 'main-script', get_template_directory_uri() . '/assets/js/script.min.js', array('jquery'), _S_VERSION, true );
     wp_localize_script( 'main-script', 'ajax_object', array(

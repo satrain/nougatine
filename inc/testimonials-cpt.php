@@ -1,7 +1,7 @@
 <?php
 
 /*
-* Creating a function to create CPT Email Submission
+* Creating a function to create CPT Testimonials
 */
   
 function nougatine_email_subimission_cpt() {
