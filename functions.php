@@ -165,3 +165,354 @@ function add_active_class_to_menu_item($classes, $item) {
     return $classes;
 }
 add_filter('nav_menu_css_class', 'add_active_class_to_menu_item', 10, 2);
+
+
+add_filter('woocommerce_cart_item_quantity', 'custom_cart_item_quantity_html', 10, 3);
+function custom_cart_item_quantity_html($product_quantity, $cart_item_key, $cart_item) {
+    // Get the current quantity
+    $quantity = $cart_item['quantity'];
+    
+    // Modify the HTML structure of the quantity input field here
+    $html = '<div class="custom-quantity">';
+    $html .= '<span class="input-number-button decrement-quantity">-</span>';
+    $html .= '<input type="number" name="quantity" value="' . esc_attr($quantity) . '" data-cart-item-key="' . esc_attr($cart_item_key) . '" class="custom-input-number">';
+    $html .= '<span class="input-number-button increment-quantity">+</span>';
+    $html .= '</div>';
+    return $html;
+}
+
+add_action('wp_ajax_update_cart_item_quantity', 'update_cart_item_quantity');
+add_action('wp_ajax_nopriv_update_cart_item_quantity', 'update_cart_item_quantity');
+
+function update_cart_item_quantity() {
+    if (isset($_POST['cart_item_key']) && isset($_POST['quantity'])) {
+        $cart_item_key = sanitize_text_field($_POST['cart_item_key']);
+        $quantity = intval($_POST['quantity']);
+
+        // Update cart item quantity
+        WC()->cart->set_quantity($cart_item_key, $quantity);
+        
+        // Calculate subtotal
+        $subtotal = WC()->cart->get_subtotal();
+
+        // Return JSON response
+        wp_send_json_success(array(
+            'subtotal' => wc_price($subtotal)
+        ));
+    } else {
+        wp_send_json_error('Invalid request.');
+    }
+
+    wp_die();
+}
+
+add_action('wp_ajax_modal_load_product_data', 'modal_load_product_data');
+add_action('wp_ajax_nopriv_modal_load_product_data', 'modal_load_product_data');
+function modal_load_product_data() {
+    $product_data = [];
+
+    $product_id = $_POST['product_id'];
+    $personalized_message = get_field('personalized_message', $product_id);
+    $bundle_items = get_field('bundle_items', $product_id);
+    $select_options = get_field('select_options', $product_id);
+    $additional_options = get_field('additional_options', $product_id);
+    $product_variation = [];
+    $variation_ids = [];
+    $variation_prices = [];
+    $labels = [];
+
+    if(!empty($personalized_message)) {
+        $product_data['personalized_message'] = $personalized_message;
+    }
+
+    if(!empty($bundle_items)) {
+        $product_data['bundle_items'] = $bundle_items;
+    }
+
+    if(!empty($select_options)) {
+        $product_data['select_options'] = $select_options;
+    }
+
+    if(!empty($additional_options)) {
+        $product_data['additional_options'] = $additional_options;
+    }
+
+    // Ensure the WC_Product_Factory class is loaded
+    if (class_exists('WC_Product_Factory')) {
+        $product_factory = new WC_Product_Factory();
+        $product = $product_factory->get_product($product_id);
+    } else {
+        // Fallback if the product factory isn't available
+        $product = wc_get_product($product_id);
+    }
+
+    // Check if product exists and is a variable product
+    if ($product && $product->is_type('variable')) {
+        $variations = $product->get_available_variations();
+
+        if (!empty($variations)) {
+
+            foreach ($variations as $variation) {
+                $variation_id = $variation['variation_id'];
+                $variation_price = $variation['display_price'];
+                $variation_ids[] = $variation_id;
+                $variation_prices[] = $variation_price;
+
+                // Construct the label with attributes and price
+                $attributes = array();
+                foreach ($variation['attributes'] as $attribute => $value) {
+                    $attributes[] = $value;
+                }
+                $label = implode(', ', $attributes) . ' ' . wc_price($variation_price);
+                $labels[] = $label;
+            }
+
+            $product_variation['ids'] = $variation_ids;
+            $product_variation['prices'] = $variation_prices;
+            $product_variation['labels'] = $labels;
+
+        }
+    }
+
+    if(!empty($product_variation)) {
+        $product_data['product_variation'] = $product_variation;
+    }
+
+    $product_data['product_description'] = wc_get_product( $product_id )->get_short_description();
+
+    $product_obj = wc_get_product($product_id);
+    $product_data['in_stock'] = true;
+    if(!$product_obj->is_in_stock()) {
+        $product_data['in_stock'] = false;
+    }
+
+    return wp_send_json_success($product_data);
+
+    wp_die();
+}
+
+function get_product_variations($product_id) {
+    $product_variation = [];
+    // Ensure the WC_Product_Factory class is loaded
+    if (class_exists('WC_Product_Factory')) {
+        $product_factory = new WC_Product_Factory();
+        $product = $product_factory->get_product($product_id);
+    } else {
+        // Fallback if the product factory isn't available
+        $product = wc_get_product($product_id);
+    }
+
+    // Check if product exists and is a variable product
+    if ($product && $product->is_type('variable')) {
+        $variations = $product->get_available_variations();
+
+        if (!empty($variations)) {
+
+            foreach ($variations as $variation) {
+                $variation_id = $variation['variation_id'];
+                $variation_price = $variation['display_price'];
+                $variation_ids[] = $variation_id;
+                $variation_prices[] = $variation_price;
+
+                // Construct the label with attributes and price
+                $attributes = array();
+                foreach ($variation['attributes'] as $attribute => $value) {
+                    $attributes[] = $value;
+                }
+                $label = implode(', ', $attributes) . ' ' . wc_price($variation_price);
+                $labels[] = $label;
+            }
+
+            $product_variation['ids'] = $variation_ids;
+            $product_variation['prices'] = $variation_prices;
+            $product_variation['labels'] = $labels;
+
+        }
+    }
+    
+    return $product_variation;
+}
+
+add_action('wp_ajax_custom_ajax_add_to_cart', 'custom_ajax_add_to_cart');
+add_action('wp_ajax_nopriv_custom_ajax_add_to_cart', 'custom_ajax_add_to_cart');
+
+function custom_ajax_add_to_cart() {
+    $product_id = apply_filters('woocommerce_add_to_cart_product_id', absint($_POST['product_id']));
+    $quantity = empty($_POST['quantity']) ? 1 : wc_stock_amount($_POST['quantity']);
+    $variation_id = isset($_POST['variation_id']) ? absint($_POST['variation_id']) : 0; // Defaults to 0 if not set
+
+    $passed_validation = apply_filters('woocommerce_add_to_cart_validation', true, $product_id, $quantity, $variation_id);
+
+    if ($passed_validation) {
+        if($variation_id) {
+            $cart_item_key = WC()->cart->add_to_cart($product_id, $quantity, $variation_id);
+        } else {
+            $cart_item_key = WC()->cart->add_to_cart($product_id, $quantity);
+        }
+
+        if ($cart_item_key) {
+            do_action('woocommerce_ajax_added_to_cart', $product_id);
+            echo json_encode(['success' => true, 'message' => 'Product added']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed to add product']);
+        }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Failed to add product']);
+    }
+
+    wp_die();
+}
+
+function get_side_cart_products_html() {
+    ob_start(); // Start output buffering
+
+    foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+        $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
+        $product_id = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key);
+        $product_permalink = apply_filters('woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink($cart_item) : '', $cart_item, $cart_item_key);
+        $thumbnail = apply_filters('woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key);
+        $product_name = apply_filters('woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key);
+
+        // Echo out the structure for each product
+        ?>
+        <div class="product">
+            <?php echo $thumbnail; ?>
+            <div class="product-content">
+                <span class="delete-item product-remove">
+                <a>x</a>
+                </span>
+                <p class="product-title"><?php echo $product_name; ?></p>
+                <div class="product-price-qty">
+                    <p class="quantity">x<?php echo $cart_item['quantity']; ?></p>
+                    <p class="price"><?php echo WC()->cart->get_product_price($_product); ?></p>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+
+    $side_cart_html = ob_get_clean(); // Get the buffered content into a variable
+    wp_send_json_success($side_cart_html); // Send this content back as a JSON response
+    wp_die(); // End the request here
+}
+add_action('wp_ajax_get_side_cart_products_html', 'get_side_cart_products_html');
+add_action('wp_ajax_nopriv_get_side_cart_products_html', 'get_side_cart_products_html');
+
+function remove_item_from_cart() {
+    $product_id = isset($_POST['product_id']) ? sanitize_text_field($_POST['product_id']) : 0;
+
+    if (!empty($product_id)) {
+        foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+            if ($cart_item['product_id'] == $product_id) {
+                WC()->cart->remove_cart_item($cart_item_key);
+                break;
+            }
+        }
+        ob_start(); // Start output buffering
+
+        foreach (WC()->cart->get_cart() as $cart_item_key => $cart_item) {
+            $_product = apply_filters('woocommerce_cart_item_product', $cart_item['data'], $cart_item, $cart_item_key);
+            $product_id = apply_filters('woocommerce_cart_item_product_id', $cart_item['product_id'], $cart_item, $cart_item_key);
+            $product_permalink = apply_filters('woocommerce_cart_item_permalink', $_product->is_visible() ? $_product->get_permalink($cart_item) : '', $cart_item, $cart_item_key);
+            $thumbnail = apply_filters('woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key);
+            $product_name = apply_filters('woocommerce_cart_item_name', $_product->get_name(), $cart_item, $cart_item_key);
+    
+            // Echo out the structure for each product
+            ?>
+            <div class="product">
+                <?php echo $thumbnail; ?>
+                <div class="product-content">
+                    <span class="delete-item product-remove">
+                    <a>x</a>
+                    </span>
+                    <p class="product-title"><?php echo $product_name; ?></p>
+                    <div class="product-price-qty">
+                        <p class="quantity">x<?php echo $cart_item['quantity']; ?></p>
+                        <p class="price"><?php echo WC()->cart->get_product_price($_product); ?></p>
+                    </div>
+                </div>
+            </div>
+            <?php
+        }
+    
+        $side_cart_html = ob_get_clean(); // Get the buffered content into a variable
+        $result = ['success' => true, 'html' => $side_cart_html]; // get_side_cart_contents_html() should generate the updated sidecart HTML
+    } else {
+        $result = ['success' => false];
+    }
+
+    wp_send_json($result);
+    wp_die();
+}
+add_action('wp_ajax_remove_item_from_cart', 'remove_item_from_cart');
+add_action('wp_ajax_nopriv_remove_item_from_cart', 'remove_item_from_cart');
+
+function handle_delivery_charge() {
+    if (isset($_POST['city_price'])) {
+        $delivery_price = intval($_POST['city_price']);
+        WC()->session->set('custom_delivery_charge', $delivery_price);
+
+        echo $delivery_price; 
+    }
+    wp_die();
+}
+add_action('wp_ajax_handle_delivery_charge', 'handle_delivery_charge');
+add_action('wp_ajax_nopriv_handle_delivery_charge', 'handle_delivery_charge'); 
+
+function add_custom_delivery_charge($cart) {
+    if (is_admin() && !defined('DOING_AJAX')) return;
+
+    $delivery_charge = WC()->session->get('custom_delivery_charge');
+    // if ($delivery_charge > 0) {
+        $cart->add_fee(__('Delivery', 'woocommerce'), $delivery_charge);
+    // }
+}
+add_action('woocommerce_cart_calculate_fees', 'add_custom_delivery_charge', 20);
+
+function remove_delivery_charge() {
+    WC()->session->set('custom_delivery_charge', 0);
+    wp_die(); // Properly close the AJAX call
+}
+add_action('wp_ajax_remove_delivery_charge', 'remove_delivery_charge');
+add_action('wp_ajax_nopriv_remove_delivery_charge', 'remove_delivery_charge');
+
+function search_faqs() {
+    $search_term = $_POST['search_term'];
+
+    $args = array(
+        'post_type' => 'faqs',
+        's' => $search_term,
+        'posts_per_page' => -1, // Retrieve all matching FAQs
+        'orderby' => 'title', // Order by title
+        'order' => 'ASC',
+        'search_post_title_only' => true,
+    );
+
+    $query = new WP_Query($args);
+
+    if ($query->have_posts()) {
+        while ($query->have_posts()) {
+            $query->the_post();
+            // Output HTML for each FAQ item
+            ?>
+            <div class="faq item">
+                <p class="title">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 12.998H13V17.998C13 18.2633 12.8946 18.5176 12.7071 18.7052C12.5196 18.8927 12.2652 18.998 12 18.998C11.7348 18.998 11.4804 18.8927 11.2929 18.7052C11.1054 18.5176 11 18.2633 11 17.998V12.998H6C5.73478 12.998 5.48043 12.8927 5.29289 12.7052C5.10536 12.5176 5 12.2633 5 11.998C5 11.7328 5.10536 11.4785 5.29289 11.2909C5.48043 11.1034 5.73478 10.998 6 10.998H11V5.99805C11 5.73283 11.1054 5.47848 11.2929 5.29094C11.4804 5.1034 11.7348 4.99805 12 4.99805C12.2652 4.99805 12.5196 5.1034 12.7071 5.29094C12.8946 5.47848 13 5.73283 13 5.99805V10.998H18C18.2652 10.998 18.5196 11.1034 18.7071 11.2909C18.8946 11.4785 19 11.7328 19 11.998C19 12.2633 18.8946 12.5176 18.7071 12.7052C18.5196 12.8927 18.2652 12.998 18 12.998Z" fill="#C2996F"/>
+                    </svg>
+                    <?php the_title(); ?>
+                </p>
+                <p class="content"><?php the_field('content', get_the_ID()); ?></p>
+            </div>
+            <?php
+        }
+    } else {
+        pll_e("No FAQs found.");
+    }
+
+    wp_reset_postdata();
+
+    die();
+}
+add_action('wp_ajax_search_faqs', 'search_faqs');
+add_action('wp_ajax_nopriv_search_faqs', 'search_faqs'); // Allow non-logged in users to use the function

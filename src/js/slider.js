@@ -115,5 +115,6 @@ jQuery(document).ready(function($) {
     sliderSetSameHeight('.testimonials-slider .card')
     sliderSetSameHeight('.best-sellers-slider .card')
     sliderSetSameHeight('.best-sellers-slider .card p.title')
+    sliderSetSameHeight('.product-catalog-category-wrapper .card p.title')
 
 });

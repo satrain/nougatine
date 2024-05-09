@@ -96,25 +96,153 @@ document.addEventListener('DOMContentLoaded', (event) => {
     let galleryModal = document.querySelector('.gallery-image-modal')
     let galleryImage = document.querySelectorAll('.gallery-slider-wrapper .item img')
 
-    for(let i = 0; i < galleryImage.length; i++) {
-        galleryImage[i].addEventListener('click', () => {
-            galleryModal.classList.add("active");
-            galleryModal.querySelector('img').src = galleryImage[i].src;
-            document.querySelector('html').style.overflow = "hidden"
+    if(galleryModal) {
+        for(let i = 0; i < galleryImage.length; i++) {
+            galleryImage[i].addEventListener('click', () => {
+                galleryModal.classList.add("active");
+                galleryModal.querySelector('img').src = galleryImage[i].src;
+                document.querySelector('html').style.overflow = "hidden"
+            })
+        }
+
+        closePopup.addEventListener('click', (event) => {
+            event.stopPropagation();
+            galleryModal.classList.remove('active')
+            document.querySelector('html').style.overflow = "auto"
+        })
+
+        // Close popup when clicking outside of the video
+        document.addEventListener('click', (event) => {
+        if (event.target.classList.contains('modal-close-area')) {
+            galleryModal.classList.remove('active');
+            document.querySelector('html').style.overflow = "auto"
+        }
+        });
+    }
+
+
+    var scrollToTopBtn = document.querySelector('#scrollToTopBtn');
+
+    window.addEventListener('scroll', function () {
+        if (window.scrollY > 500) {
+            scrollToTopBtn.classList.add('show');
+        } else {
+            scrollToTopBtn.classList.remove('show');
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+
+    scrollToTopBtn.addEventListener('click', () => {
+        scrollToTop()
+    })
+
+    let cards = document.querySelectorAll('.card')
+    let productModal = document.querySelector('.product-modal')
+    let closeProductModal = document.querySelector('.product-modal .close')
+    if(productModal) {
+        closeProductModal.addEventListener('click', () => {
+            productModal.classList.remove('active');
+        })
+
+        for(let i = 0; i < cards.length; i++) {
+            cards[i].addEventListener('click', () => {
+                productModal.classList.add('active')
+            })
+            if(cards[i].querySelector('.nougatine-add-to-cart')) {
+                cards[i].querySelector('.nougatine-add-to-cart').addEventListener('click', (ev) => {
+                    ev.stopPropagation();
+                })
+            }
+        }
+
+        // close popup by clicking outside of the popup
+        productModal.addEventListener('click', () => {
+            productModal.classList.remove('active')
+        })
+        productModal.querySelector('.modal-wrapper').addEventListener('click', (ev) => {
+            ev.stopPropagation();
         })
     }
 
-    closePopup.addEventListener('click', (event) => {
-        event.stopPropagation();
-        galleryModal.classList.remove('active')
-        document.querySelector('html').style.overflow = "auto"
+    // sidecart animation
+    let sideCart = document.querySelector('.nougatine-sidecart')
+    let sideCartContent = document.querySelector('.sidecart-content')
+    let shoppingCarts = document.querySelectorAll('.shopping-cart')
+    let closeSideCart = document.querySelector('.close-sidecart')
+
+    shoppingCarts.forEach(cart => {
+        cart.addEventListener('click', () => {
+            sideCart.classList.add('active')
+        })
     })
 
-    // Close popup when clicking outside of the video
-    document.addEventListener('click', (event) => {
-    if (event.target.classList.contains('modal-close-area')) {
-        galleryModal.classList.remove('active');
-        document.querySelector('html').style.overflow = "auto"
-    }
-    });
+    closeSideCart.addEventListener('click', () => {
+        sideCart.classList.remove('active')
+    })
+
+    sideCart.addEventListener('click', () => {
+        sideCart.classList.remove('active')
+    })
+
+    sideCartContent.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+    })
+
 })
+
+jQuery(document).ready(function($) {
+
+    let decrementBtn = document.querySelectorAll('.decrement-quantity');
+    let incrementBtn = document.querySelectorAll('.increment-quantity');
+    let inputField = document.querySelectorAll('.custom-input-number');
+    let subtotal = document.querySelector('.cart-subtotal td');
+    
+    for(let i = 0; i < decrementBtn.length; i++) {
+        decrementBtn[i].addEventListener('click', () => {
+            if(inputField[i].value > 1) {
+                inputField[i].stepDown();
+                updateCart(inputField[i]);
+            }
+        });
+    }
+    
+    for(let i = 0; i < incrementBtn.length; i++) {
+        incrementBtn[i].addEventListener('click', () => {
+            inputField[i].stepUp();
+            updateCart(inputField[i]);
+        });
+    }
+    
+    function updateCart(inputField) {
+        let cart_item_key = inputField.getAttribute('data-cart-item-key');
+        let quantity = inputField.value;
+
+    
+        jQuery.ajax({
+            url: ajax_object.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'update_cart_item_quantity',
+                cart_item_key: cart_item_key,
+                quantity: quantity
+            },
+            success: function(response) {
+                // Update subtotal
+                subtotal.innerHTML = response.data.subtotal;
+
+                // Optionally update other parts of the cart
+                // e.g., mini cart in header
+            },
+            error: function(error) {
+                console.error('Error:', error);
+            }
+        });
+    }
+
+});

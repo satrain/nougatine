@@ -9,6 +9,11 @@
 // Layouts
 @import 'layouts/header';
 @import 'layouts/footer';
+@import 'layouts/products_catalog';
+@import 'layouts/recommended_menus';
+@import 'layouts/cart';
+@import 'layouts/sidecart';
+@import 'layouts/checkout';
 
 // Blocks
 @import 'blocks/hero';
@@ -24,3 +29,4 @@
 @import 'blocks/dedicated_to_events';
 @import 'blocks/our_story';
 @import 'blocks/about_us_footer';
+@import 'blocks/need_a_quote';

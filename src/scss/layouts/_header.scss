@@ -210,7 +210,7 @@ header {
 			gap: 32px;
 			@include media(lg) {
 				flex-direction: row-reverse;
-				gap: 4px;
+				gap: 15px;
 			}
 
 			.lang-switcher {
@@ -234,32 +234,56 @@ header {
 			}
 
 			.shopping-cart {
-				
-				button {
-					cursor: pointer;
+				position: relative;
+				cursor: pointer;
+				margin-top: 8px;
 
-					svg {
-						circle {
-							transition: .1s;
-						}
-						path {
-							transition: .1s;
-						}
+				
+				svg {
+					circle {
+						transition: .1s;
+					}
+					path {
+						transition: .1s;
+					}
+				}
+
+				.products-counter {
+					position: absolute;
+					right: -10px;
+					bottom: -5px;
+					width: 20px;
+					height: 20px;
+					border-radius: 50%;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					background: $primary;
+
+					p {
+						color: #fff;
+						text-align: center;
+						font-family: "Open Sans", sans-serif;
+						font-size: 12px;
+						font-style: normal;
+						font-weight: 600;
+						line-height: 16px; /* 133.333% */
 					}
 
-					&:hover {
-						opacity: 1!important;
-						transition: .1s;
-						svg {
-							circle {
-								fill: $primary!important;
-								transition: .1s;
-							}
+				}
 
-							path {
-								fill: $primary!important;
-								transition: .1s;
-							}
+				&:hover {
+					opacity: 1!important;
+					transition: .1s;
+					svg {
+						circle {
+							fill: $primary!important;
+							transition: .1s;
+						}
+
+						path {
+							fill: $primary!important;
+							transition: .1s;
 						}
 					}
 				}

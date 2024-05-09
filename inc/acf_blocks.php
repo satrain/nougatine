@@ -168,5 +168,15 @@ function nougatine_acf_init() {
             'keywords'        => array('page'),
         ));
 
+        acf_register_block(array(
+            'name' => 'need-a-quote',
+            'title' => __("Need a Quote"),
+            'Description' => __("Export a quote as PDF"),
+            'render_callback' => 'nougatine_acf_block_render_callback',
+            'category'        => 'custom',
+            'icon'            => 'slides',
+            'keywords'        => array('page'),
+        ));
+
     }
 }
