@@ -15,8 +15,7 @@ html {
   overflow-x: hidden; }
 
 body {
-  color: #2C2B2E;
-  overflow-x: hidden; }
+  color: #2C2B2E; }
 
 .lang-he h1,
 .lang-he h2,
@@ -711,7 +710,8 @@ a {
     left: -170px; }
 
 header {
-  position: fixed;
+  position: sticky;
+  top: 0;
   width: 100vw;
   z-index: 99;
   padding: 12px 16px;
@@ -1144,6 +1144,12 @@ footer {
             line-height: normal; } }
   .product-catalog .product-categories {
     padding-top: 32px; }
+    .product-catalog .product-categories.sticky {
+      position: sticky;
+      top: var(--header-height);
+      z-index: 999;
+      background-color: #fff;
+      padding-top: 0; }
     @media screen and (min-width: 992px) {
       .product-catalog .product-categories .container .categories-dropdown {
         display: none; } }
@@ -1268,7 +1274,8 @@ footer {
       font-weight: 700;
       line-height: 32px;
       /* 133.333% */
-      text-transform: uppercase; }
+      text-transform: uppercase;
+      flex: 0 0 100%; }
       @media (max-width: 992px) {
         .product-catalog .product-catalog-wrapper .container h3 {
           font-weight: 600;
@@ -1290,6 +1297,11 @@ footer {
       gap: 24px;
       margin-top: 40px;
       margin-bottom: 70px; }
+      .product-catalog .product-catalog-wrapper .container .product-catalog-category-wrapper.sticky h3 {
+        position: sticky;
+        top: calc(var(--header-height) + 60px);
+        z-index: 9;
+        background: #fff; }
       @media (max-width: 992px) {
         .product-catalog .product-catalog-wrapper .container .product-catalog-category-wrapper {
           gap: 12px;
@@ -1308,6 +1320,10 @@ footer {
         box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.15);
         width: 100%;
         flex: 0 0 23.5%; }
+        .product-catalog .product-catalog-wrapper .container .product-catalog-category-wrapper .card.inactive {
+          visibility: hidden; }
+        .product-catalog .product-catalog-wrapper .container .product-catalog-category-wrapper .card.active {
+          visibility: visible; }
         @media (max-width: 992px) {
           .product-catalog .product-catalog-wrapper .container .product-catalog-category-wrapper .card {
             max-width: 100%;
@@ -3067,7 +3083,7 @@ footer {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-      align-items: flex-end; }
+      align-items: flex-start; }
       @media (max-width: 992px) {
         .custom-checkout .checkout-wrapper #checkout-steps {
           width: 100%;
@@ -3395,6 +3411,132 @@ footer {
               font-style: normal;
               font-weight: 400;
               line-height: 22px; }
+        .custom-checkout .checkout-wrapper #checkout-steps .content abbr {
+          color: #c2996f; }
+        .custom-checkout .checkout-wrapper #checkout-steps .content .step-content input:not([type="radio"]), .custom-checkout .checkout-wrapper #checkout-steps .content .step-content select {
+          padding: 11px 8px;
+          border-radius: 2px;
+          border: 1px solid #D9D9D9;
+          outline: none;
+          background: #FFF;
+          color: #2C2B2E;
+          font-family: "Open Sans", sans-serif;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 16px;
+          /* 114.286% */ }
+          .custom-checkout .checkout-wrapper #checkout-steps .content .step-content input:not([type="radio"])::placeholder, .custom-checkout .checkout-wrapper #checkout-steps .content .step-content select::placeholder {
+            color: #8E99A5;
+            font-family: "Open Sans", sans-serif;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 16px;
+            /* 114.286% */ }
+        .custom-checkout .checkout-wrapper #checkout-steps .content .step-content #ship-to-different-address label {
+          cursor: pointer;
+          margin-top: 12px;
+          margin-bottom: 16px;
+          border-radius: 5px;
+          border: 2px solid #c2996f;
+          padding: 16px 12px;
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          gap: 8px; }
+        .custom-checkout .checkout-wrapper #checkout-steps .content .step-content #ship-to-different-address span {
+          color: #c2996f;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: 20px; }
+        .custom-checkout .checkout-wrapper #checkout-steps .content .step-content #ship-to-different-address #ship-to-different-address-checkbox {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 20px;
+          height: 20px;
+          flex-shrink: 0;
+          border-radius: 3px;
+          border: 2px solid #c2996f; }
+        .custom-checkout .checkout-wrapper #checkout-steps .content .step-content #payment {
+          background: transparent; }
+        .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery select {
+          cursor: pointer;
+          padding: 11px 8px;
+          border-radius: 2px;
+          outline: 0;
+          border: 1px solid #d9d9d9;
+          background: #fff;
+          color: #8e99a5;
+          font-family: "Open Sans", sans-serif;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 16px; }
+        .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery #shipping_time_field,
+        .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery #shipping_date_field {
+          width: 50%; }
+        .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery input {
+          padding: 11px 8px;
+          border-radius: 2px;
+          border: 1px solid #d9d9d9;
+          outline: 0;
+          background: #fff;
+          color: #2c2b2e;
+          font-family: "Open Sans", sans-serif;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 16px; }
+        .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery .half {
+          display: flex;
+          justify-content: space-between;
+          gap: 36px;
+          margin-top: 8px; }
+        .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery_field .woocommerce-input-wrapper {
+          display: flex;
+          justify-content: space-between;
+          gap: 32px;
+          align-content: center; }
+          .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery_field .woocommerce-input-wrapper input {
+            display: none;
+            opacity: 0;
+            visibility: hidden;
+            position: absolute; }
+            .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery_field .woocommerce-input-wrapper input#choose_delivery_pickup:hover + label::before {
+              content: url("../images/pickup_gold.svg"); }
+            .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery_field .woocommerce-input-wrapper input#choose_delivery_pickup + label::before {
+              content: url("../images/pickup.svg");
+              width: 52px;
+              height: 52px; }
+            .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery_field .woocommerce-input-wrapper input#choose_delivery_shipping:hover + label::before {
+              content: url("../images/delivery_gold.svg"); }
+            .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery_field .woocommerce-input-wrapper input#choose_delivery_shipping + label::before {
+              content: url("../images/delivery.svg");
+              width: 52px;
+              height: 52px; }
+            .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery_field .woocommerce-input-wrapper input:checked + label {
+              border: 1px solid #c2996f;
+              background: #fff; }
+            .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery_field .woocommerce-input-wrapper input + label {
+              width: 50%;
+              cursor: pointer;
+              border-radius: 2px;
+              border: 1px solid #f6f6f6;
+              background: #f6f6f6;
+              padding: 16px 33px;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              gap: 8px;
+              transition: .3s; }
+              .custom-checkout .checkout-wrapper #checkout-steps .content #choose_delivery_field .woocommerce-input-wrapper input + label:hover {
+                border: 1px solid #c2996f;
+                background: #fff;
+                transition: 0.3s; }
     .custom-checkout .checkout-wrapper #order-summary {
       padding: 0 0 70px;
       width: 35%;
@@ -4564,7 +4706,6 @@ html body .lightbox {
   position: relative;
   background-size: cover !important;
   background-repeat: no-repeat !important;
-  margin-top: 105px;
   padding: 59px 16px 97px; }
   @media (max-width: 992px) {
     .faq-page-container .faq-hero {

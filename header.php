@@ -6,14 +6,14 @@
     <?php wp_head(); ?>
 
 </head>
-<body class="<?php if (get_locale() == 'he_IL') { echo 'lang-he'; } ?>">
+<body  <?php body_class(); ?>>
 
 <div id="scrollToTopBtn" class="hidden">
     <span>&#8593;</span>
 </div>
-    
+
     <?php //get_template_part('template-parts/preloader'); ?>
-    
+
     <header>
         <div class="header-wrapper header-desktop">
             <div class="logo">
@@ -105,7 +105,7 @@
                         <img src="/wp-content/uploads/2024/02/nougatine-logo.svg" alt="Nougatine logo">
                     </a>
                     <nav>
-                        <?php 
+                        <?php
                             wp_nav_menu( array( 'theme_location' => 'menu-1' ) );
                         ?>
                     </nav>
