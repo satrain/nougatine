@@ -470,12 +470,30 @@ function remove_item_from_cart() {
 			<div class="product">
 				<?php echo $thumbnail; ?>
 				<div class="product-content">
-                    <span class="delete-item product-remove" data-product-id="<?= $product_id ?>">
-                    <a>x</a>
-                    </span>
-					<p class="product-title"><?php echo $product_name; ?></p>
+					<div class="product-info">
+						<p class="product-title">
+							<?php
+							if ( ! $product_permalink ) {
+								echo wp_kses_post( $product_name . '&nbsp;' );
+							} else {
+								/**
+								 * This filter is documented above.
+								 *
+								 * @since 2.1.0
+								 */
+								echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ), $_product->get_name() ), $cart_item, $cart_item_key ) );
+							}
+							?>
+						</p>
+						<span class="delete-item product-remove" data-product-id="<?= $product_id ?>">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+<path d="M13.3333 3.99967H10.6667V3.33301C10.6667 2.80257 10.456 2.29387 10.0809 1.91879C9.70581 1.54372 9.1971 1.33301 8.66667 1.33301H7.33333C6.8029 1.33301 6.29419 1.54372 5.91912 1.91879C5.54405 2.29387 5.33333 2.80257 5.33333 3.33301V3.99967H2.66667C2.48986 3.99967 2.32029 4.06991 2.19526 4.19494C2.07024 4.31996 2 4.48953 2 4.66634C2 4.84315 2.07024 5.01272 2.19526 5.13775C2.32029 5.26277 2.48986 5.33301 2.66667 5.33301H3.33333V12.6663C3.33333 13.1968 3.54405 13.7055 3.91912 14.0806C4.29419 14.4556 4.8029 14.6663 5.33333 14.6663H10.6667C11.1971 14.6663 11.7058 14.4556 12.0809 14.0806C12.456 13.7055 12.6667 13.1968 12.6667 12.6663V5.33301H13.3333C13.5101 5.33301 13.6797 5.26277 13.8047 5.13775C13.9298 5.01272 14 4.84315 14 4.66634C14 4.48953 13.9298 4.31996 13.8047 4.19494C13.6797 4.06991 13.5101 3.99967 13.3333 3.99967ZM6.66667 3.33301C6.66667 3.1562 6.7369 2.98663 6.86193 2.8616C6.98695 2.73658 7.15652 2.66634 7.33333 2.66634H8.66667C8.84348 2.66634 9.01305 2.73658 9.13807 2.8616C9.2631 2.98663 9.33333 3.1562 9.33333 3.33301V3.99967H6.66667V3.33301ZM11.3333 12.6663C11.3333 12.8432 11.2631 13.0127 11.1381 13.1377C11.013 13.2628 10.8435 13.333 10.6667 13.333H5.33333C5.15652 13.333 4.98695 13.2628 4.86193 13.1377C4.7369 13.0127 4.66667 12.8432 4.66667 12.6663V5.33301H11.3333V12.6663Z"
+      fill="#868686"/>
+</svg> <a><?= pll_e( 'Remove' ) ?></a>
+                                </span>
+					</div>
 					<div class="product-price-qty">
-						<p class="quantity">x<?php echo $cart_item['quantity']; ?></p>
+						<p class="quantity"><?php echo $cart_item['quantity']; ?></p>
 						<p class="price"><?php echo WC()->cart->get_product_price( $_product ); ?></p>
 					</div>
 				</div>
@@ -584,31 +602,32 @@ add_filter( 'body_class', 'add_class_to_body' );
 
 function woocommerce_get_cart() {
 	// Check the nonce
-	if ( !isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'wp_rest') ) {
-		wp_send_json_error(array('message' => 'Invalid nonce'));
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'wp_rest' ) ) {
+		wp_send_json_error( array( 'message' => 'Invalid nonce' ) );
 	}
 
 	$cart = WC()->cart;
 
 	$cart_items = array();
 
-	foreach ($cart->get_cart() as $cart_item) {
-		$product = wc_get_product($cart_item['product_id']);
-		$price_per_item = wc_price($product->get_price());
-		$total_price_for_item = wc_price($cart_item['quantity'] * $product->get_price());
-		$cart_items[] = array(
-			'name' => $product->get_name(),
-			'quantity' => $cart_item['quantity'],
-			'price_per_item' => $price_per_item,
+	foreach ( $cart->get_cart() as $cart_item ) {
+		$product              = wc_get_product( $cart_item['product_id'] );
+		$price_per_item       = wc_price( $product->get_price() );
+		$total_price_for_item = wc_price( $cart_item['quantity'] * $product->get_price() );
+		$cart_items[]         = array(
+			'name'                 => $product->get_name(),
+			'quantity'             => $cart_item['quantity'],
+			'price_per_item'       => $price_per_item,
 			'total_price_for_item' => $total_price_for_item,
-			'line_total' => wc_price($cart_item['line_total'])
+			'line_total'           => wc_price( $cart_item['line_total'] ),
 		);
 	}
 
 	$subtotal = $cart->get_cart_subtotal();
-	$total = $cart->get_cart_total();
+	$total    = $cart->get_cart_total();
 
-	wp_send_json_success(array('items' => $cart_items, 'subtotal' => $subtotal, 'total' => $total));
+	wp_send_json_success( array( 'items' => $cart_items, 'subtotal' => $subtotal, 'total' => $total ) );
 }
-add_action('wp_ajax_woocommerce_get_cart', 'woocommerce_get_cart');
-add_action('wp_ajax_nopriv_woocommerce_get_cart', 'woocommerce_get_cart');
+
+add_action( 'wp_ajax_woocommerce_get_cart', 'woocommerce_get_cart' );
+add_action( 'wp_ajax_nopriv_woocommerce_get_cart', 'woocommerce_get_cart' );

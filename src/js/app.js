@@ -185,9 +185,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		sideCart.classList.remove('active')
 	})
 
-	sideCart.addEventListener('click', () => {
-		sideCart.classList.remove('active')
-	})
+	// sideCart.addEventListener('click', () => {
+	// 	sideCart.classList.remove('active')
+	// })
 
 	// sideCartContent.addEventListener('click', (ev) => {
 	// 	ev.stopPropagation();
