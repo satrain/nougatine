@@ -405,6 +405,7 @@ function custom_ajax_add_to_cart() {
 }
 
 function get_side_cart_products_html() {
+	$subtotal = WC()->cart->get_subtotal();
 	ob_start(); // Start output buffering
 
 	foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
@@ -419,7 +420,7 @@ function get_side_cart_products_html() {
 		<div class="product">
 			<?php echo $thumbnail; ?>
 			<div class="product-content">
-                <span class="delete-item product-remove">
+                <span class="delete-item product-remove" data-product-id="<?= $product_id ?>">
                 <a>x</a>
                 </span>
 				<p class="product-title"><?php echo $product_name; ?></p>
@@ -433,7 +434,8 @@ function get_side_cart_products_html() {
 	}
 
 	$side_cart_html = ob_get_clean(); // Get the buffered content into a variable
-	wp_send_json_success( $side_cart_html ); // Send this content back as a JSON response
+	$object_to_send = [ 'success' => true, 'html' => $side_cart_html, 'totalPrice' => $subtotal ];
+	wp_send_json_success( $object_to_send ); // Send this content back as a JSON response
 	wp_die(); // End the request here
 }
 
@@ -450,6 +452,7 @@ function remove_item_from_cart() {
 				break;
 			}
 		}
+		$subtotal = WC()->cart->get_subtotal();
 		ob_start(); // Start output buffering
 
 		foreach ( WC()->cart->get_cart() as $cart_item_key => $cart_item ) {
@@ -464,7 +467,7 @@ function remove_item_from_cart() {
 			<div class="product">
 				<?php echo $thumbnail; ?>
 				<div class="product-content">
-                    <span class="delete-item product-remove">
+                    <span class="delete-item product-remove" data-product-id="<?= $product_id ?>">
                     <a>x</a>
                     </span>
 					<p class="product-title"><?php echo $product_name; ?></p>
@@ -478,12 +481,12 @@ function remove_item_from_cart() {
 		}
 
 		$side_cart_html = ob_get_clean(); // Get the buffered content into a variable
-		$result         = [ 'success' => true, 'html' => $side_cart_html ]; // get_side_cart_contents_html() should generate the updated sidecart HTML
+		$result         = [ 'success' => true, 'html' => $side_cart_html, 'totalPrice' => $subtotal ]; // get_side_cart_contents_html() should generate the updated sidecart HTML
 	} else {
 		$result = [ 'success' => false ];
 	}
 
-	wp_send_json( $result );
+	wp_send_json_success( $result );
 	wp_die();
 }
 

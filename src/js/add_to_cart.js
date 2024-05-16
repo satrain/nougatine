@@ -64,8 +64,8 @@ jQuery(document).ready(function($) {
                             console.log(response)
                             // var html_data = JSON.parse(response);
                             if(response.success) {
-                                $('.sidecart-products .container').html(response.data); // Inject new HTML
-                                // $('.payment .subtotal .price').html(response.data.totalPrice);
+                                $('.sidecart-products .container').html(response.data.html); // Inject new HTML
+                                $('.payment .subtotal .price').html("₪" + response.data.totalPrice + ".00");
                                 var itemsCount = $('.sidecart-products .container .product').length;
                                 $('.sidecart-title .quantity').html('(' + itemsCount + ')')
                                 setSidecartProductCount();
@@ -93,8 +93,9 @@ jQuery(document).ready(function($) {
         });
     });
 
-    $('.delete-item.product-remove').on('click', function(e) {
+    $('.sidecart-products .container').on('click', '.delete-item.product-remove', function(e) {
         e.preventDefault();
+        console.log('clicked')
     
         var product_id = $(this).data('product-id'); // Make sure each button has a 'data-product-id' attribute
     
@@ -108,7 +109,8 @@ jQuery(document).ready(function($) {
             success: function(response) {
                 if (response.success) {
                     // Update the sidecart to reflect the item removal
-                    $('.sidecart-products .container').html(response.html); // Assuming the new HTML of the sidecart is returned
+                    $('.sidecart-products .container').html(response.data.html); // Assuming the new HTML of the sidecart is returned
+                    $('.payment .subtotal .price').html("₪" + response.data.totalPrice + ".00");
                     var itemsCount = $('.sidecart-products .container .product').length;
                     $('.sidecart-title .quantity').html('(' + itemsCount + ')')
                     setSidecartProductCount(); // update minicart counter
