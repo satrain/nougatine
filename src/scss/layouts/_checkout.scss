@@ -219,7 +219,6 @@
 
 					.forms-wrapper {
 						margin-top: 20px;
-						padding: 0 20px;
 						@include media(lg) {
 							padding: 0;
 						}
@@ -371,7 +370,6 @@
 
 					.content-bottom {
 						margin-top: 16px;
-						padding: 0 20px;
 						@include media(lg) {
 							padding: 0;
 						}
@@ -512,6 +510,10 @@
 
 						}
 
+					}
+
+					#timeslots {
+						display: none;
 					}
 
 				}
@@ -1057,9 +1059,7 @@
 			}
 
 		}
-
 	}
-
 }
 
 .lang-he {
@@ -1097,4 +1097,97 @@
 
 	}
 
+}
+
+body:not(.woocommerce-cart) {
+	.pika-single.is-bound {
+		width: 480px !important;
+		height: 330px !important;
+		position: absolute !important;
+		left: 50% !important;
+		top: 50% !important;
+		transform: translate(-50%, -50%) !important;
+
+		@include media(lg) {
+			width: 100% !important;
+		}
+	}
+}
+
+.pika-single.is-bound {
+	.pika-lendar {
+		width: 100% !important;
+		height: 100% !important;
+		padding: 21px !important;
+		margin: 0 !important;
+
+		.pika-prev {
+			display: none;
+		}
+
+		.pika-next {
+			background: url('../images/arrow.svg') no-repeat center;
+			border: none;
+		}
+
+		.pika-label {
+			font-size: 20px;
+		}
+
+		.pika-table {
+			abbr {
+				color: #2C2B2E;
+				font-size: 12px;
+				font-weight: 800;
+				text-decoration: none;
+			}
+
+
+			td {
+				@include media(lg) {
+					padding: 5px !important;
+				}
+				padding: 5px 10px !important;
+			}
+		}
+
+		button {
+			text-align: center !important;
+			border-radius: 5px;
+			border: 1px solid #2C2B2E;
+			background-color: white;
+			padding: 11px 15px;
+			color: #2C2B2E;
+
+			&:hover {
+				background-color: #2C2B2E;
+				color: white;
+			}
+		}
+
+		.is-disabled {
+			button {
+				background-color: #F9F9FA !important;
+			}
+		}
+	}
+}
+
+.dateslot-dialog {
+	display: none !important;
+}
+
+#hotdish_delivery_field {
+	span {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+		gap: 15px;
+	}
+}
+
+.load_items {
+	height: 150px;
+	overflow: hidden;
+	transition: 0.5s all;
 }

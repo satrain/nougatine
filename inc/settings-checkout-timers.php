@@ -28,18 +28,25 @@ class NM_Settings_Checkout_Timers {
 			'callback'    => 'disabled_dates_field_callback',
 		],
 		[
-			'id'          => 'start_times',
-			'label'       => 'Start Times',
+			'id'          => 'timeslots_start_time',
+			'label'       => 'Start Time (24-hour format):',
 			'description' => '',
 			'type'        => 'text',
-			'callback'    => 'start_times_field_callback',
+			'callback'    => 'timeslots_start_time_field_callback',
 		],
 		[
-			'id'          => 'end_times',
-			'label'       => 'End Times',
+			'id'          => 'timeslots_end_time',
+			'label'       => 'End Time (24-hour format):',
 			'description' => '',
 			'type'        => 'text',
-			'callback'    => 'end_times_field_callback',
+			'callback'    => 'timeslots_end_time_field_callback',
+		],
+		[
+			'id'          => 'timeslots_interval',
+			'label'       => 'Interval (in minutes)',
+			'description' => '',
+			'type'        => 'text',
+			'callback'    => 'timeslots_interval_field_callback',
 		],
 	];
 
@@ -58,9 +65,9 @@ class NM_Settings_Checkout_Timers {
 	function settings_init(): void {
 
 		register_setting( 'checkout-timers', 'disabled_dates', 'sanitize_text_field' );
-		register_setting( 'checkout-timers', 'start_times', 'sanitize_array' );
-		register_setting( 'checkout-timers', 'end_times', 'sanitize_array' );
-
+		register_setting( 'checkout-timers', 'timeslots_start_time' );
+		register_setting( 'checkout-timers', 'timeslots_end_time' );
+		register_setting( 'checkout-timers', 'timeslots_interval' );
 
 		add_settings_section(
 			'checkout-timers-section',
@@ -136,20 +143,20 @@ class NM_Settings_Checkout_Timers {
 		echo '<input autocomplete="off" type="text" id="disabled_dates" name="disabled_dates" value="' . $disabled_dates . '" />';
 	}
 
-	function start_times_field_callback() {
-		$start_times = get_option( 'start_times', array() );
-		foreach ( $start_times as $index => $start_time ) {
-			echo '<input type="text" id="start_times_' . $index . '" name="start_times[]" value="' . $start_time . '" class="timepicker" />';
-		}
-		echo '<button type="button" class="button button-primary" id="add_start_time">Add Start Time</button>';
+
+	function timeslots_start_time_field_callback() {
+		$start_time = get_option('timeslots_start_time');
+		echo '<input type="time" name="timeslots_start_time" value="' . esc_attr($start_time) . '" />';
 	}
 
-	function end_times_field_callback() {
-		$end_times = get_option( 'end_times', array() );
-		foreach ( $end_times as $index => $end_time ) {
-			echo '<input type="text" id="end_times_' . $index . '" name="end_times[]" value="' . $end_time . '" class="timepicker" />';
-		}
-		echo '<button type="button" class="button button-primary" id="add_end_time">Add End Time</button>';
+	function timeslots_end_time_field_callback() {
+		$end_time = get_option('timeslots_end_time');
+		echo '<input type="time" name="timeslots_end_time" value="' . esc_attr($end_time) . '" />';
+	}
+
+	function timeslots_interval_field_callback() {
+		$interval = get_option('timeslots_interval');
+		echo '<input type="number" name="timeslots_interval" value="' . esc_attr($interval) . '" />';
 	}
 
 	function sanitize_array( $input ) {

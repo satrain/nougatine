@@ -1,255 +1,263 @@
 .best-sellers {
-    padding-top: 72px;
-    padding-bottom: 77px;
-    @include media(lg) {
-        padding-top: 40px;
-        padding-bottom: 48px;
-    }
+	padding-top: 72px;
+	padding-bottom: 77px;
+	@include media(lg) {
+		padding-top: 40px;
+		padding-bottom: 48px;
+		overflow: hidden;
+	}
 
-    .container {
-        @include media(lg) {
-            padding: 0;
-        }
+	.container {
+		@include media(lg) {
+			padding: 0;
+		}
 
-        .best-sellers-slider {
-            padding: 9px 64px 0;
-            @include media(lg) {
-                padding: 0;
-                padding-left: 16px;
-            }
+		.best-sellers-slider {
+			padding: 9px 64px 0;
+			@include media(lg) {
+				padding: 0;
+				padding-left: 16px;
+				width: 100%;
+				max-width: 100%;
+				overflow: hidden;
+			}
 
-            .slick-list {
-                margin: 0 -20px;
-                padding-bottom: 52px;
-                padding-top: 49px;
-                @include media(lg) {
-                    padding: 49px 20% 32px 0 !important;
-                    margin: 0 -12px;
-                }
+			.slick-list {
+				margin: 0 -20px;
+				padding-bottom: 52px;
+				padding-top: 49px;
+				@include media(lg) {
+					padding: 49px 20% 32px 0 !important;
+					margin: 0 -12px;
+				}
 
-                .slick-slide {
-                    margin: 0 20px;
-                    @include media(lg) {
-                        margin: 0 12px;
-                    }
+				.slick-slide {
+					margin: 0 20px;
+					@include media(lg) {
+						margin: 0 12px;
+					}
 
-                    .card {
-                        cursor: pointer;
-                        display: flex!important;
-                        flex-direction: column;
-                        position: relative;
-                        border-radius: $radius-1;
-                        overflow: hidden;
-                        background: $bg;
-                        box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.15);
+					.card {
+						cursor: pointer;
+						display: flex !important;
+						flex-direction: column;
+						position: relative;
+						border-radius: $radius-1;
+						overflow: hidden;
+						background: $bg;
+						box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.15);
 
-                        &:hover {
+						&:hover {
 
-                            .image-holder {
+							.image-holder {
 
-                                img {
-                                    transform: scale(1.2);
-                                    transition: .3s;
-                                }
+								img {
+									transform: scale(1.2);
+									transition: .3s;
+								}
 
-                            }
+							}
 
-                        }
+						}
 
-                        .vegan-badge {
-                            position: absolute;
-                            z-index: 3;
-                            top: 6px;
-                            right: 6px;
-                        }
+						.vegan-badge {
+							position: absolute;
+							z-index: 3;
+							top: 6px;
+							right: 6px;
+						}
 
-                        .image-holder {
-                            overflow: hidden;
-                            flex-shrink: 0;
-                            img {
-                                width: 100%;
-                                max-height: 154px;
-                                object-fit: cover;
-                                object-position: center;
-                                transition: .5s;
-                            }
-                        }
+						.image-holder {
+							overflow: hidden;
+							flex-shrink: 0;
 
-                        .content {
-                            height: 100%;
-                            padding: 12px 16px 16px;
-                            min-height: 196px;
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: space-between;
+							img {
+								width: 100%;
+								max-height: 154px;
+								object-fit: cover;
+								object-position: center;
+								transition: .5s;
+							}
+						}
 
-                            .wrapper {
-                                height: 100%;
-                                display: flex;
-                                flex-direction: column;
-                                justify-content: space-between;
-                            }
+						.content {
+							height: 100%;
+							padding: 12px 16px 16px;
+							min-height: 196px;
+							display: flex;
+							flex-direction: column;
+							justify-content: space-between;
 
-                            .title {
-                                color: $text-dark;
-                                font-size: 16px;
-                                font-style: normal;
-                                font-weight: 600;
-                                line-height: 20px;
-                                letter-spacing: 0.16px;
-                                text-align: center;
-                            }
-    
-                            .options {
-                                margin-top: 12px;
-                                margin-bottom: 24px;
+							.wrapper {
+								height: 100%;
+								display: flex;
+								flex-direction: column;
+								justify-content: space-between;
+							}
 
-                                form {
+							.title {
+								color: $text-dark;
+								font-size: 16px;
+								font-style: normal;
+								font-weight: 600;
+								line-height: 20px;
+								letter-spacing: 0.16px;
+								text-align: center;
+							}
 
-                                    .option {
-                                        display: flex;
-                                        align-items: center;
-                                        &:not(:last-child) {
-                                            margin-bottom: 10px;
-                                        }
+							.options {
+								margin-top: 12px;
+								margin-bottom: 24px;
 
-                                        &.selected {
-                                            label {
-                                                font-weight: 600;
-                                            }
-                                        }
+								form {
 
-                                        input {
-                                            flex-shrink: 0;
-                                            /* Add if not using autoprefixer */
-                                            -webkit-appearance: none;
-                                            appearance: none;
-                                            /* For iOS < 15 to remove gradient background */
-                                            background-color: #fff;
-                                            /* Not removed via appearance */
-                                            margin: 0;
-                                            vertical-align: middle;
-                                            font: inherit;
-                                            color: $primary;
-                                            width: 20px;
-                                            height: 20px;
-                                            border: 1px solid $primary;
-                                            border-radius: 50%;
+									.option {
+										display: flex;
+										align-items: center;
 
-                                            display: grid;
-                                            place-content: center;
+										&:not(:last-child) {
+											margin-bottom: 10px;
+										}
 
-                                            &::before {
-                                                content: "";
-                                                width: 12px;
-                                                height: 12px;
-                                                border-radius: 50%;
-                                                transform: scale(0);
-                                                transition: 120ms transform ease-in-out;
-                                                box-shadow: inset 11px 11px $primary;
-                                            }
+										&.selected {
+											label {
+												font-weight: 600;
+											}
+										}
 
-                                            &:checked {
-                                                &::before {
-                                                    transform: scale(1);
-                                                }
-                                            }
-                                        }
+										input {
+											flex-shrink: 0;
+											/* Add if not using autoprefixer */
+											-webkit-appearance: none;
+											appearance: none;
+											/* For iOS < 15 to remove gradient background */
+											background-color: #fff;
+											/* Not removed via appearance */
+											margin: 0;
+											vertical-align: middle;
+											font: inherit;
+											color: $primary;
+											width: 20px;
+											height: 20px;
+											border: 1px solid $primary;
+											border-radius: 50%;
 
-                                        label {
-                                            margin-left: 8px;
-                                            color: $text-dark;
-                                            font-family: "Open Sans", sans-serif;
-                                            font-size: 14px;
-                                            font-style: normal;
-                                            font-weight: 400;
-                                            line-height: 18px;
-                                            letter-spacing: 0.14px;
+											display: grid;
+											place-content: center;
 
-                                            span {
-                                                margin-left: 12px;
-                                            }
+											&::before {
+												content: "";
+												width: 12px;
+												height: 12px;
+												border-radius: 50%;
+												transform: scale(0);
+												transition: 120ms transform ease-in-out;
+												box-shadow: inset 11px 11px $primary;
+											}
 
-                                        }
+											&:checked {
+												&::before {
+													transform: scale(1);
+												}
+											}
+										}
 
-                                    }
+										label {
+											margin-left: 8px;
+											color: $text-dark;
+											font-family: "Open Sans", sans-serif;
+											font-size: 14px;
+											font-style: normal;
+											font-weight: 400;
+											line-height: 18px;
+											letter-spacing: 0.14px;
 
-                                }
-                            }
-    
-                            a {
-                                width: 100%;
-                                padding: 8px 20px;
-                                font-size: 14px;
-                            }
+											span {
+												margin-left: 12px;
+											}
 
-                        }
-                    }
+										}
 
-                }
+									}
 
-            }
+								}
+							}
 
-            .slick-dots {
-                left: 0;
-            }
+							a {
+								width: 100%;
+								padding: 8px 20px;
+								font-size: 14px;
+							}
 
-        }
+						}
+					}
 
-        .explore-our-products-btn {
-            display: block;
-            width: 100%;
-            max-width: 1003px;
-            margin: 64px auto 0;
-            background: $text-dark;
-            border: unset;
-            &:hover {
-                border: unset;
-            }
-            @include media(lg) {
-                max-width: 92%;
-            }
-        }
+				}
 
-    }
+			}
+
+			.slick-dots {
+				left: 0;
+			}
+
+		}
+
+		.explore-our-products-btn {
+			display: block;
+			width: 100%;
+			max-width: 1003px;
+			margin: 64px auto 0;
+			background: $text-dark;
+			border: unset;
+
+			&:hover {
+				border: unset;
+			}
+
+			@include media(lg) {
+				max-width: 92%;
+			}
+		}
+
+	}
 
 }
 
 .lang-he {
 
-    .best-sellers {
+	.best-sellers {
 
-        a {
-            &.btn {
-                display: flex;
-                justify-content: center;
-                flex-direction: row-reverse;
-                gap: 10px;
-                
-                svg {
-                    margin-right: 0!important;
-                }
-            }
-        }
+		a {
+			&.btn {
+				display: flex;
+				justify-content: center;
+				flex-direction: row-reverse;
+				gap: 10px;
 
-        .options {
+				svg {
+					margin-right: 0 !important;
+				}
+			}
+		}
 
-            form {
+		.options {
 
-                .option {
-                    flex-direction: row-reverse;
-                    gap: 8px;
+			form {
 
-                    label {
-                        margin-left: 0;
-                        direction: rtl;
-                    }
-                }
+				.option {
+					flex-direction: row-reverse;
+					gap: 8px;
 
-            }
+					label {
+						margin-left: 0;
+						direction: rtl;
+					}
+				}
 
-        }
+			}
 
-    }
+		}
+
+	}
 
 }

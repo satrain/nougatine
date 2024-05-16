@@ -10,6 +10,8 @@ class WooCommerceCustomCheckout {
 		add_action( 'woocommerce_checkout_update_order_meta', array( $this, 'delivery_fields_update_order_meta' ) );
 		add_action( 'woocommerce_checkout_process', array( $this, 'delivery_fields_process' ) );
 		add_action( 'woocommerce_admin_order_data_after_billing_address', array( $this, 'display_delivery_fields_in_admin_order' ) );
+		add_action( 'woocommerce_product_options_general_product_data', array( $this, 'add_custom_field_general_product_data' ) );
+		add_action( 'woocommerce_process_product_meta', array( $this, 'save_custom_field_general_product_data' ) );
 
 		add_action( 'wp_ajax_update_delivery_city', array( $this, 'update_delivery_city' ) );
 		add_action( 'wp_ajax_nopriv_update_delivery_city', array( $this, 'update_delivery_city' ) );
@@ -18,9 +20,26 @@ class WooCommerceCustomCheckout {
 
 
 		add_filter( 'woocommerce_checkout_fields', array( $this, 'remove_order_notes' ) );
-		add_filter( 'woocommerce_shipping_packages', array( $this, 'modifyShippingPackages' ) );
+		add_filter( 'woocommerce_default_address_fields', array( $this, 'change_default_address_fields' ), 20, 1 );
+		add_filter( 'woocommerce_billing_fields', array( $this, 'change_default_billing_fields' ), 20, 1 );
+		add_filter( 'woocommerce_shipping_packages', array( $this, 'modify_shipping_packages' ) );
 		add_filter( 'woocommerce_checkout_cart_item_quantity', array( $this, 'add_delete_link_to_checkout_item' ), 10, 3 );
-		add_filter( 'woocommerce_cart_item_name', array( $this, 'add_image_to_checkout_item' ), 10, 3 );
+		add_filter( 'woocommerce_get_script_data', array( $this, 'ajax_handler_fix_translation' ), 10, 3 );
+//		add_filter( 'woocommerce_cart_item_name', array( $this, 'add_image_to_checkout_item' ), 10, 3 );
+		remove_action( 'woocommerce_proceed_to_checkout', 'wc_cart_pdf_button', 21 );
+	}
+
+	public function ajax_handler_fix_translation( $params ) {
+		$locale = determine_locale();
+		$lang   = ( ! empty( $locale ) ) ? strstr( $locale, '_', true ) : '';
+		if ( empty( $lang ) ) {
+			return $params;
+		}
+		if ( isset( $params['wc_ajax_url'] ) ) {
+			$params['wc_ajax_url'] = '/' . $lang . $params['wc_ajax_url'];
+		}
+
+		return $params;
 	}
 
 	public function add_delete_link_to_checkout_item( $quantity_html, $cart_item, $cart_item_key ) {
@@ -37,12 +56,13 @@ class WooCommerceCustomCheckout {
 	}
 
 	public function add_image_to_checkout_item( $product_name, $cart_item, $cart_item_key ) {
-		if(is_checkout()){
+		if ( is_checkout() ) {
 			$product = $cart_item['data'];
 			if ( $product ) {
 				$product_name = '<img src="' . wp_get_attachment_image_url( $product->get_image_id(), 'thumbnail' ) . '" alt="' . $product->get_name() . '">' . $product_name;
 			}
 		}
+
 		return $product_name;
 	}
 
@@ -62,6 +82,32 @@ class WooCommerceCustomCheckout {
 		return $fields;
 	}
 
+	public function change_default_address_fields( $address_fields ) {
+		// Only on checkout page
+		if ( ! is_checkout() ) {
+			return $address_fields;
+		}
+
+		// All field keys in this array
+		$key_fields = array( 'country', 'company', 'address_1', 'address_2', 'city', 'state', 'postcode' );
+
+		// Loop through each address fields (billing and shipping)
+		foreach ( $key_fields as $key_field ) {
+			$address_fields[ $key_field ]['required'] = false;
+		}
+
+		return $address_fields;
+	}
+
+	public function change_default_billing_fields( $billing_fields ) {
+		// Only on checkout page
+		if ( ! is_checkout() ) {
+			return $billing_fields;
+		}
+
+		return $billing_fields;
+	}
+
 	public function delivery_city_checkout() {
 		if ( is_checkout() ) {
 			?>
@@ -74,10 +120,31 @@ class WooCommerceCustomCheckout {
 						if (this.value === 'pickup') {
 							$('#pickup_fields').show();
 							$('#shipping_fields').hide();
+							$('#billing_address_1_field').hide();
+							$('#billing_address_2_field').hide();
+							$('#billing_company_field').hide();
+							$('#billing_country_field').hide();
+							$('#billing_postcode_field').hide();
+							$('#billing_city_field').hide();
+							$('#ship-to-different-address').hide();
 						} else if (this.value === 'shipping') {
 							$('#pickup_fields').hide();
 							$('#shipping_fields').show();
 						}
+					});
+
+					$('body').on('change', 'input[name=choose_delivery]', function () {
+						$.ajax({
+							type: 'POST',
+							url: wc_checkout_params.ajax_url,
+							data: {
+								action: 'update_delivery_city',
+								update_delivery_city: $(this).val(),
+							},
+							success: function (response) {
+								$('body').trigger('update_checkout');
+							}
+						});
 					});
 
 					$('body').on('change', 'select[name=delivery_city]', function () {
@@ -99,6 +166,24 @@ class WooCommerceCustomCheckout {
 		}
 	}
 
+	public function add_custom_field_general_product_data() {
+		echo '<div class="options_group">';
+
+		woocommerce_wp_checkbox(
+			array(
+				'id'    => 'is_hot_dish',
+				'label' => pll__( 'Is it a hot dish?' ),
+			)
+		);
+
+		echo '</div>';
+	}
+
+	public function save_custom_field_general_product_data( $post_id ) {
+		$is_hot_dish = isset( $_POST['is_hot_dish'] ) ? 'yes' : 'no';
+		update_post_meta( $post_id, 'is_hot_dish', $is_hot_dish );
+	}
+
 	public function delivery_checkout_fields( $checkout ) {
 		echo '<div id="choose_delivery">';
 
@@ -115,14 +200,14 @@ class WooCommerceCustomCheckout {
 		echo '<div id="pickup_fields">';
 
 		woocommerce_form_field( 'pickup_time', array(
-			'type'     => 'time',
+			'type'     => 'text',
 			'class'    => array( 'form-row-wide', 'pickup-field' ),
 			'label'    => pll__( 'Pickup Time' ),
 			'required' => true,
 		), $checkout->get_value( 'pickup_time' ) );
 
 		woocommerce_form_field( 'pickup_date', array(
-			'type'     => 'date',
+			'type'     => 'text',
 			'class'    => array( 'form-row-wide', 'pickup-field' ),
 			'label'    => pll__( 'Pickup Date' ),
 			'required' => true,
@@ -137,6 +222,7 @@ class WooCommerceCustomCheckout {
 			'class'    => array( 'form-row-wide', 'shipping-field' ),
 			'label'    => pll__( 'City' ),
 			'options'  => array(
+				''    => pll__( "Select City" ),
 				'250' => pll__( "Ornit, Elkana, Bat Yam, Holon" ),
 				'170' => pll__( "Haifa and the surrounding area" ),
 				'140' => pll__( "Airport City, Beer Ya'akov" ),
@@ -163,11 +249,40 @@ class WooCommerceCustomCheckout {
 
 
 		echo '</div></div></div>';
+
+		$is_hot_dish_in_cart = false;
+
+		foreach ( WC()->cart->get_cart() as $cart_item ) {
+			$product = $cart_item['data'];
+			if ( $product ) {
+				$is_hot_dish = get_post_meta( $product->get_id(), 'is_hot_dish', true );
+				if ( $is_hot_dish === 'yes' ) {
+					$is_hot_dish_in_cart = true;
+					break;
+				}
+			}
+		}
+
+		if ( $is_hot_dish_in_cart ) {
+			woocommerce_form_field( 'hotdish_delivery', array(
+				'type'     => 'radio',
+				'class'    => array( 'form-row-wide' ),
+				'options'  => array(
+					'hot'  => pll__( 'Hot (Ready to serve)' ),
+					'cold' => pll__( 'Cold (I will heat it up later)' ),
+				),
+				'required' => true,
+			), $checkout->get_value( 'hotdish_delivery' ) );
+		}
 	}
 
 	public function delivery_fields_update_order_meta( $order_id ) {
 		if ( ! empty( $_POST['choose_delivery'] ) ) {
 			update_post_meta( $order_id, 'Choose Delivery', sanitize_text_field( $_POST['choose_delivery'] ) );
+		}
+
+		if ( ! empty( $_POST['hotdish_delivery'] ) ) {
+			update_post_meta( $order_id, 'Hot Dish Delivery', sanitize_text_field( $_POST['hotdish_delivery'] ) );
 		}
 
 		if ( $_POST['choose_delivery'] == 'pickup' ) {
@@ -197,18 +312,23 @@ class WooCommerceCustomCheckout {
 
 	public function delivery_fields_process() {
 		if ( ! $_POST['choose_delivery'] ) {
-			wc_add_notice( __( 'Please select delivery method.' ), 'error' );
+			wc_add_notice( pll__( 'Please select delivery method.' ), 'error' );
+		}
+
+		if ( ! $_POST['hotdish_delivery'] ) {
+			wc_add_notice( pll__( 'Please select hot dish.' ), 'error' );
 		}
 
 		if ( $_POST['choose_delivery'] == 'pickup' ) {
 			if ( ! $_POST['pickup_time'] || ! $_POST['pickup_date'] ) {
-				wc_add_notice( __( 'Please fill in both pickup time and date.' ), 'error' );
+				wc_add_notice( pll__( 'Please fill in both pickup time and date.' ), 'error' );
 			}
 		}
 
+
 		if ( $_POST['choose_delivery'] == 'shipping' ) {
 			if ( ! $_POST['delivery_city'] || ! $_POST['shipping_time'] || ! $_POST['shipping_date'] ) {
-				wc_add_notice( __( 'Please fill in all shipping fields.' ), 'error' );
+				wc_add_notice( pll__( 'Please fill in all shipping fields.' ), 'error' );
 			}
 		}
 	}
@@ -217,6 +337,7 @@ class WooCommerceCustomCheckout {
 		$delivery_method = get_post_meta( $order->get_id(), 'Choose Delivery', true );
 		$pickup_time     = get_post_meta( $order->get_id(), 'Pickup Time', true );
 		$pickup_date     = get_post_meta( $order->get_id(), 'Pickup Date', true );
+		$hot_dish        = get_post_meta( $order->get_id(), 'Hot Dish Delivery', true );
 		$shipping_city   = get_post_meta( $order->get_id(), 'Delivery City', true );
 		$shipping_time   = get_post_meta( $order->get_id(), 'Shipping Time', true );
 		$shipping_date   = get_post_meta( $order->get_id(), 'Shipping Date', true );
@@ -233,6 +354,9 @@ class WooCommerceCustomCheckout {
 			echo '<p><strong>Shipping Time:</strong> ' . $shipping_time . '</p>';
 			echo '<p><strong>Shipping Date:</strong> ' . $shipping_date . '</p>';
 		}
+
+		echo '<p><strong>Hot Dish:</strong> ' . $hot_dish . '</p>';
+
 	}
 
 	public function update_delivery_city() {
@@ -241,8 +365,34 @@ class WooCommerceCustomCheckout {
 		wp_die();
 	}
 
-	public function modifyShippingPackages( $packages ) {
+	public function modify_shipping_packages( $packages ) {
 		$update_delivery_city = WC()->session->get( 'update_delivery_city' );
+
+		if ( $update_delivery_city == 'pickup' ) {
+			$newRates = array_filter( $packages[0]['rates'], function ( $shippingRate ) {
+				return $shippingRate->id === 'local_pickup:9';
+			} );
+
+			$packages[0]['rates'] = $newRates;
+			$session              = WC()->session;
+			$session->set( 'shipping_method_counts', [ count( $newRates ) ] );
+			if ( isset( $newRates[0] ) ) {
+				$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
+			}		}
+
+		if ( $update_delivery_city == 'shipping' || ! $update_delivery_city ) {
+			$newRates = array_filter( $packages[0]['rates'], function ( $shippingRate ) {
+				return $shippingRate->id === 'flat_rate:8';
+			} );
+
+			$packages[0]['rates'] = $newRates;
+
+			$session = WC()->session;
+			$session->set( 'shipping_method_counts', [ count( $newRates ) ] );
+			if ( isset( $newRates[0] ) ) {
+				$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
+			}
+		}
 
 		if ( $update_delivery_city == 100 ) {
 			$newRates = array_filter( $packages[0]['rates'], function ( $shippingRate ) {
@@ -252,7 +402,9 @@ class WooCommerceCustomCheckout {
 			$packages[0]['rates'] = $newRates;
 			$session              = WC()->session;
 			$session->set( 'shipping_method_counts', [ count( $newRates ) ] );
-			$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
+			if ( isset( $newRates[0] ) ) {
+				$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
+			}
 		}
 
 		if ( $update_delivery_city == 140 ) {
@@ -264,7 +416,9 @@ class WooCommerceCustomCheckout {
 
 			$session = WC()->session;
 			$session->set( 'shipping_method_counts', [ count( $newRates ) ] );
-			$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
+			if ( isset( $newRates[0] ) ) {
+				$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
+			}
 		}
 
 		if ( $update_delivery_city == 170 ) {
@@ -276,7 +430,9 @@ class WooCommerceCustomCheckout {
 
 			$session = WC()->session;
 			$session->set( 'shipping_method_counts', [ count( $newRates ) ] );
-			$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
+			if ( isset( $newRates[0] ) ) {
+				$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
+			}
 		}
 
 		if ( $update_delivery_city == 250 ) {
@@ -288,7 +444,9 @@ class WooCommerceCustomCheckout {
 
 			$session = WC()->session;
 			$session->set( 'shipping_method_counts', [ count( $newRates ) ] );
-			$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
+			if ( isset( $newRates[0] ) ) {
+				$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
+			}
 		}
 
 		return $packages;

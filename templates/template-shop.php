@@ -4,8 +4,11 @@ get_header();
 
 $categories = get_terms( array(
 	'taxonomy'     => 'product_cat',
-	'hide_empty'   => false,
-	'exclude_tree' => array( get_term_by( 'slug', 'recommended-menus', 'product_cat' )->term_id, get_term_by( 'slug', 'recommended-menus-he', 'product_cat' )->term_id ),
+	'hide_empty'   => true,
+	'exclude_tree' => array(
+		get_term_by( 'slug', 'recommended-menus', 'product_cat' )->term_id ?? null,
+		get_term_by( 'slug', 'recommended-menus-he', 'product_cat' )->term_id ?? null,
+	),
 ) );
 ?>
 <div class="product-catalog product-catalog-template page template">

@@ -1,4 +1,32 @@
 document.addEventListener('DOMContentLoaded', function () {
+	let modal = document.getElementsByClassName('image-modal')[0];
+	let modalContent = document.getElementsByClassName('image-modal-content')[0];
+
+	window.onclick = function (event) {
+		if (event.target == modal) {
+			modal.classList.remove('active');
+		}
+	}
+
+	window.addEventListener('keydown', function (event) {
+		if (event.key === "Escape") {
+			modal.classList.remove('active');
+		}
+	});
+
+	window.onclick = function (event) {
+		if (event.target == modalContent) {
+			modalContent.classList.remove('active');
+		}
+	}
+
+	window.addEventListener('keydown', function (event) {
+		if (event.key === "Escape") {
+			modalContent.classList.remove('active');
+		}
+	});
+
+
 	var element = document.querySelector('.categories.product-categories');
 
 	if (element) {
@@ -113,32 +141,169 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 
+	var startTime = pickersTime.startTime,
+		endTime = pickersTime.endTime,
+		interval = pickersTime.interval,
+		timeslots = [],
+		current = moment(startTime, "HH:mm"),
+		end = moment(endTime, "HH:mm");
+	while (current.isBefore(end)) {
+		var timeslotEnd = moment(current).add(interval, "minutes");
+		if (timeslotEnd.isAfter(end)) {
+			timeslotEnd = end;
+		}
+		timeslots.push(current.format("HH:mm") + " - " + timeslotEnd.format("HH:mm"));
+		current.add(interval, "minutes");
+	}
+	for (var key in timeslots) {
+		if (timeslots.hasOwnProperty(key)) {
+			var $button = jQuery("<button />").text(timeslots[key]);
+			$button.on("click", function () {
+				jQuery("#shipping_time").val(jQuery(this).text());
+				jQuery("#pickup_time").val(jQuery(this).text());
+				jQuery("#timeslots").dialog("close");
+			});
+			jQuery("#timeslots").append($button);
+		}
+	}
+
+	jQuery("#timeslots").dialog({
+		autoOpen: false,
+		modal: true,
+		buttons: {},
+		open: function (event, ui) {
+			jQuery(".ui-widget-overlay").on("click", function () {
+				jQuery("#timeslots").dialog("close");
+			});
+		}
+	});
+	jQuery("#shipping_time").on("click", function () {
+		jQuery("#timeslots").dialog("open");
+	});
+
+	jQuery("#pickup_time").on("click", function () {
+		jQuery("#timeslots").dialog("open");
+	});
+
 	var disabledDates = pickersDate.disabledDates.map(function (date) {
 		return moment(date, 'DD.MM.YYYY').toDate();
 	});
 
-	new Pikaday({
-		field: document.getElementById('shipping_date'),
+	var picker = new Pikaday({
+		field: document.getElementById('datepicker'),
 		format: 'DD.MM.YYYY',
+		minDate: new Date(),
 		disableDayFn: function (date) {
 			return disabledDates.some(function (disabledDate) {
 				return moment(date).isSame(disabledDate, 'day');
 			});
+		},
+		onSelect: function () {
+			jQuery("#shipping_date").val(this.toString());
+			jQuery("#pickup_date").val(this.toString());
+			jQuery("#dateslot").dialog("close");
 		}
 	});
 
-
-	var disableTimeRanges = pickersTime.disabledStartTimes.map(function (startTime, index) {
-		return [startTime, pickersTime.disabledEndTimes[index]];
+	jQuery("#dateslot").dialog({
+		autoOpen: false,
+		modal: true,
+		dialogClass: 'dateslot-dialog',
+		open: function () {
+			picker.show();
+			jQuery(".ui-widget-overlay").on("click", function () {
+				jQuery("#dateslot").dialog("close");
+			});
+		},
+		close: function () {
+			picker.hide();
+		}
 	});
 
-
-	jQuery('#shipping_time').timepicker({
-		'timeFormat': 'H:i',
-		'disableTimeRanges': disableTimeRanges
+	jQuery("#shipping_date").on("click", function () {
+		jQuery("#dateslot").dialog("open");
+	});
+	jQuery("#pickup_date").on("click", function () {
+		jQuery("#dateslot").dialog("open");
 	});
 
+	var picker_modal = new Pikaday({
+		field: document.getElementById('deliveryDate_pdf_export'),
+		format: 'DD.MM.YYYY',
+		minDate: new Date(),
+		autoClose: true,
+		disableDayFn: function (date) {
+			return disabledDates.some(function (disabledDate) {
+				return moment(date).isSame(disabledDate, 'day');
+			});
+		},
+		onSelect: function () {
+			jQuery("#deliveryDate_pdf_export").val(this.toString());
+			jQuery("#deliveryDate_pdf_export").trigger('input');
+			picker_modal.hide(0);
+		}
+	});
 
+	jQuery('.export-btn').on('click', function (event) {
+		event.preventDefault();
+		jQuery('#export-popup').show();
+	});
+
+	jQuery('.get_pdf').on('click', function (event) {
+		// Get the URL from the data-pdf attribute.
+		var url = new URL(jQuery(this).data('pdf'));
+
+		// Get all filled fields in the #export-popup form.
+		jQuery('#export-popup :input').each(function () {
+			if (jQuery(this).val()) {
+				// Add each field's value as a query parameter.
+				url.searchParams.append(jQuery(this).attr('name'), jQuery(this).val());
+			}
+		});
+
+		// Set the modified URL as the new data-pdf attribute.
+		jQuery(this).attr('data-pdf', url.toString());
+		window.location.href = url.toString();
+	});
+
+	if (jQuery('body.woocommerce-cart').length > 0) {
+		var export_modal = document.getElementById('export-popup');
+		var button = export_modal.querySelector('button');
+		var requiredFields = Array.from(export_modal.querySelectorAll('input[required]'));
+		var allFields = Array.from(export_modal.querySelectorAll('input'));
+
+		// Check if all required fields are filled
+		function checkRequiredFields() {
+			var allFilled = requiredFields.every(function (field) {
+				return field.value !== '';
+			});
+
+			if (allFilled) {
+				button.classList.add('active');
+			} else {
+				button.classList.remove('active');
+			}
+		}
+
+		// Add event listener to all fields
+		allFields.forEach(function (field) {
+			field.addEventListener('input', checkRequiredFields);
+		});
+
+		// Close modal when clicking outside of it
+		window.addEventListener('click', function (event) {
+			if (event.target == export_modal) {
+				export_modal.style.display = 'none';
+			}
+		});
+
+		// Close modal when pressing escape key
+		window.addEventListener('keydown', function (event) {
+			if (event.key === 'Escape') {
+				export_modal.style.display = 'none';
+			}
+		});
+	}
 });
 
 jQuery(document).ready(function ($) {
@@ -168,7 +333,10 @@ jQuery(document).ready(function ($) {
 
 	let productCards = document.querySelectorAll('.product-card')
 	let productCardsImages = document.querySelectorAll('.products-catalog-modal .image-holder')
+	let imageContent = document.querySelectorAll('.imageContent')
 	let imageModal = document.querySelector('.image-modal')
+	let imageModalContent = document.querySelector('.image-modal-content')
+	let closeImageModalContent = document.querySelector('.image-modal-content .close')
 	let closeImageModal = document.querySelector('.image-modal .close')
 
 	for (let i = 0; i < productCards.length; i++) {
@@ -466,6 +634,19 @@ jQuery(document).ready(function ($) {
 
 		closeImageModal.addEventListener('click', () => {
 			imageModal.classList.remove('active')
+		})
+	}
+
+	if (imageModalContent) {
+		for (let i = 0; i < imageContent.length; i++) {
+			imageContent[i].addEventListener('click', () => {
+				imageModalContent.classList.add('active')
+				imageModalContent.querySelector('img').src = imageContent[i].querySelector('img').src;
+			})
+		}
+
+		closeImageModalContent.addEventListener('click', () => {
+			imageModalContent.classList.remove('active')
 		})
 	}
 

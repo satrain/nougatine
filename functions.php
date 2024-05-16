@@ -38,9 +38,9 @@ require_once 'inc/acf_blocks.php';
 require_once 'inc/translations.php';
 
 /** NM customizations */
-require_once 'inc/settings_checkout_timers.php';
+require_once 'inc/settings-checkout-timers.php';
 require_once 'inc/settings-checkout.php';
-
+require_once 'inc/settings-clap-co-il.php';
 
 /**
  * Add theme support
@@ -160,38 +160,41 @@ function alokin_enqueue_assets() {
 	wp_enqueue_script( 'lightbox-script', 'https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js', array( 'jquery' ), '', true );
 
 	wp_enqueue_script( 'main-script', get_template_directory_uri() . '/assets/js/script.min.js', array( 'jquery' ), _S_VERSION, true );
+
 	wp_localize_script( 'main-script', 'ajax_object', array(
 		'ajax_url' => admin_url( 'admin-ajax.php' ),
+		'root'     => esc_url_raw( rest_url() ),
+		'nonce'    => wp_create_nonce( 'wp_rest' ),
 	) );
 
 
-	$disabled_dates     = get_option( 'disabled_dates', '' );
-	$disabled_dates     = array_map( 'trim', explode( ',', $disabled_dates ) );
-	$disabledStartTimes = get_option( 'start_times' );
-	$disabledEndTimes   = get_option( 'end_times' );
+	$disabled_dates = get_option( 'disabled_dates', '' );
+	$disabled_dates = array_map( 'trim', explode( ',', $disabled_dates ) );
 
+	$start_time = get_option( 'timeslots_start_time' );
+	$end_time   = get_option( 'timeslots_end_time' );
+	$interval   = get_option( 'timeslots_interval' );
 
 	wp_enqueue_style( 'pikaday', 'https://cdn.jsdelivr.net/npm/pikaday/css/pikaday.css', array(), null );
 	wp_enqueue_script( 'pikaday', 'https://cdn.jsdelivr.net/npm/pikaday/pikaday.js', array( 'moment' ), null, true );
-	wp_enqueue_script( 'jquery-timepicker', 'https://cdn.jsdelivr.net/npm/timepicker@1.14.1/jquery.timepicker.min.js', array( 'jquery' ), '1.14.1', true );
-	wp_enqueue_style( 'jquery-timepicker', 'https://cdn.jsdelivr.net/npm/timepicker@1.14.1/jquery.timepicker.min.css', array(), '1.14.1' );
+
+	wp_enqueue_script( 'jquery-ui', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', array( 'jquery' ), '1.12.1', true );
+	wp_enqueue_script( 'jquery-ui-dialog', 'https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.dialog.min.js', array( 'jquery', 'jquery-ui' ), '1.12.1', true );
+
+
+	wp_enqueue_style( 'jquery-ui', '//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' );
 
 	wp_localize_script( 'main-script', 'pickersTime', array(
-		'disabledStartTimes' => $disabledStartTimes,
-		'disabledEndTimes'   => $disabledEndTimes,
+		'startTime' => $start_time,
+		'endTime'   => $end_time,
+		'interval'  => $interval,
 	) );
 
 	wp_localize_script( 'pikaday', 'pickersDate', array(
 		'disabledDates' => $disabled_dates,
 	) );
 
-	add_filter( 'script_loader_tag', function ( $tag, $handle ) {
-		if ( 'pikaday' !== $handle ) {
-			return $tag;
-		}
 
-		return str_replace( ' src', ' defer src', $tag );
-	}, 10, 2 );
 }
 
 add_action( 'wp_enqueue_scripts', 'alokin_enqueue_assets' );
@@ -578,3 +581,34 @@ function add_class_to_body( $classes ) {
 }
 
 add_filter( 'body_class', 'add_class_to_body' );
+
+function woocommerce_get_cart() {
+	// Check the nonce
+	if ( !isset($_POST['nonce']) || !wp_verify_nonce($_POST['nonce'], 'wp_rest') ) {
+		wp_send_json_error(array('message' => 'Invalid nonce'));
+	}
+
+	$cart = WC()->cart;
+
+	$cart_items = array();
+
+	foreach ($cart->get_cart() as $cart_item) {
+		$product = wc_get_product($cart_item['product_id']);
+		$price_per_item = wc_price($product->get_price());
+		$total_price_for_item = wc_price($cart_item['quantity'] * $product->get_price());
+		$cart_items[] = array(
+			'name' => $product->get_name(),
+			'quantity' => $cart_item['quantity'],
+			'price_per_item' => $price_per_item,
+			'total_price_for_item' => $total_price_for_item,
+			'line_total' => wc_price($cart_item['line_total'])
+		);
+	}
+
+	$subtotal = $cart->get_cart_subtotal();
+	$total = $cart->get_cart_total();
+
+	wp_send_json_success(array('items' => $cart_items, 'subtotal' => $subtotal, 'total' => $total));
+}
+add_action('wp_ajax_woocommerce_get_cart', 'woocommerce_get_cart');
+add_action('wp_ajax_nopriv_woocommerce_get_cart', 'woocommerce_get_cart');

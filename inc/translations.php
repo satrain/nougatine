@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 // Register custom Polylang strings for translation
 add_action('init', function() {
@@ -161,4 +161,9 @@ add_action('init', function() {
     pll_register_string('alokin', "Your cart is empty");
     pll_register_string('alokin', "Craft your ideal menu with ease from our diverse selection of culinary delights.");
     pll_register_string('alokin', "No FAQs found.");
+    pll_register_string('alokin', "Please select delivery method.");
+    pll_register_string('alokin', "Please select hot dish.");
+    pll_register_string('alokin', "Please fill in both pickup time and date.");
+    pll_register_string('alokin', "Please fill in all shipping fields.");
+    pll_register_string('alokin', "Is it a hot dish?");
 });

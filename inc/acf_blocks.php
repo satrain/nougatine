@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 /************ PREVIEW CSS **************/
 
 function nougatine_setup() {
     // Add support for editor styles.
     add_theme_support( 'editor-styles' );
-    
+
     // Enqueue editor styles
     add_editor_style( 'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css' );
     add_editor_style( 'assets/css/theme.min.css' );
@@ -117,6 +117,16 @@ function nougatine_acf_init() {
             'icon'            => 'slides',
             'keywords'        => array('page'),
         ));
+
+	    acf_register_block(array(
+		    'name' => 'kosher',
+		    'title' => __('Kosher'),
+		    'Description' => __('Block for kosher section'),
+		    'render_callback' => 'nougatine_acf_block_render_callback',
+		    'category'        => 'custom',
+		    'icon'            => 'slides',
+		    'keywords'        => array('page'),
+	    ));
 
         acf_register_block(array(
             'name' => 'cta-mid-box',

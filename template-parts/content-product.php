@@ -15,7 +15,11 @@ if ( $product_data->is_in_stock() ) {
 	?>
 	<div class="product-card card <?php echo $placement == 'shop' ? 'inactive' : '' ?>" data-product-id="<?= $args['id'] ?>" data-product-name="<?= $args['name'] ?>" data-product-price="<?= $args['price'] ?>">
 		<div class="image-holder">
-			<?= $product_data->get_image() ?>
+			<?php
+			$image_id  = $product_data->get_image_id(); // Get the image ID
+			$image_url = wp_get_attachment_image_url( $image_id, 'full' );
+			echo '<img src="' . $image_url . '" alt="' . $product_data->get_title() . '" />';
+			?>
 		</div>
 		<div class="content">
 			<div class="wrapper">
