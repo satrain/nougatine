@@ -458,6 +458,14 @@
 
 
 #cart-pdf {
+	height: 29.7cm;
+	width: 21cm;
+	margin: 0 auto;
+	background: white;
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+	padding: 0 20px;
+	position: relative;
+
 	.header-wrapper {
 		display: flex;
 		justify-content: space-between;
@@ -469,13 +477,18 @@
 	}
 
 	.heading-wrapper {
-		background: rgba(253, 209, 156, .2);
+		background: #E7DAC8;
 		border-radius: 5px;
-		padding: 20px;
+		padding: 35px;
 		display: flex;
 		justify-content: center;
 		flex-flow: row wrap;
 		margin-bottom: 25px;
+
+		h2 {
+			font-size: 35px;
+			margin-bottom: 26px;
+		}
 
 		.heading-content-text {
 			display: flex;
@@ -484,12 +497,13 @@
 
 			p {
 				margin-bottom: 0;
+				font-size: 26px;
 			}
 		}
 	}
 
 	table {
-		border: 2px solid #C2996F;
+		border: 2px solid #E7DAC8;
 		width: 100%;
 		color: #212529;
 		border-collapse: collapse;
@@ -497,23 +511,33 @@
 		thead th {
 			border-left: none;
 			border-right: none;
-			border-bottom: 2px solid #C2996F !important;
+			border-bottom: 2px solid #E7DAC8 !important;
 			text-align: left;
+			color: #5F5F5F;
+			font-weight: 400;
+			padding-left: 35px;
+			padding-block: 5px;
 		}
 
 		td {
-			border-bottom: 2px solid #C2996F !important;
+			border-bottom: 2px solid #E7DAC8 !important;
 			padding: 0.75rem;
 			vertical-align: top;
+			padding-left: 35px;
 		}
 
 		tbody tr:nth-of-type(odd) {
-			background-color: #B5B5B5;
+			background-color: #D9D9D9;
 		}
 
 		tfoot {
-			background-color: rgba(253, 209, 156, .8);
+			background-color: #E7DAC8;
 		}
+	}
+
+	.footer-pdf {
+		position: absolute;
+		bottom: 0;
 	}
 
 	.footer-pdf {
@@ -523,7 +547,7 @@
 	.footer-pdf-black {
 		text-align: center;
 		background: black;
-		color: white;
 		padding: 20px;
+		color: #F4E6D6;
 	}
 }

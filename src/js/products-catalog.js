@@ -189,10 +189,21 @@ document.addEventListener('DOMContentLoaded', function () {
 		return moment(date, 'DD.MM.YYYY').toDate();
 	});
 
+	var bodyClasses = Array.from(document.body.classList),
+		isHebrew = bodyClasses.includes('lang-he');
+	var monthNames = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+
 	var picker = new Pikaday({
 		field: document.getElementById('datepicker'),
 		format: 'DD.MM.YYYY',
 		minDate: new Date(),
+		i18n: isHebrew ? {
+			previousMonth: 'החודש הקודם',
+			nextMonth: 'החודש הבא',
+			months: monthNames,
+			weekdays: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
+			weekdaysShort: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
+		} : null,
 		disableDayFn: function (date) {
 			return disabledDates.some(function (disabledDate) {
 				return moment(date).isSame(disabledDate, 'day');
@@ -232,6 +243,13 @@ document.addEventListener('DOMContentLoaded', function () {
 		format: 'DD.MM.YYYY',
 		minDate: new Date(),
 		autoClose: true,
+		i18n: isHebrew ? {
+			previousMonth: 'החודש הקודם',
+			nextMonth: 'החודש הבא',
+			months: monthNames,
+			weekdays: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
+			weekdaysShort: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
+		} : null,
 		disableDayFn: function (date) {
 			return disabledDates.some(function (disabledDate) {
 				return moment(date).isSame(disabledDate, 'day');
@@ -266,11 +284,14 @@ document.addEventListener('DOMContentLoaded', function () {
 		window.location.href = url.toString();
 	});
 
-	if (jQuery('body.woocommerce-cart').length > 0) {
+	if (jQuery('body.woocommerce-cart').length > 0 || jQuery('body.page-id-733').length > 0) {
 		var export_modal = document.getElementById('export-popup');
 		var button = export_modal.querySelector('button');
 		var requiredFields = Array.from(export_modal.querySelectorAll('input[required]'));
 		var allFields = Array.from(export_modal.querySelectorAll('input'));
+
+		console.log(requiredFields);
+		console.log(allFields);
 
 		// Check if all required fields are filled
 		function checkRequiredFields() {
@@ -279,8 +300,10 @@ document.addEventListener('DOMContentLoaded', function () {
 			});
 
 			if (allFilled) {
+				button.disabled = false;
 				button.classList.add('active');
 			} else {
+				button.disabled = true;
 				button.classList.remove('active');
 			}
 		}

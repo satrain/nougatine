@@ -645,6 +645,10 @@
 				flex-direction: column;
 			}
 
+			.right-side + .tags-holder {
+				display: none !important;
+			}
+
 			.separator {
 				width: 1px;
 				background: #D9D9D9;
@@ -726,6 +730,11 @@
 				}
 
 
+				.tags-holder {
+					@include media(lg) {
+						display: none;
+					}
+				}
 			}
 
 			.right-side {

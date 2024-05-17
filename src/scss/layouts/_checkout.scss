@@ -1099,7 +1099,7 @@
 
 }
 
-body:not(.woocommerce-cart) {
+body:not(.woocommerce-cart):not(.page-id-733) {
 	.pika-single.is-bound {
 		width: 480px !important;
 		height: 330px !important;

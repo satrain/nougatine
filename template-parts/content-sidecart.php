@@ -62,7 +62,7 @@ if ( function_exists( 'WC' ) ) {
 													 *
 													 * @since 2.1.0
 													 */
-													echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ), $_product->get_name() ), $cart_item, $cart_item_key ) );
+													echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ), truncateString($_product->get_name(), 15) ), $cart_item, $cart_item_key ) );
 												}
 												?>
 											</p>
@@ -114,12 +114,8 @@ if ( function_exists( 'WC' ) ) {
 						<span class="price"><?= $cart_subtotal ?></span>
 					</div>
 					<?php
-					$secure_payment = '/לבדוק/';
-					$cart           = '/עגלת-הקניות-שלך/';
-					if ( get_locale() !== 'he_IL' ) {
-						$secure_payment = wc_get_checkout_url();
-						$cart           = wc_get_cart_url();
-					}
+					$secure_payment = wc_get_checkout_url();
+					$cart           = wc_get_cart_url();
 					?>
 					<a href="<?= $secure_payment ?>" class="btn btn-primary btn-secure-payment"><?php pll_e( "Secure Payment" ) ?></a>
 					<a href="<?= $cart ?>" class="btn btn-secondary"><?php pll_e( "Shopping Cart" ) ?></a>

@@ -309,10 +309,8 @@ footer {
 			align-content: center;
 
 			input {
-				display: none;
-				opacity: 0;
-				visibility: hidden;
 				position: absolute;
+				left: -9999px;
 
 
 				&#choose_delivery_pickup_export_pdf {

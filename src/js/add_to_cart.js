@@ -75,6 +75,7 @@ jQuery(document).ready(function ($) {
 								$('.empty-cart').removeClass('active');
 								$('.nougatine-sidecart').addClass('active');
 							}
+	                        $('.nougatine-sidecart').addClass('active');
 
 							// remove disabled buttons since in this ajax response we definitely have at least 1 product
 							$('.payment a').each(function () {

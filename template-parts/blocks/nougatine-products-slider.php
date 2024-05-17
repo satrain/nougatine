@@ -41,7 +41,20 @@ else: $custom_class = ''; endif;
 						<img src="<?= ASSETS_URI ?>/images/product-popup-zoom-image.svg" alt="Zoom in">
 					</div>
 				</div>
-
+				<div class="tags-holder">
+					<div class="tag item">
+						<div class="icon">
+							<img src="/wp-content/uploads/2024/03/mdi_heart.svg" alt="Tag icon">
+						</div>
+						<p><?php pll_e( "Customers Favorite" ) ?></p>
+					</div>
+					<div class="tag item">
+						<div class="icon">
+							<img src="/wp-content/uploads/2024/03/fa6-solid_children.svg" alt="Tag icon">
+						</div>
+						<p><?php pll_e( "Suitable For Children" ) ?></p>
+					</div>
+				</div>
 			</div>
 			<div class="separator"></div>
 			<div class="right-side">

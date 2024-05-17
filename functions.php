@@ -481,7 +481,7 @@ function remove_item_from_cart() {
 								 *
 								 * @since 2.1.0
 								 */
-								echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ), $_product->get_name() ), $cart_item, $cart_item_key ) );
+								echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ), truncateString($_product->get_name(), 15) ), $cart_item, $cart_item_key ) );
 							}
 							?>
 						</p>
@@ -492,9 +492,12 @@ function remove_item_from_cart() {
 </svg> <a><?= pll_e( 'Remove' ) ?></a>
                                 </span>
 					</div>
+
 					<div class="product-price-qty">
 						<p class="quantity"><?php echo $cart_item['quantity']; ?></p>
-						<p class="price"><?php echo WC()->cart->get_product_price( $_product ); ?></p>
+						<p class="price">
+							<?php echo apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key ); ?>
+						</p>
 					</div>
 				</div>
 			</div>
@@ -513,7 +516,9 @@ function remove_item_from_cart() {
 
 add_action( 'wp_ajax_remove_item_from_cart', 'remove_item_from_cart' );
 add_action( 'wp_ajax_nopriv_remove_item_from_cart', 'remove_item_from_cart' );
-
+function truncateString($string, $maxLength) {
+	return mb_strimwidth($string, 0, $maxLength, "...");
+}
 function handle_delivery_charge() {
 	if ( isset( $_POST['city_price'] ) ) {
 		$delivery_price = intval( $_POST['city_price'] );

@@ -1,5 +1,5 @@
 <div id="export-popup" class="modal" data-focus="false">
-	<div class="modal-content">
+	<form method="get" action="<?php echo wc_get_cart_url(); ?>" class="modal-content">
 		<p class="export-heading"><?php pll_e( 'Get a Quote' ) ?></p>
 		<p class="form-row form-row-wide validate-required" id="choose_delivery_field_export_pdf" data-priority="">
 			<span class="woocommerce-input-wrapper">
@@ -19,7 +19,6 @@
 				<input type="text" id="address_pdf_export" name="address_pdf_export" placeholder="Address">
 			</label>
 		</p>
-
 		<div class="combined">
 			<div class="split">
 				<label for="deliveryDate_pdf_export"><?php pll_e( 'Delivery Date' ) ?> <span style="color: #c2996f;">*</span>
@@ -34,83 +33,11 @@
 			</div>
 		</div>
 
-
-		<p>
-			<button data-pdf="<?php echo esc_url( wp_nonce_url( add_query_arg( array( 'cart-pdf' => '1' ), wc_get_cart_url() ), 'cart-pdf' ) ); ?>" class="get_pdf">
-				<svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
-					<path d="M20.5 8.94C20.4896 8.84813 20.4695 8.75763 20.44 8.67V8.58C20.3919 8.47718 20.3278 8.38267 20.25 8.3L14.25 2.3C14.1673 2.22222 14.0728 2.15808 13.97 2.11H13.88C13.7784 2.05174 13.6662 2.01434 13.55 2H7.5C6.70435 2 5.94129 2.31607 5.37868 2.87868C4.81607 3.44129 4.5 4.20435 4.5 5V19C4.5 19.7956 4.81607 20.5587 5.37868 21.1213C5.94129 21.6839 6.70435 22 7.5 22H17.5C18.2956 22 19.0587 21.6839 19.6213 21.1213C20.1839 20.5587 20.5 19.7956 20.5 19V9C20.5 9 20.5 9 20.5 8.94ZM14.5 5.41L17.09 8H15.5C15.2348 8 14.9804 7.89464 14.7929 7.70711C14.6054 7.51957 14.5 7.26522 14.5 7V5.41ZM18.5 19C18.5 19.2652 18.3946 19.5196 18.2071 19.7071C18.0196 19.8946 17.7652 20 17.5 20H7.5C7.23478 20 6.98043 19.8946 6.79289 19.7071C6.60536 19.5196 6.5 19.2652 6.5 19V5C6.5 4.73478 6.60536 4.48043 6.79289 4.29289C6.98043 4.10536 7.23478 4 7.5 4H12.5V7C12.5 7.79565 12.8161 8.55871 13.3787 9.12132C13.9413 9.68393 14.7044 10 15.5 10H18.5V19Z" fill="white"></path>
-				</svg>
-
-				<?php pll_e( 'Export as PDF' ) ?>
-			</button>
-		</p>
-	</div>
+		<input type="hidden" readonly="readonly" name="cart-pdf" value="1"/>
+		<?php wp_nonce_field( 'cart-pdf', '_wpnonce', false, true ); ?>
+		<button disabled type="submit"><?= pll__( 'Export as PDF' ) ?></button>
+	</form>
 </div>
-
-<button id="generate-cart-pdf-button">Generate PDF</button>
-<div id="cart-pdf" style="display: none">
-	<div class="header-wrapper">
-		<img style="width: 100px" src="https://nougatine.spartansdemo.local/wp-content/themes/nougatine/assets/images/nougatine-footer-logo.svg" alt="Nougatine logo">
-		<div class="content">
-			<p>test</p>
-			<p>test</p>
-			<p>test</p>
-			<p>test</p>
-			<p>test</p>
-		</div>
-	</div>
-
-	<div class="heading-wrapper">
-		<h3>test</h3>
-		<div class="heading-content-text">
-			<p>test1</p>
-			<p>test2</p>
-		</div>
-	</div>
-
-	<div class="cart-output">
-
-		<?php
-		$cart       = WC()->cart;
-		$cart_items = $cart->get_cart();
-		$total      = $cart->get_cart_total();
-
-		echo '<table class="table table-striped table-bordered">';
-		echo '<thead><tr><th>Quantity</th><th>Name</th><th>Price per item</th><th>Total price for item</th></tr></thead>';
-		echo '<tbody>';
-
-		foreach ( $cart_items as $cart_item ) {
-			$product              = wc_get_product( $cart_item['product_id'] );
-			$price_per_item       = wc_price( $product->get_price() );
-			$total_price_for_item = wc_price( $cart_item['quantity'] * $product->get_price() );
-
-			echo '<tr>';
-			echo '<td>' . $cart_item['quantity'] . '</td>';
-			echo '<td>' . $product->get_name() . '</td>';
-			echo '<td>' . $price_per_item . '</td>';
-			echo '<td>' . $total_price_for_item . '</td>';
-			echo '</tr>';
-		}
-		echo '</tbody>';
-		echo '<tfoot>';
-		echo '<tr>';
-		echo '<td colspan="4">Total' . $total . '</td>';
-		echo '</tr>';
-		echo '</tfoot>';
-		echo '</table>';
-		?>
-	</div>
-
-	<div class="footer-pdf">
-		<h3>test</h3>
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aspernatur at beatae cum debitis, distinctio dolorem error ex expedita facere fugiat harum, in officiis, placeat quod sapiente sit soluta voluptas?</p>
-	</div>
-	<div class="footer-pdf-black">
-		<p>521512 | 5125 | 125125</p>
-		<p>521512 | 5125 | 125125</p>
-	</div>
-</div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 <footer>
 	<div class="container">
 		<div class="wrapper">
