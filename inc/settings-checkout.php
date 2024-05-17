@@ -315,9 +315,24 @@ class WooCommerceCustomCheckout {
 			wc_add_notice( pll__( 'Please select delivery method.' ), 'error' );
 		}
 
-		if ( ! $_POST['hotdish_delivery'] ) {
-			wc_add_notice( pll__( 'Please select hot dish.' ), 'error' );
+		$is_hot_dish_in_cart = false;
+
+		foreach ( WC()->cart->get_cart() as $cart_item ) {
+			$product = $cart_item['data'];
+			if ( $product ) {
+				$is_hot_dish = get_post_meta( $product->get_id(), 'is_hot_dish', true );
+				if ( $is_hot_dish === 'yes' ) {
+					$is_hot_dish_in_cart = true;
+					break;
+				}
+			}
 		}
+		if($is_hot_dish_in_cart) {
+			if ( ! $_POST['hotdish_delivery'] ) {
+				wc_add_notice( pll__( 'Please select hot dish.' ), 'error' );
+			}
+		}
+
 
 		if ( $_POST['choose_delivery'] == 'pickup' ) {
 			if ( ! $_POST['pickup_time'] || ! $_POST['pickup_date'] ) {

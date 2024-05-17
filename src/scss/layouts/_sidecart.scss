@@ -20,6 +20,7 @@
 			.sidecart-content {
 				transform: translateX(0);
 				transition: .5s;
+				overflow-x: scroll;
 
 				@include media(lg) {
 					overflow-y: scroll;
@@ -47,6 +48,10 @@
 
 			.best-sellers {
 				max-width: 936px;
+
+				h2 {
+					font-size: 18px;
+				}
 			}
 
 			.product-card {
@@ -69,6 +74,24 @@
 			flex-direction: column;
 			justify-content: space-between;
 			transition: .5s;
+
+			.best-sellers {
+				h2 {
+					font-size: 18px;
+				}
+
+				.card {
+					.content {
+						a {
+							font-size: 10px;
+						}
+					}
+				}
+
+				.best-sellers-wrapper {
+					margin-top: 25px;
+				}
+			}
 
 			.upper {
 
