@@ -637,6 +637,10 @@
 						gap: 32px;
 						align-content: center;
 
+						label {
+							position: relative;
+						}
+
 						input {
 							display: none;
 							opacity: 0;
@@ -659,6 +663,26 @@
 										height: 52px;
 									}
 								}
+
+								&:checked + label {
+									border: 1px solid #c2996f;
+									background: #fff;
+
+									&::before {
+										content: url("../images/pickup_gold.svg");
+									}
+
+									&::after {
+										content: '';
+										position: absolute;
+										right: 15px;
+										width: 15px;
+										height: 15px;
+										background: #c2996f;
+										border-radius: 50%;
+										top: 15px;
+									}
+								}
 							}
 
 							&#choose_delivery_shipping {
@@ -675,6 +699,26 @@
 										content: url("../images/delivery.svg");
 										width: 52px;
 										height: 52px;
+									}
+								}
+
+								&:checked + label {
+									border: 1px solid #c2996f;
+									background: #fff;
+
+									&::before {
+										content: url("../images/delivery_gold.svg");
+									}
+
+									&::after {
+										content: '';
+										position: absolute;
+										right: 15px;
+										width: 15px;
+										height: 15px;
+										background: #c2996f;
+										border-radius: 50%;
+										top: 15px;
 									}
 								}
 							}

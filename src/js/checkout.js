@@ -259,33 +259,53 @@ jQuery(document).ready(function ($) {
 	var monthNames = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
 
 
-	var picker = new Pikaday({
-		field: document.getElementById('datepicker'),
-		format: 'DD.MM.YYYY',
-		minDate: new Date(),
-		disableDayOfWeek: [6],
-		disableDayFn: function (date) {
-			var today = new Date();
-			today.setHours(0, 0, 0, 0);
-			return date.getTime() === today.getTime() || date.getDay() === 6 || disabledDates.some(function (disabledDate) {
-				return moment(date).isSame(disabledDate, 'day');
-			});
-		},
-		onSelect: function () {
-			jQuery("#shipping_date").val(this.toString());
-			jQuery("#pickup_date").val(this.toString());
-			jQuery("#dateslot").dialog("close");
-		}
-	});
 	if (isHebrew) {
-		picker.i18n = {
-			previousMonth: 'החודש הקודם',
-			nextMonth: 'החודש הבא',
-			months: monthNames,
-			weekdays: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
-			weekdaysShort: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
-		}
+		var picker = new Pikaday({
+			field: document.getElementById('datepicker'),
+			format: 'DD.MM.YYYY',
+			minDate: new Date(),
+			i18n: {
+				previousMonth: 'החודש הקודם',
+				nextMonth: 'החודש הבא',
+				months: monthNames,
+				weekdays: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
+				weekdaysShort: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
+			},
+			disableDayOfWeek: [6],
+			disableDayFn: function (date) {
+				var today = new Date();
+				today.setHours(0, 0, 0, 0);
+				return date.getTime() === today.getTime() || date.getDay() === 6 || disabledDates.some(function (disabledDate) {
+					return moment(date).isSame(disabledDate, 'day');
+				});
+			},
+			onSelect: function () {
+				jQuery("#shipping_date").val(this.toString());
+				jQuery("#pickup_date").val(this.toString());
+				jQuery("#dateslot").dialog("close");
+			}
+		});
+	} else {
+		var picker = new Pikaday({
+			field: document.getElementById('datepicker'),
+			format: 'DD.MM.YYYY',
+			minDate: new Date(),
+			disableDayOfWeek: [6],
+			disableDayFn: function (date) {
+				var today = new Date();
+				today.setHours(0, 0, 0, 0);
+				return date.getTime() === today.getTime() || date.getDay() === 6 || disabledDates.some(function (disabledDate) {
+					return moment(date).isSame(disabledDate, 'day');
+				});
+			},
+			onSelect: function () {
+				jQuery("#shipping_date").val(this.toString());
+				jQuery("#pickup_date").val(this.toString());
+				jQuery("#dateslot").dialog("close");
+			}
+		});
 	}
+
 
 	jQuery("#dateslot").dialog({
 		autoOpen: false,
@@ -330,13 +350,53 @@ jQuery(document).ready(function ($) {
 	});
 
 	if (isHebrew) {
-		picker_modal.i18n = {
-			previousMonth: 'החודש הקודם',
-			nextMonth: 'החודש הבא',
-			months: monthNames,
-			weekdays: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
-			weekdaysShort: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
-		}
+
+		var picker_modal = new Pikaday({
+			field: document.getElementById('deliveryDate_pdf_export'),
+			format: 'DD.MM.YYYY',
+			minDate: new Date(),
+			disableDayOfWeek: [6],
+			autoClose: true,
+			i18n: {
+				previousMonth: 'החודש הקודם',
+				nextMonth: 'החודש הבא',
+				months: monthNames,
+				weekdays: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
+				weekdaysShort: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
+			},
+			disableDayFn: function (date) {
+				var today = new Date();
+				today.setHours(0, 0, 0, 0);
+				return date.getTime() === today.getTime() || date.getDay() === 6 || disabledDates.some(function (disabledDate) {
+					return moment(date).isSame(disabledDate, 'day');
+				});
+			},
+			onSelect: function () {
+				jQuery("#deliveryDate_pdf_export").val(this.toString());
+				jQuery("#deliveryDate_pdf_export").trigger('input');
+				picker_modal.hide(0);
+			}
+		});
+	} else {
+		var picker_modal = new Pikaday({
+			field: document.getElementById('deliveryDate_pdf_export'),
+			format: 'DD.MM.YYYY',
+			minDate: new Date(),
+			disableDayOfWeek: [6],
+			autoClose: true,
+			disableDayFn: function (date) {
+				var today = new Date();
+				today.setHours(0, 0, 0, 0);
+				return date.getTime() === today.getTime() || date.getDay() === 6 || disabledDates.some(function (disabledDate) {
+					return moment(date).isSame(disabledDate, 'day');
+				});
+			},
+			onSelect: function () {
+				jQuery("#deliveryDate_pdf_export").val(this.toString());
+				jQuery("#deliveryDate_pdf_export").trigger('input');
+				picker_modal.hide(0);
+			}
+		});
 	}
 
 	jQuery('.export-btn').on('click', function (event) {

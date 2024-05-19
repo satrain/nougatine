@@ -92,6 +92,7 @@ add_action('init', function() {
     pll_register_string('alokin', "Collect In Store");
     pll_register_string('alokin', "City");
     pll_register_string('alokin', "Ornit, Elkana, Bat Yam, Holon");
+    pll_register_string('alokin', "Select City");
     pll_register_string('alokin', "Bnei Brak, Givatayim, Savion");
     pll_register_string('alokin', "Airport City, Beer Ya'akov");
     pll_register_string('alokin', "Haifa and the surrounding area");

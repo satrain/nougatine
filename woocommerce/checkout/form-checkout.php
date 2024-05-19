@@ -64,9 +64,10 @@ if ( ! $checkout->is_registration_enabled() && $checkout->is_registration_requir
 								<h3>
 									<?php
 									$interval = get_option( 'timeslots_interval' );
-									$span = $interval / 60;
+									$span     = $interval / 60;
 									?>
-									<?php pll_e( "The estimated delivery time for the selected date is in the span of <span> $span  hours.</span> " ) ?>
+									<?php pll_e( "זמן האספקה המשוער לתאריך הנבחר הוא בטווח של
+ <span> $span  שעה (ות.</span> " ) ?>
 								</h3>
 							</div>
 
