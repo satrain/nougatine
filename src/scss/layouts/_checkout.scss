@@ -734,7 +734,7 @@
 				}
 
 				.order-summary-card {
-					max-width: 284px;
+					max-width: 100%;
 					margin-top: 105px;
 					@include media(lg) {
 						max-width: 100%;
@@ -1068,7 +1068,7 @@
 		direction: rtl;
 
 		#order-summary .order-summary-wrapper {
-			padding-left: 0;
+			padding-left: 23px;
 			padding-right: 23px;
 
 			.order-summary-card .products .edit-order .left-side .order-count-price .price {
@@ -1121,13 +1121,15 @@ body:not(.woocommerce-cart):not(.page-id-733) {
 		padding: 21px !important;
 		margin: 0 !important;
 
-		.pika-prev {
-			display: none;
-		}
-
 		.pika-next {
 			background: url('../images/arrow.svg') no-repeat center;
 			border: none;
+		}
+
+		.pika-prev {
+			background: url('../images/arrow.svg') no-repeat center;
+			border: none;
+			transform: rotate(180deg);
 		}
 
 		.pika-label {
@@ -1190,4 +1192,8 @@ body:not(.woocommerce-cart):not(.page-id-733) {
 	height: 150px;
 	overflow: hidden;
 	transition: 0.5s all;
+}
+
+.step-number {
+	cursor: pointer;
 }

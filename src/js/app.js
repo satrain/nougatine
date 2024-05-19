@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', (event) => {
 
 	// Init AOS
-	AOS.init({once: true});
+	// AOS.init({once: true});
 
-	let scrollRef = 0;
+	// let scrollRef = 0;
 
-	window.addEventListener('scroll', function () {
-		// increase value up to 10, then refresh AOS
-		scrollRef <= 10 ? scrollRef++ : AOS.refresh();
-	});
+	// window.addEventListener('scroll', function () {
+	// 	// increase value up to 10, then refresh AOS
+	// 	scrollRef <= 10 ? scrollRef++ : AOS.refresh();
+	// });
 
 	//Mobile - show navigation on burger click and slider
 	if (window.matchMedia("(max-width: 1024px)").matches) {
@@ -52,24 +52,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		});
 	}
 
-	let searchBtn = document.querySelector('.search-btn')
-	let searchInput = document.querySelector('.search input')
+	let searchBtn = document.querySelector('.dgwt-wcas-search-submit')
+	let searchInput = document.querySelector('.dgwt-wcas-search-input')
 
 	searchBtn.addEventListener('click', () => {
 		searchInput.classList.toggle('active')
 	})
-
-	const faqItems = document.querySelectorAll('.faq');
-
-	faqItems.forEach(function (faqItem) {
-		const title = faqItem.querySelector('.title');
-		const content = faqItem.querySelector('.content');
-
-		title.addEventListener('click', function () {
-			faqItem.classList.toggle('open');
-			content.classList.toggle('active');
-		});
-	});
 
 	var options = document.querySelectorAll('.option input[type="radio"]');
 
@@ -141,7 +129,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		scrollToTop()
 	})
 
-	let cards = document.querySelectorAll('.card')
+	let cards = document.querySelectorAll('.card .image-holder')
 	let productModal = document.querySelector('.product-modal')
 	let closeProductModal = document.querySelector('.product-modal .close')
 	if (productModal) {

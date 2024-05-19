@@ -1,11 +1,6 @@
 .about-us-page-container {
 
     .about-us-hero {
-        margin-top: 95px;
-        @include media(lg) {
-            padding-bottom: 48px;
-            margin-top: 0;
-        }
 
         .half-section-background {
             height: 57%;

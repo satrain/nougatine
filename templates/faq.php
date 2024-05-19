@@ -1,4 +1,4 @@
-<?php 
+<?php
 /* Template Name: FAQ Template */
 get_header();
 ?>
@@ -9,4 +9,4 @@ get_header();
     </div>
 </div>
 
-<?php get_footer('basic'); ?>
+<?php get_footer() ?>

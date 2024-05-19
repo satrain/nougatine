@@ -117,6 +117,8 @@ header {
 			.search-btn {
 				display: block;
 				cursor: pointer;
+				z-index: 2;
+				background-color: white;
 
 				svg {
 					path {
@@ -134,22 +136,6 @@ header {
 				}
 			}
 
-			input {
-				position: absolute;
-				left: 30px;
-				visibility: hidden;
-				width: 0;
-				border: unset;
-				border-bottom: 1px solid $text-dark;
-				outline: none;
-				transition: .3s;
-
-				&.active {
-					width: 160px;
-					visibility: visible;
-					transition: .3s;
-				}
-			}
 
 		}
 
@@ -432,6 +418,11 @@ header {
 		display: flex;
 		align-items: center;
 		margin-top: 3px;
+
+		svg {
+			width: 32px;
+			height: 32px;
+		}
 	}
 }
 

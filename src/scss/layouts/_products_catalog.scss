@@ -1,10 +1,4 @@
 .product-catalog {
-	padding-top: 105px;
-	@include media(lg) {
-		padding-top: 69px;
-	}
-
-
 	.product-catalog-hero {
 		position: relative;
 		padding-top: 76px;
@@ -615,7 +609,6 @@
 		}
 
 	}
-
 }
 
 .products-catalog-modal {

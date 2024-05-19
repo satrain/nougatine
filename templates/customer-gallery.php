@@ -1,11 +1,11 @@
-<?php 
+<?php
 /* Template Name: Customer's Gallery */
 get_header();
 ?>
 
 <div class="main">
     <div class="page-container gallery-page-container">
-        
+
         <?php the_content(); ?>
 
         <div class="footer">
@@ -33,4 +33,4 @@ get_header();
     </div>
 </div>
 
-<?php get_footer('basic'); ?>
+<?php get_footer(); ?>

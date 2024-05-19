@@ -1,8 +1,8 @@
 .nougatine-cart-page {
-	padding-top: 105px;
-	@include media(lg) {
-		padding-top: 69px;
-	}
+	//padding-top: 105px;
+	//@include media(lg) {
+	//	padding-top: 69px;
+	//}
 
 	.your-cart {
 		width: 100%;
@@ -165,6 +165,7 @@
 			font-weight: 600;
 			line-height: 40px; /* 100% */
 			letter-spacing: 4px;
+			margin-bottom: 20px;
 
 			&:before {
 				display: none;

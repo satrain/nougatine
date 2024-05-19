@@ -35,7 +35,8 @@ body {
 	h5,
 	h6,
 	p,
-	a {
+	a,
+	input {
 		// transform: scaleX(-1);
 		direction: rtl;
 	}
@@ -114,6 +115,7 @@ img {
 .btn-secondary {
 	background: $bg;
 	color: $primary;
+
 	&:hover {
 		color: $text-light;
 		background: $primary;
@@ -157,33 +159,34 @@ img {
 }
 
 .slick-arrow {
-	width: unset!important;
-	height: unset!important;
+	width: unset !important;
+	height: unset !important;
+
 	&:before {
-		display: none!important;
+		display: none !important;
 	}
 }
 
 .slick-prev {
-	left: 0!important;
+	left: 0 !important;
 }
 
 .slick-next {
-	right: 0!important;
+	right: 0 !important;
 }
 
 .slick-dots {
 
 	li {
-		margin: 0!important;
+		margin: 0 !important;
 
 		button {
 
 			&:before {
-				color: #C2996F!important;
-				width: 14px!important;
-				height: 14px!important;
-				font-size: 12px!important;
+				color: #C2996F !important;
+				width: 14px !important;
+				height: 14px !important;
+				font-size: 12px !important;
 			}
 
 		}
@@ -193,7 +196,7 @@ img {
 			button {
 
 				&:before {
-					color: $primary!important;
+					color: $primary !important;
 				}
 
 			}
@@ -212,20 +215,20 @@ img {
 	position: relative;
 	z-index: 2;
 	cursor: pointer;
-  }
+}
 
-  /* Hide the tooltip content by default */
-  [data-tooltip]:before,
-  [data-tooltip]:after {
+/* Hide the tooltip content by default */
+[data-tooltip]:before,
+[data-tooltip]:after {
 	visibility: hidden;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 	filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=0)";
 	opacity: 0;
 	pointer-events: none;
-  }
+}
 
-  /* Position tooltip above the element */
-  [data-tooltip]:before {
+/* Position tooltip above the element */
+[data-tooltip]:before {
 	position: absolute;
 	bottom: 150%;
 	left: 50%;
@@ -243,10 +246,10 @@ img {
 	text-align: center;
 	font-size: 10px;
 	line-height: 1.2;
-  }
+}
 
-  /* Triangle hack to make tooltip look like a speech bubble */
-  [data-tooltip]:after {
+/* Triangle hack to make tooltip look like a speech bubble */
+[data-tooltip]:after {
 	position: absolute;
 	bottom: 150%;
 	left: 50%;
@@ -259,53 +262,54 @@ img {
 	content: " ";
 	font-size: 0;
 	line-height: 0;
-	}
+}
 
-	/* Show tooltip content on hover */
-	[data-tooltip]:hover:before,
-	[data-tooltip]:hover:after {
+/* Show tooltip content on hover */
+[data-tooltip]:hover:before,
+[data-tooltip]:hover:after {
 	visibility: visible;
 	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=100)";
 	opacity: 1;
-  }
+}
 
-  /* Bottom */
-  .tooltip-bottom:after {
+/* Bottom */
+.tooltip-bottom:after {
 	display: none;
-  }
+}
+
 .tooltip-bottom:before,
 .tooltip-bottom:after {
-  top: 100%;
-  bottom: auto;
-  left: 50%;
+	top: 100%;
+	bottom: auto;
+	left: 50%;
 }
 
 .tooltip-bottom:before {
-  margin-top: -12px;
-  margin-bottom: 0;
-  border-top-color: transparent;
-  border-bottom-color: #000;
-  border-bottom-color: hsla(0, 0%, 20%, 0.9);
+	margin-top: -12px;
+	margin-bottom: 0;
+	border-top-color: transparent;
+	border-bottom-color: #000;
+	border-bottom-color: hsla(0, 0%, 20%, 0.9);
 }
 
 .tooltip-bottom:hover:before,
 .tooltip-bottom:hover:after,
 .tooltip-bottom:focus:before,
 .tooltip-bottom:focus:after {
-  -webkit-transform: translateY(12px);
-  -moz-transform:    translateY(12px);
-  transform:         translateY(12px);
+	-webkit-transform: translateY(12px);
+	-moz-transform: translateY(12px);
+	transform: translateY(12px);
 }
 
 #preloader {
 	position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999;
-    background-color: #fff;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background-color: #fff;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -359,34 +363,34 @@ img {
 }
 
 html .wc-block-components-drawer {
-	left: 100%!important;
+	left: 100% !important;
 }
 
 .added-to-cart-message,
 .form-error-message {
-    position: fixed;
-    top: 95px;
+	position: fixed;
+	top: 95px;
 	right: 60px;
-    // left: 50%;
-    // transform: translateX(-50%);
-    color: #fff;
-    padding: 10px;
-    z-index: 9999;
+	// left: 50%;
+	// transform: translateX(-50%);
+	color: #fff;
+	padding: 10px;
+	z-index: 9999;
 	border-radius: 5px;
 
 	font-family: 'Open Sans', sans-serif;
 	font-size: 16px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 20px;
-    letter-spacing: .16px;
-    text-align: center;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 20px;
+	letter-spacing: .16px;
+	text-align: center;
 	@include media(lg) {
 		font-size: 14px;
 		line-height: 18px;
 		right: unset;
 		left: 50%;
-    	transform: translateX(-50%);
+		transform: translateX(-50%);
 	}
 }
 
@@ -394,11 +398,13 @@ html .wc-block-components-drawer {
 	visibility: hidden;
 	opacity: 0;
 	max-width: 488px;
+
 	&.active {
 		visibility: visible;
 		opacity: 1;
 		transition: .2s;
 	}
+
 	border-radius: 5px 0px 0px 5px;
 	background: #FFF;
 	box-shadow: 0px 0px 14px 0px rgba(11, 19, 22, 0.30);
@@ -411,10 +417,10 @@ html .wc-block-components-drawer {
 	right: 0;
 	transition: .2s;
 	@include media(lg) {
-		transform: unset!important;
+		transform: unset !important;
 		top: 130px;
 		max-width: 90%;
-		left: unset!important;
+		left: unset !important;
 	}
 
 	svg {
@@ -440,36 +446,27 @@ html .wc-block-components-drawer {
 }
 
 #scrollToTopBtn {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: $primary;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    padding: 0 13px 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 27px;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	background-color: $primary;
+	color: #fff;
+	border: none;
+	border-radius: 5px;
+	padding: 0 13px 5px;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 27px;
 	line-height: normal;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
 	z-index: 9999;
 
 	&.show {
 		opacity: 1;
 	}
-}
-
-.lang-he {
-
-	#scrollToTopBtn {
-		right: unset;
-		left: 20px;
-	}
-
 }
 
 .product-modal {
@@ -743,7 +740,6 @@ html .wc-block-components-drawer {
 }
 
 .lang-he {
-
 	.product-modal .modal-wrapper .container .modal-content,
 	.product-modal .modal-wrapper .container .modal-content .products-list-wrapper .product-tag .title,
 	.product-modal .modal-wrapper .container .modal-content .products-list-wrapper .product-tag .products-list .item,
@@ -753,6 +749,10 @@ html .wc-block-components-drawer {
 		flex-direction: row-reverse;
 	}
 
+	#scrollToTopBtn {
+		right: unset;
+		left: 20px;
+	}
 }
 
 .woocommerce-notices-wrapper {
@@ -760,7 +760,7 @@ html .wc-block-components-drawer {
 }
 
 .added_to_cart.wc-forward {
-	display: none!important;
+	display: none !important;
 }
 
 input[type="radio"] {

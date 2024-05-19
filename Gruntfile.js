@@ -23,10 +23,14 @@ module.exports = function (grunt) {
                         'src/js/app.js',
                         'src/js/preloader-script.js',
                         'src/js/products-catalog.js',
-                        'src/js/checkout.js',
                         'src/js/add_to_cart.js',
-                        'src/js/faq.js',
                     ],
+                    'assets/js/checkout.min.js': [
+                        'src/js/checkout.js',
+                    ],
+                    'assets/js/faq.min.js': [
+                        'src/js/faq.js',
+                    ]
                 },
             },
         },

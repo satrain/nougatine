@@ -40,3 +40,11 @@ jQuery(document).ready(function ($) {
 		faq_accordion.querySelector('.content').classList.add('active');
 	}
 });
+document.addEventListener('DOMContentLoaded', (event) => {
+	document.addEventListener('click', function (e) {
+		if (!e.target.closest('.faq')) return;
+
+		e.target.closest('.faq').classList.toggle('open');
+		e.target.closest('.faq').querySelector('.content').classList.toggle('active');
+	});
+});

@@ -1,43 +1,47 @@
-<div id="export-popup" class="modal" data-focus="false">
-	<form method="get" action="<?php echo wc_get_cart_url(); ?>" class="modal-content">
-		<p class="export-heading"><?php pll_e( 'Get a Quote' ) ?></p>
-		<p class="form-row form-row-wide validate-required" id="choose_delivery_field_export_pdf" data-priority="">
+<?php
+if ( is_cart() ) { ?>
+	<div id="export-popup" class="modal" data-focus="false">
+		<form method="get" action="<?php echo wc_get_cart_url(); ?>" class="modal-content">
+			<p class="export-heading"><?php pll_e( 'Get a Quote' ) ?></p>
+			<p class="form-row form-row-wide validate-required" id="choose_delivery_field_export_pdf" data-priority="">
 			<span class="woocommerce-input-wrapper">
 				<input type="radio" class="input-radio " value="shipping" name="choose_delivery_export_pdf" id="choose_delivery_shipping_export_pdf" required>
 				<label for="choose_delivery_shipping_export_pdf" class="radio "><?php pll_e( 'Delivery' ); ?></label>
 				<input type="radio" class="input-radio " value="pickup" name="choose_delivery_export_pdf" id="choose_delivery_pickup_export_pdf">
 				<label for="choose_delivery_pickup_export_pdf" class="radio "><?php pll_e( 'Collect In Store' ); ?></label>
 			</span>
-		</p>
-		<p>
-			<label for="city_export_pdf"><?php pll_e( 'City' ) ?> <span style="color: #c2996f;">*</span>
-				<input type="text" id="city_export_pdf" name="city_export_pdf" placeholder="City" required>
-			</label>
-		</p>
-		<p>
-			<label for="address_pdf_export"><?php pll_e( 'Address' ) ?>
-				<input type="text" id="address_pdf_export" name="address_pdf_export" placeholder="Address">
-			</label>
-		</p>
-		<div class="combined">
-			<div class="split">
-				<label for="deliveryDate_pdf_export"><?php pll_e( 'Delivery Date' ) ?> <span style="color: #c2996f;">*</span>
-					<input type="text" id="deliveryDate_pdf_export" name="deliveryDate_pdf_export" required>
+			</p>
+			<p>
+				<label for="city_export_pdf"><?php pll_e( 'City' ) ?> <span style="color: #c2996f;">*</span>
+					<input type="text" id="city_export_pdf" name="city_export_pdf" placeholder="City" required>
 				</label>
+			</p>
+			<p>
+				<label for="address_pdf_export"><?php pll_e( 'Address' ) ?>
+					<input type="text" id="address_pdf_export" name="address_pdf_export" placeholder="Address">
+				</label>
+			</p>
+			<div class="combined">
+				<div class="split">
+					<label for="deliveryDate_pdf_export"><?php pll_e( 'Delivery Date' ) ?> <span style="color: #c2996f;">*</span>
+						<input type="text" id="deliveryDate_pdf_export" name="deliveryDate_pdf_export" required>
+					</label>
+				</div>
+
+				<div class="split">
+					<label for="companyName_pdf_export"><?php pll_e( 'Company Name' ) ?>
+						<input type="text" id="companyName_pdf_export" name="companyName_pdf_export" placeholder="Company Name">
+					</label>
+				</div>
 			</div>
 
-			<div class="split">
-				<label for="companyName_pdf_export"><?php pll_e( 'Company Name' ) ?>
-					<input type="text" id="companyName_pdf_export" name="companyName_pdf_export" placeholder="Company Name">
-				</label>
-			</div>
-		</div>
+			<input type="hidden" readonly="readonly" name="cart-pdf" value="1"/>
+			<?php wp_nonce_field( 'cart-pdf', '_wpnonce', false, true ); ?>
+			<button disabled type="submit"><?= pll__( 'Export as PDF' ) ?></button>
+		</form>
+	</div>
+<?php } ?>
 
-		<input type="hidden" readonly="readonly" name="cart-pdf" value="1"/>
-		<?php wp_nonce_field( 'cart-pdf', '_wpnonce', false, true ); ?>
-		<button disabled type="submit"><?= pll__( 'Export as PDF' ) ?></button>
-	</form>
-</div>
 <footer>
 	<div class="container">
 		<div class="wrapper">

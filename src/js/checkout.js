@@ -197,11 +197,225 @@ jQuery(document).ready(function ($) {
 		}
 	}
 
-	document.addEventListener('click', function(e) {
-		if(e.target.classList.contains('btn-see-whole-order')) {
+	document.addEventListener('click', function (e) {
+		if (e.target.classList.contains('btn-see-whole-order')) {
 			e.preventDefault();
 			document.querySelector('.list').classList.remove('load_items');
 			e.target.remove();
 		}
 	});
+
+
+	var startTime = pickersTime.startTime,
+		endTime = pickersTime.endTime,
+		interval = pickersTime.interval,
+		timeslots = [],
+		current = moment(startTime, "HH:mm"),
+		end = moment(endTime, "HH:mm");
+	while (current.isBefore(end)) {
+		var timeslotEnd = moment(current).add(interval, "minutes");
+		if (timeslotEnd.isAfter(end)) {
+			timeslotEnd = end;
+		}
+		timeslots.push(current.format("HH:mm") + " - " + timeslotEnd.format("HH:mm"));
+		current.add(interval, "minutes");
+	}
+	for (var key in timeslots) {
+		if (timeslots.hasOwnProperty(key)) {
+			var $button = jQuery("<button />").text(timeslots[key]);
+			$button.on("click", function () {
+				jQuery("#shipping_time").val(jQuery(this).text());
+				jQuery("#pickup_time").val(jQuery(this).text());
+				jQuery("#timeslots").dialog("close");
+			});
+			jQuery("#timeslots").append($button);
+		}
+	}
+
+	jQuery("#timeslots").dialog({
+		autoOpen: false,
+		modal: true,
+		buttons: {},
+		open: function (event, ui) {
+			jQuery(".ui-widget-overlay").on("click", function () {
+				jQuery("#timeslots").dialog("close");
+			});
+		}
+	});
+	jQuery("#shipping_time").on("click", function () {
+		jQuery("#timeslots").dialog("open");
+	});
+
+	jQuery("#pickup_time").on("click", function () {
+		jQuery("#timeslots").dialog("open");
+	});
+
+	var disabledDates = pickersDate.disabledDates.map(function (date) {
+		return moment(date, 'DD.MM.YYYY').toDate();
+	});
+
+	var bodyClasses = Array.from(document.body.classList),
+		isHebrew = bodyClasses.includes('lang-he');
+	var monthNames = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
+
+
+	var picker = new Pikaday({
+		field: document.getElementById('datepicker'),
+		format: 'DD.MM.YYYY',
+		minDate: new Date(),
+		disableDayOfWeek: [6],
+		disableDayFn: function (date) {
+			var today = new Date();
+			today.setHours(0, 0, 0, 0);
+			return date.getTime() === today.getTime() || date.getDay() === 6 || disabledDates.some(function (disabledDate) {
+				return moment(date).isSame(disabledDate, 'day');
+			});
+		},
+		onSelect: function () {
+			jQuery("#shipping_date").val(this.toString());
+			jQuery("#pickup_date").val(this.toString());
+			jQuery("#dateslot").dialog("close");
+		}
+	});
+	if (isHebrew) {
+		picker.i18n = {
+			previousMonth: 'החודש הקודם',
+			nextMonth: 'החודש הבא',
+			months: monthNames,
+			weekdays: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
+			weekdaysShort: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
+		}
+	}
+
+	jQuery("#dateslot").dialog({
+		autoOpen: false,
+		modal: true,
+		dialogClass: 'dateslot-dialog',
+		open: function () {
+			picker.show();
+			jQuery(".ui-widget-overlay").on("click", function () {
+				jQuery("#dateslot").dialog("close");
+			});
+		},
+		close: function () {
+			picker.hide();
+		}
+	});
+
+	jQuery("#shipping_date").on("click", function () {
+		jQuery("#dateslot").dialog("open");
+	});
+	jQuery("#pickup_date").on("click", function () {
+		jQuery("#dateslot").dialog("open");
+	});
+
+	var picker_modal = new Pikaday({
+		field: document.getElementById('deliveryDate_pdf_export'),
+		format: 'DD.MM.YYYY',
+		minDate: new Date(),
+		disableDayOfWeek: [6],
+		autoClose: true,
+		disableDayFn: function (date) {
+			var today = new Date();
+			today.setHours(0, 0, 0, 0);
+			return date.getTime() === today.getTime() || date.getDay() === 6 || disabledDates.some(function (disabledDate) {
+				return moment(date).isSame(disabledDate, 'day');
+			});
+		},
+		onSelect: function () {
+			jQuery("#deliveryDate_pdf_export").val(this.toString());
+			jQuery("#deliveryDate_pdf_export").trigger('input');
+			picker_modal.hide(0);
+		}
+	});
+
+	if (isHebrew) {
+		picker_modal.i18n = {
+			previousMonth: 'החודש הקודם',
+			nextMonth: 'החודש הבא',
+			months: monthNames,
+			weekdays: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
+			weekdaysShort: ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ש']
+		}
+	}
+
+	jQuery('.export-btn').on('click', function (event) {
+		event.preventDefault();
+		jQuery('#export-popup').show();
+	});
+
+	jQuery('.get_pdf').on('click', function (event) {
+		// Get the URL from the data-pdf attribute.
+		var url = new URL(jQuery(this).data('pdf'));
+
+		// Get all filled fields in the #export-popup form.
+		jQuery('#export-popup :input').each(function () {
+			if (jQuery(this).val()) {
+				// Add each field's value as a query parameter.
+				url.searchParams.append(jQuery(this).attr('name'), jQuery(this).val());
+			}
+		});
+
+		// Set the modified URL as the new data-pdf attribute.
+		jQuery(this).attr('data-pdf', url.toString());
+		window.location.href = url.toString();
+	});
+
+	if (jQuery('body.woocommerce-cart').length > 0) {
+		var export_modal = document.getElementById('export-popup');
+		var button = export_modal.querySelector('button');
+		var requiredFields = Array.from(export_modal.querySelectorAll('input[required]'));
+		var allFields = Array.from(export_modal.querySelectorAll('input'));
+
+
+		// Check if all required fields are filled
+		function checkRequiredFields() {
+			var allFilled = requiredFields.every(function (field) {
+				return field.value !== '';
+			});
+
+			if (allFilled) {
+				button.disabled = false;
+				button.classList.add('active');
+			} else {
+				button.disabled = true;
+				button.classList.remove('active');
+			}
+		}
+
+		// Add event listener to all fields
+		allFields.forEach(function (field) {
+			field.addEventListener('input', checkRequiredFields);
+		});
+
+		// Close modal when clicking outside of it
+		window.addEventListener('click', function (event) {
+			if (event.target == export_modal) {
+				export_modal.style.display = 'none';
+			}
+		});
+
+		// Close modal when pressing escape key
+		window.addEventListener('keydown', function (event) {
+			if (event.key === 'Escape') {
+				export_modal.style.display = 'none';
+			}
+		});
+	}
+
+	document.addEventListener('click', function (e) {
+		if (e.target.closest('.step')) {
+			document.querySelectorAll('.step').forEach(function (index, element) {
+				index.classList.remove('active');
+				index.classList.remove('current');
+			})
+			e.target.closest('.step').classList.add('active');
+			e.target.closest('.step').classList.add('current');
+			let step = e.target.closest('.step').dataset.step;
+			document.querySelectorAll('.step-content').forEach(function (index, element) {
+				index.classList.remove('active');
+			})
+			document.querySelector('.step-' + step).classList.add('active');
+		}
+	})
 });

@@ -43,7 +43,7 @@ if ( WC()->cart->get_cart_contents_count() > 3 ) {
 
 						<div class="content">
 							<img src="<?= $image_url ?>" alt="Product image">
-							<p><?= substr( $_product->get_name(), 0, 30 ) . '...' ?></p>
+							<p><?= $_product->get_name()  ?></p>
 						</div>
 						<div class="price-amount">
 							<span class="amount">×<?= $cart_item['quantity'] ?></span>

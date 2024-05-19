@@ -277,4 +277,4 @@ $categories = get_terms( array(
 	</div>
 </div>
 
-<?php get_footer( 'basic' ); ?>
+<?php get_footer(  ); ?>

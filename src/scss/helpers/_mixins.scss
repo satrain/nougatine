@@ -57,7 +57,7 @@
 }
 
 @mixin h-1 {
-	font-family: 'Open Cond Bold', sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	font-size: 56px;
 	line-height: 67.11px;
 	font-weight: 700;
@@ -72,7 +72,7 @@
 @mixin h-2 {
 	position: relative;
 	text-align: center;
-	font-family: 'Open Cond Bold', sans-serif;
+	font-family: 'Open Sans', sans-serif;
 	font-size: 32px;
 	line-height: 54px;
 	font-weight: 600;
@@ -97,7 +97,6 @@
 	font-size: 18px;
 	font-weight: 600;
 	line-height: 26px;
-	letter-spacing: 1%;
 
 	@include media(lg) {
 		letter-spacing: 0.18px;
