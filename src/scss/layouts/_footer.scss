@@ -3,9 +3,9 @@ footer {
 	padding-bottom: 64px;
 	background: $text-dark;
 	@include media(lg) {
-		padding-top: 72px;
+		padding-top: 64px;
 		padding-bottom: 51px;
-		padding-inline: 80px;
+		padding-inline: 50px;
 	}
 
 	.container {
@@ -89,6 +89,10 @@ footer {
 					.footer-menu-3 {
 						flex-basis: 100%;
 						text-align: center;
+
+						ul {
+							align-items: center !important;
+						}
 					}
 				}
 
@@ -97,7 +101,16 @@ footer {
 						order: 1;
 
 						.powered {
-							display: block !important;
+							display: none !important;
+
+							span {
+								color: white;
+								margin-right: 15px;
+								font-size: 18px;
+								font-weight: 300;
+								line-height: 26.4px;
+								text-align: left;
+							}
 						}
 					}
 
@@ -157,13 +170,27 @@ footer {
 				position: absolute;
 				right: 0;
 				bottom: 0;
-			}
+				display: flex;
+				align-content: center;
+				justify-content: space-between;
+				margin-bottom: 52px;
+
+					span {
+						color: white;
+						margin-right: 15px;
+						font-size: 17px;
+						font-weight: 300;
+						line-height: 26.4px;
+						text-align: left;
+					}
+				}
 
 			@include media(lg) {
-				margin-top: 52px;
+				margin-top: 24px;
+
 
 				.powered {
-					display: none;
+					position: relative !important;
 				}
 			}
 
@@ -183,7 +210,6 @@ footer {
 				gap: 28px;
 				@include media(lg) {
 					margin-top: 23px;
-					gap: 12px;
 				}
 			}
 
@@ -211,6 +237,11 @@ footer {
 					align-items: flex-end;
 					@include media(lg) {
 						align-items: center;
+						order: 1;
+
+						.contact {
+							align-items: center;
+						}
 					}
 
 					.contact {
@@ -220,6 +251,7 @@ footer {
 							text-align: right;
 							gap: 12px;
 							direction: ltr;
+							width: 100%;
 
 							svg {
 								margin-right: 0 !important;
@@ -228,6 +260,18 @@ footer {
 
 					}
 
+				}
+
+				.footer-menu-1,
+				.footer-menu-2 {
+					display: flex;
+					justify-content: center;
+					flex-flow: row wrap;
+
+					p {
+						flex: 0 0 100%;
+						text-align: center !important;
+					}
 				}
 
 				.menus {

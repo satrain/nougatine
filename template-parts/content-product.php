@@ -20,6 +20,9 @@ if ( $product_data->is_in_stock() ) {
 			$image_url = wp_get_attachment_image_url( $image_id, 'full' );
 			echo '<img src="' . $image_url . '" alt="' . $product_data->get_title() . '" />';
 			?>
+			<div class="details">
+				<?= pll__( 'Details' ) ?>
+			</div>
 		</div>
 		<div class="content">
 			<div class="wrapper">
@@ -41,7 +44,7 @@ if ( $product_data->is_in_stock() ) {
 							<form>
 								<div class="option option_1">
 									<input type="radio" name="option" id="option" checked>
-									<label>₪<?= $args['price'] ?></label>
+									<label><?= get_woocommerce_currency_symbol() ?><?= $args['price'] ?> כולל מע"מ </label>
 								</div>
 							</form>
 						</div>
@@ -54,7 +57,6 @@ if ( $product_data->is_in_stock() ) {
 					</svg>
 					<?php pll_e( 'Add to cart' ) ?>
 				</a>
-				<!-- <div class="added_to_cart"></div> -->
 			</div>
 		</div>
 	</div>

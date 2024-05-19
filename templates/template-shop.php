@@ -52,10 +52,8 @@ $categories = get_terms( array(
 					$thumbnail_id  = get_term_meta( $category->term_id, 'thumbnail_id', true );
 					$thumbnail_url = wp_get_attachment_url( $thumbnail_id );
 					?>
-					<div class="product-category <?php if ( $category->count <= 0 ) {
-						echo 'not-active';
-					} ?>">
-						<a href="#<?= esc_html( $category->term_id ) ?>">
+					<div class="product-category <?php if ( $category->count <= 0 ) { echo 'not-active'; } ?>">
+						<a title="<?= $category->name ?>" href="#<?= esc_html( $category->term_id ) ?>">
 							<?php
 							if ( ! empty( $thumbnail_url ) ) {
 								echo '<img class="product-category-image" src="' . esc_url( $thumbnail_url ) . '" alt="' . esc_attr( $category->name ) . '">';
@@ -79,7 +77,7 @@ $categories = get_terms( array(
 			// Loop through product categories and display products
 			$product_categories = get_terms( array(
 				'taxonomy'   => 'product_cat',
-				'hide_empty' => false,
+				'hide_empty' => true,
 			) );
 
 			$products_arr = [];
@@ -132,7 +130,7 @@ $categories = get_terms( array(
 				if ( $products->have_posts() ) {
 					echo "<div class='product-catalog-category-wrapper'>";
 					if ( $category->count > 0 ) {
-						echo '<h3><img src="' . $thumbnail_url . '">' . $category->name . '</h3>';
+						echo '<h3>' . $category->name . '<img src="' . $thumbnail_url . '"></h3>';
 					}
 					echo "<span class='category-anchor' id='" . esc_html( $category->term_id ) . "'></span>";
 

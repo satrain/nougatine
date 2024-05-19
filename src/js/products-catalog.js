@@ -110,9 +110,9 @@ document.addEventListener('DOMContentLoaded', function () {
 	});
 
 	productCards.forEach(div => observer.observe(div));
+	document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
 
 	if (window.matchMedia('(max-width: 768px)').matches) {
-		document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
 		const observerMobileHeadings = new IntersectionObserver((entries, observer) => {
 			entries.forEach(entry => {
 				if (entry.isIntersecting) {
@@ -492,4 +492,44 @@ jQuery(document).ready(function ($) {
 	//     productVariablePrice.innerHTML = '₪' + productQuantity.value * oldPrice
 	// })
 
+});
+
+// Get all sections and anchors
+var sections = document.querySelectorAll('.product-catalog-category-wrapper');
+var anchors = document.querySelectorAll('.product-category a');
+
+// Listen to the scroll event
+window.addEventListener('scroll', function() {
+	// Loop through each section
+	for (var i = 0; i < sections.length; i++) {
+		// Check if the section is in the viewport
+		if (sections[i].offsetTop <= window.pageYOffset && sections[i].offsetTop + sections[i].offsetHeight > window.pageYOffset) {
+			// Remove the active class from all anchor parents
+			anchors.forEach(function(anchor) {
+				anchor.parentElement.classList.remove('active');
+			});
+
+			// Add the active class to the parent of the corresponding anchor
+			anchors[i].parentElement.classList.add('active');
+		}
+	}
+});
+
+// Add a click event listener to each anchor
+anchors.forEach(function(anchor, index) {
+	anchor.addEventListener('click', function(event) {
+		// Prevent the default action
+		event.preventDefault();
+
+		// Remove the active class from all anchor parents
+		anchors.forEach(function(anchor) {
+			anchor.parentElement.classList.remove('active');
+		});
+
+		// Add the active class to the parent of the clicked anchor
+		anchor.parentElement.classList.add('active');
+
+		// Scroll to the corresponding section
+		sections[index].scrollIntoView({ behavior: 'smooth' });
+	});
 });

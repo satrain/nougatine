@@ -948,9 +948,9 @@ footer {
   background: #2C2B2E; }
   @media (max-width: 992px) {
     footer {
-      padding-top: 72px;
+      padding-top: 64px;
       padding-bottom: 51px;
-      padding-inline: 80px; } }
+      padding-inline: 50px; } }
   footer .container .wrapper {
     margin-bottom: 62px;
     display: flex;
@@ -1007,7 +1007,11 @@ footer {
           footer .container .wrapper .menus .footer-menu-2,
           footer .container .wrapper .menus .footer-menu-3 {
             flex-basis: 100%;
-            text-align: center; } }
+            text-align: center; }
+            footer .container .wrapper .menus .footer-menu-1 ul,
+            footer .container .wrapper .menus .footer-menu-2 ul,
+            footer .container .wrapper .menus .footer-menu-3 ul {
+              align-items: center !important; } }
       footer .container .wrapper .menus .footer-menu-3 {
         display: flex;
         flex-flow: row wrap;
@@ -1017,7 +1021,14 @@ footer {
           footer .container .wrapper .menus .footer-menu-3 {
             order: 1; }
             footer .container .wrapper .menus .footer-menu-3 .powered {
-              display: block !important; } }
+              display: none !important; }
+              footer .container .wrapper .menus .footer-menu-3 .powered span {
+                color: white;
+                margin-right: 15px;
+                font-size: 18px;
+                font-weight: 300;
+                line-height: 26.4px;
+                text-align: left; } }
         footer .container .wrapper .menus .footer-menu-3 .powered {
           display: none; }
         footer .container .wrapper .menus .footer-menu-3 svg {
@@ -1047,12 +1058,23 @@ footer {
     footer .container .copyright-sm .powered {
       position: absolute;
       right: 0;
-      bottom: 0; }
+      bottom: 0;
+      display: flex;
+      align-content: center;
+      justify-content: space-between;
+      margin-bottom: 52px; }
+      footer .container .copyright-sm .powered span {
+        color: white;
+        margin-right: 15px;
+        font-size: 17px;
+        font-weight: 300;
+        line-height: 26.4px;
+        text-align: left; }
     @media (max-width: 992px) {
       footer .container .copyright-sm {
-        margin-top: 52px; }
+        margin-top: 24px; }
         footer .container .copyright-sm .powered {
-          display: none; } }
+          position: relative !important; } }
     footer .container .copyright-sm p {
       color: #ffffff;
       text-align: center;
@@ -1067,8 +1089,7 @@ footer {
       gap: 28px; }
       @media (max-width: 992px) {
         footer .container .copyright-sm .social-media {
-          margin-top: 23px;
-          gap: 12px; } }
+          margin-top: 23px; } }
 
 .lang-he footer .container .wrapper {
   flex-direction: row-reverse; }
@@ -1081,14 +1102,27 @@ footer {
     align-items: flex-end; }
     @media (max-width: 992px) {
       .lang-he footer .container .wrapper .info {
-        align-items: center; } }
+        align-items: center;
+        order: 1; }
+        .lang-he footer .container .wrapper .info .contact {
+          align-items: center; } }
     .lang-he footer .container .wrapper .info .contact a {
       flex-direction: row-reverse;
       text-align: right;
       gap: 12px;
-      direction: ltr; }
+      direction: ltr;
+      width: 100%; }
       .lang-he footer .container .wrapper .info .contact a svg {
         margin-right: 0 !important; }
+  .lang-he footer .container .wrapper .footer-menu-1,
+  .lang-he footer .container .wrapper .footer-menu-2 {
+    display: flex;
+    justify-content: center;
+    flex-flow: row wrap; }
+    .lang-he footer .container .wrapper .footer-menu-1 p,
+    .lang-he footer .container .wrapper .footer-menu-2 p {
+      flex: 0 0 100%;
+      text-align: center !important; }
   .lang-he footer .container .wrapper .menus {
     flex-direction: row-reverse; }
     .lang-he footer .container .wrapper .menus p {
@@ -1281,11 +1315,24 @@ footer {
 .product-catalog .product-categories {
   padding-top: 32px; }
   .product-catalog .product-categories.sticky {
-    position: sticky;
+    position: fixed;
     top: var(--header-height);
-    z-index: 999;
+    left: 0;
+    right: 0;
+    padding: 0 16px;
     background-color: #fff;
-    padding-top: 0; }
+    z-index: 2; }
+    .product-catalog .product-categories.sticky h2 {
+      display: none; }
+    @media (max-width: 992px) {
+      .product-catalog .product-categories.sticky {
+        position: sticky;
+        top: var(--header-height);
+        z-index: 999;
+        padding-top: 0; } }
+    .product-catalog .product-categories.sticky .container .categories-wrapper .product-category {
+      max-width: calc(100% / 14);
+      margin-bottom: 12px; }
   @media screen and (min-width: 992px) {
     .product-catalog .product-categories .container .categories-dropdown {
       display: none; } }
@@ -1374,6 +1421,10 @@ footer {
         cursor: default; }
       .product-catalog .product-categories .container .categories-wrapper .product-category.not-active a img {
         filter: grayscale(1); }
+      .product-catalog .product-categories .container .categories-wrapper .product-category.active a {
+        border: 1px solid #C2996F;
+        border-radius: 2px;
+        box-shadow: 0 4px 17.7px 4px rgba(0, 0, 0, 0.08); }
       .product-catalog .product-categories .container .categories-wrapper .product-category a {
         width: 170px;
         height: 111px;
@@ -1421,8 +1472,8 @@ footer {
         justify-content: center;
         align-items: center; } }
     .product-catalog .product-catalog-wrapper .container h3 img {
-      width: auto;
-      margin-right: 8px;
+      width: 24px;
+      margin-right: 54px;
       vertical-align: middle; }
       @media (max-width: 992px) {
         .product-catalog .product-catalog-wrapper .container h3 img {
@@ -1432,12 +1483,12 @@ footer {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 40px 24px;
     margin-top: 40px;
     margin-bottom: 70px; }
     .product-catalog .product-catalog-wrapper .container .product-catalog-category-wrapper.sticky h3 {
       position: sticky;
-      top: calc(var(--header-height) + 60px);
+      top: calc(var(--header-height) + 59px);
       z-index: 9;
       background: #fff; }
     @media (max-width: 992px) {
@@ -1473,7 +1524,6 @@ footer {
         flex-shrink: 0; }
         .product-catalog .product-catalog-wrapper .container .product-catalog-category-wrapper .card:hover .image-holder img {
           flex-shrink: 0;
-          transform: scale(1.2);
           transition: .3s; }
       .product-catalog .product-catalog-wrapper .container .product-catalog-category-wrapper .card .vegan-badge {
         position: absolute;
@@ -1482,14 +1532,14 @@ footer {
         right: 6px; }
       .product-catalog .product-catalog-wrapper .container .product-catalog-category-wrapper .card .image-holder {
         flex-shrink: 0;
+        position: relative;
         overflow: hidden; }
         .product-catalog .product-catalog-wrapper .container .product-catalog-category-wrapper .card .image-holder img {
           flex-shrink: 0;
           width: 100%;
           object-fit: cover;
           object-position: center;
-          transition: .5s;
-          max-height: 180px; }
+          transition: .5s; }
       .product-catalog .product-catalog-wrapper .container .product-catalog-category-wrapper .card .content {
         height: 100%;
         padding: 12px 16px 16px;
@@ -2100,8 +2150,8 @@ footer {
     margin-left: 0;
     direction: rtl; }
 .lang-he .product-catalog .product-catalog-wrapper .container h3 img {
-  margin-right: 0;
-  margin-left: 8px; }
+  margin-left: 0;
+  margin-right: 54px; }
 .lang-he .product-catalog .product-categories .container .categories-dropdown .dropdown-button {
   flex-direction: row-reverse; }
 .lang-he .product-catalog .products-catalog-modal .title h2,
@@ -2165,6 +2215,30 @@ footer {
 .ui-dialog-buttonpane,
 .ui-dialog-titlebar {
   display: none; }
+
+.image-holder {
+  position: relative; }
+  .image-holder img {
+    transform: unset !important;
+    height: 100%; }
+  .image-holder .details {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    border: 1px solid #c9ab81;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(15, 29, 34, 0.9);
+    color: #c9ab81;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 5px; }
+  .image-holder:hover .details {
+    opacity: 1;
+    transition: .3s; }
 
 .recommended-menus .recommended-menus-hero {
   padding-top: 89px;
