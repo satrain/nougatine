@@ -472,25 +472,25 @@ jQuery(document).ready(function ($) {
 		})
 	}
 
-	// if (imageModalContent) {
-	// 	for (let i = 0; i < imageContent.length; i++) {
-	// 		imageContent[i].addEventListener('click', () => {
-	// 			imageModalContent.classList.add('active')
-	// 			imageModalContent.querySelector('img').src = imageContent[i].querySelector('img').src;
-	// 		})
-	// 	}
-	//
-	// 	closeImageModalContent.addEventListener('click', () => {
-	// 		imageModalContent.classList.remove('active')
-	// 	})
-	// }
+	if (imageModalContent) {
+		for (let i = 0; i < imageContent.length; i++) {
+			imageContent[i].addEventListener('click', () => {
+				imageModalContent.classList.add('active')
+				imageModalContent.querySelector('img').src = imageContent[i].querySelector('img').src;
+			})
+		}
 
-	// let productQuantity = document.querySelector('.product-quantity .custom-input-number')
-	// productQuantity.addEventListener('change', () => {
-	//     let productVariablePrice = document.querySelector('.title .price')
-	//     let oldPrice = productVariablePrice.innerHTML
-	//     productVariablePrice.innerHTML = '₪' + productQuantity.value * oldPrice
-	// })
+		closeImageModalContent.addEventListener('click', () => {
+			imageModalContent.classList.remove('active')
+		})
+	}
+
+	let productQuantity = document.querySelector('.product-quantity .custom-input-number')
+	productQuantity.addEventListener('change', () => {
+	    let productVariablePrice = document.querySelector('.title .price')
+	    let oldPrice = productVariablePrice.innerHTML
+	    productVariablePrice.innerHTML = '₪' + productQuantity.value * oldPrice
+	})
 
 });
 
