@@ -1202,7 +1202,7 @@
 							}
 
 							a {
-								padding: 13px 39px;
+								padding: 13px 25px;
 								background: #b5b5b5;
 								border: 1px solid #b5b5b5;
 								cursor: default;
@@ -1212,6 +1212,11 @@
 									background: $primary !important;
 									border: 1px solid $primary !important;
 									cursor: pointer;
+
+									&:hover {
+										background: white !important;
+										color: $primary !important;
+									}
 								}
 
 								@include media(lg) {

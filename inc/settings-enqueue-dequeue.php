@@ -10,11 +10,11 @@ class EnqueueDequeue {
 	 * @return void
 	 */
 	public function __construct() {
-		add_action( 'wp_enqueue_scripts', [ $this, 'dequeueStylesScripts' ] );
-		add_filter( 'style_loader_tag', [ $this, 'preloadStyles' ], 10, 2 );
+//		add_action( 'wp_enqueue_scripts', [ $this, 'dequeueStylesScripts' ] );
+//		add_filter( 'style_loader_tag', [ $this, 'preloadStyles' ], 10, 2 );
 
 		if ( ! is_user_logged_in() ) {
-			add_filter( 'script_loader_tag', [ $this, 'defferScripts' ], 999, 2 );
+//			add_filter( 'script_loader_tag', [ $this, 'defferScripts' ], 999, 2 );
 		}
 
 	}
@@ -73,8 +73,8 @@ class EnqueueDequeue {
 				wp_dequeue_script( 'zoom' );
 			endif;
 
-			wp_dequeue_script( 'wc-add-to-cart-variation' );
-			wp_dequeue_script( 'wc-add-to-cart' );
+//			wp_dequeue_script( 'wc-add-to-cart-variation' );
+//			wp_dequeue_script( 'wc-add-to-cart' );
 			wp_dequeue_script( 'jquery-blockui' );
 		endif;
 	}

@@ -66,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function () {
 	function checkSelections() {
 		const sections = document.querySelectorAll('.section.required');
 		let allSelected = true;
-		console.log('works')
 
 		sections.forEach(function (section) {
 			// Check if this section has a radio button that's checked
@@ -87,10 +86,10 @@ document.addEventListener('DOMContentLoaded', function () {
 	}
 
 	// Attach change event listeners to all radio buttons
-	const radioButtons = document.querySelectorAll('.products-catalog-modal .section.required input');
-	radioButtons.forEach(function (radio) {
-		radio.addEventListener('click', checkSelections);
-	});
+	// const radioButtons = document.querySelectorAll('.products-catalog-modal .section.required input');
+	// radioButtons.forEach(function (radio) {
+	// 	radio.addEventListener('click', checkSelections);
+	// });
 
 	const productCards = document.querySelectorAll('.product-card.inactive'),
 		categorySections = document.querySelectorAll('.product-catalog-category-wrapper'),
@@ -139,9 +138,12 @@ document.addEventListener('DOMContentLoaded', function () {
 			}
 		});
 	});
+
 });
 
 jQuery(document).ready(function ($) {
+
+
 
 	// Successfully added product to the cart notification
 	let addToCartBtns = document.querySelectorAll('.nougatine-add-to-cart')
@@ -166,7 +168,7 @@ jQuery(document).ready(function ($) {
 		})
 	}
 
-	let productCards = document.querySelectorAll('.product-card .img-holder')
+	let productCards = document.querySelectorAll('.product-card');
 	let productCardsImages = document.querySelectorAll('.products-catalog-modal .image-holder')
 	let imageContent = document.querySelectorAll('.imageContent')
 	let imageModal = document.querySelector('.image-modal')
@@ -185,6 +187,7 @@ jQuery(document).ready(function ($) {
 			modal.querySelector('.product-image').src = productImage
 			modal.querySelector('.title .price').innerHTML = '₪' + productPrice
 			modal.querySelector('.title h2').innerHTML = productName
+			modal.querySelector('.btn-add-to-cart').dataset.product_id =  productId;
 
 			//add ajax to pull all the additional fields
 			$.ajax({
@@ -197,7 +200,6 @@ jQuery(document).ready(function ($) {
 				success: function (response) {
 
 					let productData = response.data;
-					console.log(productData)
 
 					if (productData.hasOwnProperty('product_description')) {
 						document.querySelector('.main-content .description').innerHTML = productData.product_description;

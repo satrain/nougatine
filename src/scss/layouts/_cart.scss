@@ -347,6 +347,12 @@
 	margin: 0;
 }
 
+.custom-quantity-number::-webkit-inner-spin-button,
+.custom-quantity-number::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
 .custom-quantity {
 	display: flex;
 	width: fit-content;
@@ -360,7 +366,7 @@
 }
 
 /* Style input field */
-.custom-input-number {
+.custom-input-number,.custom-quantity-number {
 	/* Add your desired styles for the input field */
 	max-width: 30px;
 	border: unset;

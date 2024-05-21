@@ -42,6 +42,9 @@ require_once 'inc/settings-checkout-timers.php';
 require_once 'inc/settings-checkout.php';
 require_once 'inc/settings-clap-co-il.php';
 require_once 'inc/settings-enqueue-dequeue.php';
+if ( defined( 'WP_CLI' ) && WP_CLI ) {
+	require_once 'inc/cli-import.php';
+}
 
 remove_action( 'wp_head', 'feed_links_extra', 3 );
 remove_action( 'wp_head', 'feed_links', 2 );
@@ -434,13 +437,34 @@ function get_side_cart_products_html() {
 		<div class="product">
 			<?php echo $thumbnail; ?>
 			<div class="product-content">
-                <span class="delete-item product-remove" data-product-id="<?= $product_id ?>">
-                <a>x</a>
-                </span>
-				<p class="product-title"><?php echo $product_name; ?></p>
+				<div class="product-info">
+					<p class="product-title">
+						<?php
+						if ( ! $product_permalink ) {
+							echo wp_kses_post( $product_name . '&nbsp;' );
+						} else {
+							/**
+							 * This filter is documented above.
+							 *
+							 * @since 2.1.0
+							 */
+							echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ), truncateString($_product->get_name(), 15) ), $cart_item, $cart_item_key ) );
+						}
+						?>
+					</p>
+					<span class="delete-item product-remove" data-product-id="<?= $product_id ?>">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+<path d="M13.3333 3.99967H10.6667V3.33301C10.6667 2.80257 10.456 2.29387 10.0809 1.91879C9.70581 1.54372 9.1971 1.33301 8.66667 1.33301H7.33333C6.8029 1.33301 6.29419 1.54372 5.91912 1.91879C5.54405 2.29387 5.33333 2.80257 5.33333 3.33301V3.99967H2.66667C2.48986 3.99967 2.32029 4.06991 2.19526 4.19494C2.07024 4.31996 2 4.48953 2 4.66634C2 4.84315 2.07024 5.01272 2.19526 5.13775C2.32029 5.26277 2.48986 5.33301 2.66667 5.33301H3.33333V12.6663C3.33333 13.1968 3.54405 13.7055 3.91912 14.0806C4.29419 14.4556 4.8029 14.6663 5.33333 14.6663H10.6667C11.1971 14.6663 11.7058 14.4556 12.0809 14.0806C12.456 13.7055 12.6667 13.1968 12.6667 12.6663V5.33301H13.3333C13.5101 5.33301 13.6797 5.26277 13.8047 5.13775C13.9298 5.01272 14 4.84315 14 4.66634C14 4.48953 13.9298 4.31996 13.8047 4.19494C13.6797 4.06991 13.5101 3.99967 13.3333 3.99967ZM6.66667 3.33301C6.66667 3.1562 6.7369 2.98663 6.86193 2.8616C6.98695 2.73658 7.15652 2.66634 7.33333 2.66634H8.66667C8.84348 2.66634 9.01305 2.73658 9.13807 2.8616C9.2631 2.98663 9.33333 3.1562 9.33333 3.33301V3.99967H6.66667V3.33301ZM11.3333 12.6663C11.3333 12.8432 11.2631 13.0127 11.1381 13.1377C11.013 13.2628 10.8435 13.333 10.6667 13.333H5.33333C5.15652 13.333 4.98695 13.2628 4.86193 13.1377C4.7369 13.0127 4.66667 12.8432 4.66667 12.6663V5.33301H11.3333V12.6663Z"
+      fill="#868686"/>
+</svg> <a><?= pll_e( 'Remove' ) ?></a>
+                                </span>
+				</div>
+
 				<div class="product-price-qty">
-					<p class="quantity">x<?php echo $cart_item['quantity']; ?></p>
-					<p class="price"><?php echo WC()->cart->get_product_price( $_product ); ?></p>
+					<p class="quantity"><?php echo $cart_item['quantity']; ?></p>
+					<p class="price">
+						<?php echo apply_filters( 'woocommerce_cart_item_price', WC()->cart->get_product_price( $_product ), $cart_item, $cart_item_key ); ?>
+					</p>
 				</div>
 			</div>
 		</div>
@@ -632,3 +656,52 @@ function add_tooltip_to_menu_items( $item_output, $item, $depth, $args ) {
 	return '<a href="' . esc_attr( $item->url ) . '" title="' . esc_attr( $item->title ) . '">' . esc_html( $item->title ) . '</a>';
 }
 
+function add_modal_to_footer() {
+	?>
+	<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-body">
+					<!-- Product data will be loaded here -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<?php
+}
+
+add_action( 'wp_footer', 'add_modal_to_footer' );
+
+function test() {
+	$product_id = $_POST['product_id'];
+	global $product;
+	$product    = wc_get_product( $product_id );
+
+	if ( $product ) { // Check if the product exists
+		ob_start();
+
+		// Output your product data here. For example:
+		echo '<h2>' . $product->get_name() . '</h2>';
+		echo $product->get_description();
+		echo $product->get_price_html();
+
+		// If the product is a variable product, output the variations form
+		if ( $product->is_type( 'variable' ) ) {
+			woocommerce_variable_add_to_cart();
+		} else {
+			woocommerce_simple_add_to_cart();
+		}
+
+		$output = ob_get_clean();
+
+		echo $output;
+	} else {
+		echo 'Product not found';
+	}
+
+	wp_die();
+}
+
+add_action( 'wp_ajax_test', 'test' );
+add_action( 'wp_ajax_nopriv_test', 'test' );
+//

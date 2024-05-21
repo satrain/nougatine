@@ -2047,7 +2047,7 @@ footer {
             .products-catalog-modal .modal-wrapper .modal-content .right-side .content .bottom-part .quantity-add-to-cart .product-quantity .custom-quantity .input-number-button {
               font-size: 20px; }
           .products-catalog-modal .modal-wrapper .modal-content .right-side .content .bottom-part .quantity-add-to-cart a {
-            padding: 13px 39px;
+            padding: 13px 25px;
             background: #b5b5b5;
             border: 1px solid #b5b5b5;
             cursor: default;
@@ -2056,6 +2056,9 @@ footer {
               background: #C2996F !important;
               border: 1px solid #C2996F !important;
               cursor: pointer; }
+              .products-catalog-modal .modal-wrapper .modal-content .right-side .content .bottom-part .quantity-add-to-cart a.active:hover {
+                background: white !important;
+                color: #C2996F !important; }
             @media (max-width: 992px) {
               .products-catalog-modal .modal-wrapper .modal-content .right-side .content .bottom-part .quantity-add-to-cart a {
                 padding: 13px 25px;
@@ -3016,6 +3019,11 @@ footer {
   -webkit-appearance: none;
   margin: 0; }
 
+.custom-quantity-number::-webkit-inner-spin-button,
+.custom-quantity-number::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0; }
+
 .custom-quantity {
   display: flex;
   width: fit-content;
@@ -3028,7 +3036,7 @@ footer {
       padding: 5px; } }
 
 /* Style input field */
-.custom-input-number {
+.custom-input-number, .custom-quantity-number {
   /* Add your desired styles for the input field */
   max-width: 30px;
   border: unset;
@@ -3044,7 +3052,7 @@ footer {
   /* 114.286% */
   text-align: center; }
   @media (max-width: 992px) {
-    .custom-input-number {
+    .custom-input-number, .custom-quantity-number {
       margin: 0 5px; } }
 
 .input-number-button {
@@ -3331,7 +3339,7 @@ footer {
                 font-style: normal;
                 font-weight: 600;
                 line-height: 20px;
-                width: 24px;
+                width: 30px;
                 border: 1px solid #C2996F;
                 border-radius: 5px;
                 text-align: center; }

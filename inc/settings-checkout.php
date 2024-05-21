@@ -134,12 +134,16 @@ class WooCommerceCustomCheckout {
 					});
 
 					$('body').on('change', 'input[name=choose_delivery]', function () {
+						if ($('select[name=delivery_city]').val()) {
+							var $city = $('select[name=delivery_city]').val();
+						}
 						$.ajax({
 							type: 'POST',
 							url: wc_checkout_params.ajax_url,
 							data: {
 								action: 'update_delivery_city',
-								update_delivery_city: $(this).val(),
+								update_delivery_city_option: $(this).val(),
+								update_delivery_city: $city,
 							},
 							success: function (response) {
 								$('body').trigger('update_checkout');
@@ -148,12 +152,16 @@ class WooCommerceCustomCheckout {
 					});
 
 					$('body').on('change', 'select[name=delivery_city]', function () {
+						if ($('select[name=choose_delivery]').val()) {
+							var $option = $('select[name=choose_delivery]').val();
+						}
 						$.ajax({
 							type: 'POST',
 							url: wc_checkout_params.ajax_url,
 							data: {
 								action: 'update_delivery_city',
 								update_delivery_city: $(this).val(),
+								update_delivery_city_option: $option,
 							},
 							success: function (response) {
 								$('body').trigger('update_checkout');
@@ -217,17 +225,27 @@ class WooCommerceCustomCheckout {
 
 		echo '<div id="shipping_fields">';
 
+		$zone = WC_Shipping_Zones::get_zone( 668 );
+
+		$shipping_methods = $zone->get_shipping_methods();
+
+		$options = array(
+				'' => pll__( 'בחר עיר' ),
+		);
+
+		foreach ( $shipping_methods as $shipping_method ) {
+			// Get the title of the shipping method
+			$title = $shipping_method->get_title();
+
+			// Add an option for the select dropdown
+			$options[ $shipping_method->get_instance_id() ] = $title;
+		}
+
 		woocommerce_form_field( 'delivery_city', array(
 			'type'     => 'select',
 			'class'    => array( 'form-row-wide', 'shipping-field' ),
 			'label'    => pll__( 'City' ),
-			'options'  => array(
-				''    => pll__( "Select City" ),
-				'250' => pll__( "Ornit, Elkana, Bat Yam, Holon" ),
-				'170' => pll__( "Haifa and the surrounding area" ),
-				'140' => pll__( "Airport City, Beer Ya'akov" ),
-				'100' => pll__( "Bnei Brak, Givatayim, Savion" ),
-			),
+			'options'  => $options,
 			'required' => true,
 		), $checkout->get_value( 'delivery_city' ) );
 
@@ -327,7 +345,7 @@ class WooCommerceCustomCheckout {
 				}
 			}
 		}
-		if($is_hot_dish_in_cart) {
+		if ( $is_hot_dish_in_cart ) {
 			if ( ! $_POST['hotdish_delivery'] ) {
 				wc_add_notice( pll__( 'Please select hot dish.' ), 'error' );
 			}
@@ -375,17 +393,20 @@ class WooCommerceCustomCheckout {
 	}
 
 	public function update_delivery_city() {
-		$update_delivery_city = $_POST['update_delivery_city'];
+		$update_delivery_city        = $_POST['update_delivery_city'];
+		$update_delivery_city_option = $_POST['update_delivery_city_option'];
 		WC()->session->set( 'update_delivery_city', $update_delivery_city );
+		WC()->session->set( 'update_delivery_city_option', $update_delivery_city_option );
 		wp_die();
 	}
 
 	public function modify_shipping_packages( $packages ) {
-		$update_delivery_city = WC()->session->get( 'update_delivery_city' );
+		$update_delivery_city        = WC()->session->get( 'update_delivery_city' );
+		$update_delivery_city_option = WC()->session->get( 'update_delivery_city_option' );
 
-		if ( $update_delivery_city == 'pickup' ) {
-			$newRates = array_filter( $packages[0]['rates'], function ( $shippingRate ) {
-				return $shippingRate->id === 'local_pickup:9';
+		if ( $update_delivery_city_option === 'pickup' ) {
+			$newRates = array_filter( $packages[0]['rates'], function ( $shippingRate ) use ( $update_delivery_city ) {
+				return $shippingRate->id === 'local_pickup:' . 2498;
 			} );
 
 			$packages[0]['rates'] = $newRates;
@@ -393,25 +414,11 @@ class WooCommerceCustomCheckout {
 			$session->set( 'shipping_method_counts', [ count( $newRates ) ] );
 			if ( isset( $newRates[0] ) ) {
 				$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
-			}		}
-
-		if ( $update_delivery_city == 'shipping' || ! $update_delivery_city ) {
-			$newRates = array_filter( $packages[0]['rates'], function ( $shippingRate ) {
-				return $shippingRate->id === 'flat_rate:8';
-			} );
-
-			$packages[0]['rates'] = $newRates;
-
-			$session = WC()->session;
-			$session->set( 'shipping_method_counts', [ count( $newRates ) ] );
-			if ( isset( $newRates[0] ) ) {
-				$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
 			}
-		}
 
-		if ( $update_delivery_city == 100 ) {
-			$newRates = array_filter( $packages[0]['rates'], function ( $shippingRate ) {
-				return $shippingRate->id === 'flat_rate:5';
+		} else {
+			$newRates = array_filter( $packages[0]['rates'], function ( $shippingRate ) use ( $update_delivery_city ) {
+				return $shippingRate->id === 'flat_rate:' . $update_delivery_city;
 			} );
 
 			$packages[0]['rates'] = $newRates;
@@ -422,47 +429,6 @@ class WooCommerceCustomCheckout {
 			}
 		}
 
-		if ( $update_delivery_city == 140 ) {
-			$newRates = array_filter( $packages[0]['rates'], function ( $shippingRate ) {
-				return $shippingRate->id === 'flat_rate:6';
-			} );
-
-			$packages[0]['rates'] = $newRates;
-
-			$session = WC()->session;
-			$session->set( 'shipping_method_counts', [ count( $newRates ) ] );
-			if ( isset( $newRates[0] ) ) {
-				$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
-			}
-		}
-
-		if ( $update_delivery_city == 170 ) {
-			$newRates = array_filter( $packages[0]['rates'], function ( $shippingRate ) {
-				return $shippingRate->id === 'flat_rate:7';
-			} );
-
-			$packages[0]['rates'] = $newRates;
-
-			$session = WC()->session;
-			$session->set( 'shipping_method_counts', [ count( $newRates ) ] );
-			if ( isset( $newRates[0] ) ) {
-				$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
-			}
-		}
-
-		if ( $update_delivery_city == 250 ) {
-			$newRates = array_filter( $packages[0]['rates'], function ( $shippingRate ) {
-				return $shippingRate->id === 'flat_rate:8';
-			} );
-
-			$packages[0]['rates'] = $newRates;
-
-			$session = WC()->session;
-			$session->set( 'shipping_method_counts', [ count( $newRates ) ] );
-			if ( isset( $newRates[0] ) ) {
-				$session->set( 'chosen_shipping_methods', [ $newRates[0]->id ] );
-			}
-		}
 
 		return $packages;
 	}

@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		})
 
 		closePopup.addEventListener('click', (event) => {
-			event.stopPropagation();
+			// event.stopPropagation();
 			aboutModal.classList.remove('active')
 			document.querySelector('html').style.overflow = "auto"
 		})
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 		}
 
 		closePopup.addEventListener('click', (event) => {
-			event.stopPropagation();
+			// event.stopPropagation();
 			galleryModal.classList.remove('active')
 			document.querySelector('html').style.overflow = "auto"
 		})
@@ -143,17 +143,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
 			})
 			if (cards[i].querySelector('.nougatine-add-to-cart')) {
 				cards[i].querySelector('.nougatine-add-to-cart').addEventListener('click', (ev) => {
-					ev.stopPropagation();
+					// ev.stopPropagation();
 				})
 			}
 		}
 
 		// close popup by clicking outside of the popup
-		productModal.addEventListener('click', () => {
-			productModal.classList.remove('active')
-		})
+		// productModal.addEventListener('click', () => {
+		// 	productModal.classList.remove('active')
+		// })
 		productModal.querySelector('.modal-wrapper').addEventListener('click', (ev) => {
-			ev.stopPropagation();
+			// ev.stopPropagation();
 		})
 	}
 
@@ -180,6 +180,30 @@ document.addEventListener('DOMContentLoaded', (event) => {
 	// sideCartContent.addEventListener('click', (ev) => {
 	// 	ev.stopPropagation();
 	// })
+
+
+	document.addEventListener('click', function (e) {
+		if (e.target.closest('.plus')) {
+			var quantityInput = e.target.closest('.custom-quantity').querySelector('input');
+			var button = e.target.closest('.quantity-add-to-cart').querySelector('.btn-add-to-cart');
+			var currentVal = parseInt(quantityInput.value, 10);
+			if (!isNaN(currentVal)) {
+				quantityInput.value = currentVal + 1;
+				button.dataset.product_quantity = quantityInput.value;
+			}
+		}
+
+		if (e.target.closest('.minus')) {
+			var quantityInput = e.target.closest('.custom-quantity').querySelector('input');
+			var button = e.target.closest('.quantity-add-to-cart').querySelector('.btn-add-to-cart');
+			var currentVal = parseInt(quantityInput.value, 10);
+			if (!isNaN(currentVal) && currentVal > 1) {
+				quantityInput.value = currentVal - 1;
+				button.dataset.product_quantity = quantityInput.value;
+			}
+		}
+	});
+
 
 })
 
@@ -231,82 +255,5 @@ jQuery(document).ready(function ($) {
 			}
 		});
 	}
-
 });
 
-var $ = jQuery;
-
-function fetchCartContentAndGeneratePDF() {
-	jQuery(document.body).trigger('wc_update_cart');
-	jQuery.ajax({
-		url: ajax_object.ajax_url,
-		method: 'POST',
-		data: {
-			action: 'woocommerce_get_cart',
-			nonce: ajax_object.nonce,
-		},
-		success: function (response) {
-			console.log(response);
-			if (response.data.items.length > 0) {
-				console.log('sulo');
-				let cartHTML = '';
-				cartHTML += '<table class="table table-striped table-bordered">';
-				cartHTML += '<thead><tr><th>Quantity</th><th>Name</th><th>Price per item</th><th>Total price for item</th></tr></thead>';
-				cartHTML += '<tbody>';
-				response.data.items.forEach(item => {
-					cartHTML += `<tr><td>${item.quantity}</td><td>${item.name}</td><td>${item.price_per_item}</td><td>${item.line_total}</td></tr>`;
-				});
-				cartHTML += '</tbody>';
-				cartHTML += '<tfoot><tr><td colspan="4">Total: ' + response.data.total + '</td></tr></tfoot>';
-				cartHTML += '</table>';
-
-				// Set the cart content HTML and ensure it's visible
-				// jQuery('#cart-pdf').css('display', 'block');
-				jQuery('#cart-pdf .cart-output').html(cartHTML);
-
-				// Adding a delay to ensure content is fully rendered
-				setTimeout(() => {
-					generatePDF();
-				}, 1000); // 1 second delay
-			} else {
-				alert('Your cart is empty!');
-			}
-		},
-		error: function (error) {
-			console.error('Error fetching cart items:', error);
-		}
-	});
-}
-
-function generatePDF() {
-	var element = document.getElementById('cart-pdf');
-
-
-	var opt = {
-		margin: [20, 20, 20, 20], // top, left, bottom, right margins in mm
-		filename: 'Quote.pdf',
-		image: {type: 'jpeg', quality: 1},
-		html2canvas: {scale: 2},
-		jsPDF: {unit: 'mm', format: [400, 600], orientation: 'portrait'}
-	};
-
-	// Clone the element
-	var clonedElement = element.cloneNode(true);
-
-// Change the display rule of the cloned element
-	clonedElement.style.display = "block"
-
-	// New Promise-based usage:
-	html2pdf().set(opt).from(clonedElement).save();
-
-// Remove the cloned element
-	clonedElement.remove();
-
-
-}
-
-jQuery(document).ready(function ($) {
-	$('#generate-cart-pdf-button').on('click', function () {
-		fetchCartContentAndGeneratePDF();
-	});
-});
