@@ -1145,8 +1145,6 @@
 
 body:not(.woocommerce-cart):not(.page-id-733) {
 	.pika-single.is-bound {
-		width: 480px !important;
-		height: 330px !important;
 		position: absolute !important;
 		left: 50% !important;
 		top: 50% !important;
@@ -1240,4 +1238,32 @@ body:not(.woocommerce-cart):not(.page-id-733) {
 
 .step-number {
 	cursor: pointer;
+}
+
+.woocommerce form .form-row .select2-container {
+	width: 100% !important;
+}
+
+.select2-selection--single {
+	border: none !important;
+	height: unset !important;
+
+	.select2-selection__arrow {
+		top: 50% !important;
+		transform: translateY(-50%) !important;
+	}
+
+	.select2-selection__rendered {
+		padding: 11px 8px;
+		border-radius: 2px;
+		border: 1px solid #d9d9d9;
+		outline: 0;
+		background: #fff;
+		color: #2c2b2e;
+		font-family: "Open Sans", sans-serif;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 16px;
+	}
 }

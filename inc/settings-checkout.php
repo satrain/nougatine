@@ -230,15 +230,19 @@ class WooCommerceCustomCheckout {
 		$shipping_methods = $zone->get_shipping_methods();
 
 		$options = array(
-				'' => pll__( 'בחר עיר' ),
+			'' => pll__( 'בחר עיר' ),
 		);
 
+		/**
+		 * @var WC_Shipping_Method $shipping_method
+		 */
 		foreach ( $shipping_methods as $shipping_method ) {
 			// Get the title of the shipping method
 			$title = $shipping_method->get_title();
+			$price = $shipping_method->get_option( 'cost' );
 
 			// Add an option for the select dropdown
-			$options[ $shipping_method->get_instance_id() ] = $title;
+			$options[ $shipping_method->get_instance_id() ] = $title . ' - ' . $price . ' ₪';
 		}
 
 		woocommerce_form_field( 'delivery_city', array(
@@ -366,6 +370,21 @@ class WooCommerceCustomCheckout {
 		}
 	}
 
+	public function get_shipping_method_title_by_id( $shipping_method_instance_id ) {
+		$shipping_zones = WC_Shipping_Zones::get_zones();
+
+		foreach ( $shipping_zones as $shipping_zone ) {
+			$shipping_methods = WC_Shipping_Zones::get_zone( $shipping_zone['id'] )->get_shipping_methods( true );
+			foreach ( $shipping_methods as $shipping_method ) {
+				if ( $shipping_method->instance_id == $shipping_method_instance_id ) {
+					return $shipping_method;
+				}
+			}
+		}
+
+		return null;
+	}
+
 	public function display_delivery_fields_in_admin_order( $order ) {
 		$delivery_method = get_post_meta( $order->get_id(), 'Choose Delivery', true );
 		$pickup_time     = get_post_meta( $order->get_id(), 'Pickup Time', true );
@@ -374,18 +393,20 @@ class WooCommerceCustomCheckout {
 		$shipping_city   = get_post_meta( $order->get_id(), 'Delivery City', true );
 		$shipping_time   = get_post_meta( $order->get_id(), 'Shipping Time', true );
 		$shipping_date   = get_post_meta( $order->get_id(), 'Shipping Date', true );
+		$shipping_method = $this->get_shipping_method_title_by_id( $shipping_city );
 
-		echo '<p><strong>Delivery method:</strong> ' . $delivery_method . '</p>';
+		echo '<h2>' . pll__( 'Delivery Details' ) . '</h2>';
+		echo '<p><strong>' . pll__( 'Delivery method:' ) . '</strong> ' . $delivery_method . '</p>';
 
 		if ( $delivery_method == 'pickup' ) {
-			echo '<p><strong>Pickup Time:</strong> ' . $pickup_time . '</p>';
-			echo '<p><strong>Pickup Date:</strong> ' . $pickup_date . '</p>';
+			echo '<p><strong>' . pll__( 'Pickup Time:' ) . '</strong> ' . $pickup_time . '</p>';
+			echo '<p><strong>' . pll__( 'Pickup Date:' ) . '</strong> ' . $pickup_date . '</p>';
 		}
 
 		if ( $delivery_method == 'shipping' ) {
-			echo '<p><strong>Shipping City:</strong> ' . $shipping_city . '</p>';
-			echo '<p><strong>Shipping Time:</strong> ' . $shipping_time . '</p>';
-			echo '<p><strong>Shipping Date:</strong> ' . $shipping_date . '</p>';
+			echo '<p><strong>' . pll__( 'Shipping City:' ) . '</strong> ' . $shipping_method->title . '</p>';
+			echo '<p><strong>' . pll__( 'Shipping Time:' ) . '</strong> ' . $shipping_time . '</p>';
+			echo '<p><strong>' . pll__( 'Shipping Date:' ) . '</strong> ' . $shipping_date . '</p>';
 		}
 
 		echo '<p><strong>Hot Dish:</strong> ' . $hot_dish . '</p>';

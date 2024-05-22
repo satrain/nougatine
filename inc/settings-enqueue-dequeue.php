@@ -10,11 +10,11 @@ class EnqueueDequeue {
 	 * @return void
 	 */
 	public function __construct() {
-//		add_action( 'wp_enqueue_scripts', [ $this, 'dequeueStylesScripts' ] );
-//		add_filter( 'style_loader_tag', [ $this, 'preloadStyles' ], 10, 2 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'dequeueStylesScripts' ] );
+		add_filter( 'style_loader_tag', [ $this, 'preloadStyles' ], 10, 2 );
 
 		if ( ! is_user_logged_in() ) {
-//			add_filter( 'script_loader_tag', [ $this, 'defferScripts' ], 999, 2 );
+			add_filter( 'script_loader_tag', [ $this, 'defferScripts' ], 999, 2 );
 		}
 
 	}
@@ -90,7 +90,7 @@ class EnqueueDequeue {
 			'swiper_script',
 			'slick_script',
 			'lightbox-script',
-			'jquery-dgwt-wcas'
+			'jquery-dgwt-wcas',
 		];
 
 		if ( in_array( $handle, $deffered_script, true ) ) {

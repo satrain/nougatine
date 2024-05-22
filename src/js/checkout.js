@@ -1,4 +1,19 @@
 jQuery(document).ready(function ($) {
+	var startTime = pickersTime.startTime,
+		endTime = pickersTime.endTime,
+		interval = pickersTime.interval,
+		timeslots = [],
+		current = moment(startTime, "HH:mm"),
+		end = moment(endTime, "HH:mm"),
+		disabledDates = pickersDate.disabledDates.map(function (date) {
+			return moment(date, 'DD.MM.YYYY').toDate();
+		}),
+		bodyClasses = Array.from(document.body.classList),
+		isHebrew = bodyClasses.includes('lang-he'),
+		monthNames = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'],
+		today = new Date(),
+		fourMonthsFromNow = new Date();
+	fourMonthsFromNow.setMonth(today.getMonth() + 4);
 
 	// Function to validate inputs
 	function validateInputs(stepContent) {
@@ -206,12 +221,6 @@ jQuery(document).ready(function ($) {
 	});
 
 
-	var startTime = pickersTime.startTime,
-		endTime = pickersTime.endTime,
-		interval = pickersTime.interval,
-		timeslots = [],
-		current = moment(startTime, "HH:mm"),
-		end = moment(endTime, "HH:mm");
 	while (current.isBefore(end)) {
 		var timeslotEnd = moment(current).add(interval, "minutes");
 		if (timeslotEnd.isAfter(end)) {
@@ -246,24 +255,17 @@ jQuery(document).ready(function ($) {
 		jQuery("#timeslots").dialog("open");
 	});
 
+
 	jQuery("#pickup_time").on("click", function () {
 		jQuery("#timeslots").dialog("open");
 	});
-
-	var disabledDates = pickersDate.disabledDates.map(function (date) {
-		return moment(date, 'DD.MM.YYYY').toDate();
-	});
-
-	var bodyClasses = Array.from(document.body.classList),
-		isHebrew = bodyClasses.includes('lang-he');
-	var monthNames = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
-
 
 	if (isHebrew) {
 		var picker = new Pikaday({
 			field: document.getElementById('datepicker'),
 			format: 'DD.MM.YYYY',
 			minDate: new Date(),
+			maxDate: fourMonthsFromNow,
 			i18n: {
 				previousMonth: 'החודש הקודם',
 				nextMonth: 'החודש הבא',
@@ -291,6 +293,7 @@ jQuery(document).ready(function ($) {
 			format: 'DD.MM.YYYY',
 			minDate: new Date(),
 			disableDayOfWeek: [6],
+			maxDate: fourMonthsFromNow,
 			disableDayFn: function (date) {
 				var today = new Date();
 				today.setHours(0, 0, 0, 0);
@@ -302,10 +305,9 @@ jQuery(document).ready(function ($) {
 				jQuery("#shipping_date").val(this.toString());
 				jQuery("#pickup_date").val(this.toString());
 				jQuery("#dateslot").dialog("close");
-			}
+			},
 		});
 	}
-
 
 	jQuery("#dateslot").dialog({
 		autoOpen: false,
@@ -348,14 +350,13 @@ jQuery(document).ready(function ($) {
 			picker_modal.hide(0);
 		}
 	});
-
 	if (isHebrew) {
-
 		var picker_modal = new Pikaday({
 			field: document.getElementById('deliveryDate_pdf_export'),
 			format: 'DD.MM.YYYY',
 			minDate: new Date(),
 			disableDayOfWeek: [6],
+			maxDate: fourMonthsFromNow,
 			autoClose: true,
 			i18n: {
 				previousMonth: 'החודש הקודם',
@@ -383,6 +384,7 @@ jQuery(document).ready(function ($) {
 			format: 'DD.MM.YYYY',
 			minDate: new Date(),
 			disableDayOfWeek: [6],
+			maxDate: fourMonthsFromNow,
 			autoClose: true,
 			disableDayFn: function (date) {
 				var today = new Date();
@@ -478,4 +480,21 @@ jQuery(document).ready(function ($) {
 			document.querySelector('.step-' + step).classList.add('active');
 		}
 	})
+
+	jQuery(document).ready(function ($) {
+		$('#delivery_city').select2({
+			minimumInputLength: 3,
+			placeholder: 'בחר עיר',
+			allowClear: true,
+			dir: "rtl",
+			language: {
+				inputTooShort: function () {
+					return "נא להזין 3 תווים או יותר";
+				},
+				noResults: function () {
+					return "לא נמצאו תוצאות";
+				},
+			}
+		});
+	});
 });

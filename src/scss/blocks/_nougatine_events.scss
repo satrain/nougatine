@@ -57,9 +57,22 @@
                 }
 
                 .nougatine-events-slider {
+                    .slick-prev{
+                        left: -30px !important;
+                        @include media(lg) {
+                            left: -20px !important;
+                        }
+                    }
+
+                    .slick-next{
+                        right: -30px !important;
+                        @include media(lg) {
+                            right: -20px !important;
+                        }
+                    }
 
                     .slick-list {
-                        padding-bottom: 12px;
+                        padding-bottom: 12px !important;
                     }
 
                 }
@@ -97,7 +110,7 @@
                     @include media(lg) {
                         align-items: center;
                     }
-                    
+
                     p {
                         text-align: right;
                         @include media(lg) {

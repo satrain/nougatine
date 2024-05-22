@@ -256,4 +256,3 @@ jQuery(document).ready(function ($) {
 		});
 	}
 });
-

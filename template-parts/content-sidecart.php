@@ -88,26 +88,6 @@ if ( function_exists( 'WC' ) ) {
 				</div>
 			</div>
 			<div class="bottom">
-				<?php
-				$title    = get_field( 'title', 'option' );
-				$products = get_field( 'products','option' );
-
-				?>
-				<div class="best-sellers">
-					<div class="container">
-						<h2><?= $title ?></h2>
-						<div class="best-sellers-wrapper">
-							<?php
-							foreach ( $products as $product ):
-								$price        = get_post_meta( $product->ID, '_price', true );
-								$products_arr = [ 'id' => $product->ID, 'name' => $product->post_title, 'price' => $price, 'placement' => 'slider' ];
-								get_template_part( 'template-parts/content', 'product', $products_arr );
-							endforeach;
-
-							?>
-						</div>
-					</div>
-				</div>
 				<div class="payment">
 					<div class="subtotal">
 						<p><?php pll_e( "Subtotal" ) ?></p>

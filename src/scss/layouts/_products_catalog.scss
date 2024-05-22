@@ -649,6 +649,7 @@
 .products-catalog-modal {
 	// display: flex;
 	background: rgba(0, 0, 0, 0.60);
+	z-index: 99999999;
 
 	.modal-wrapper {
 		max-width: 890px;
@@ -687,6 +688,7 @@
 				justify-content: flex-start;
 				gap: 30px;
 				margin-top: 24px;
+				direction: rtl;
 
 				.tag {
 					display: flex;
@@ -772,6 +774,7 @@
 					flex-direction: column;
 					justify-content: space-between;
 					height: 100%;
+					direction: rtl;
 
 					.main-content-wrapper {
 
@@ -785,7 +788,7 @@
 								line-height: 28px;
 								letter-spacing: 0.24px;
 								text-transform: unset;
-								text-align: left;
+								text-align: right;
 
 								&:before {
 									display: none;
@@ -1192,6 +1195,7 @@
 
 								.custom-quantity {
 									padding: 13px;
+									margin-left: 15px;
 
 									.input-number-button {
 										font-size: 20px;
@@ -1246,7 +1250,7 @@
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index: 999999;
+	z-index: 999999999;
 	display: none;
 	justify-content: center;
 	align-items: center;
@@ -1257,7 +1261,7 @@
 	}
 
 	.modal-wrapper {
-		position: unset;
+		position: relative;
 		width: 100%;
 		max-width: 1082px;
 		display: flex;
@@ -1458,8 +1462,6 @@
 
 
 .ui-dialog {
-	width: 480px !important;
-	height: 330px !important;
 	padding: 19px 53px !important;
 	display: flex;
 	justify-content: center;

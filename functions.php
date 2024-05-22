@@ -219,6 +219,13 @@ function alokin_enqueue_assets() {
 		) );
 	}
 
+	if ( is_checkout() ) {
+		wp_register_style( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css' );
+		wp_register_script( 'select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js', array( 'jquery' ), '4.0.13', true );
+		wp_enqueue_style( 'select2' );
+		wp_enqueue_script( 'select2' );
+	}
+
 	if ( is_page_template( 'templates/faq.php' ) ) {
 		wp_enqueue_script( 'faq-script', get_template_directory_uri() . '/assets/js/faq.min.js', array( 'jquery' ), _S_VERSION, true );
 	}
@@ -448,7 +455,7 @@ function get_side_cart_products_html() {
 							 *
 							 * @since 2.1.0
 							 */
-							echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ), truncateString($_product->get_name(), 15) ), $cart_item, $cart_item_key ) );
+							echo wp_kses_post( apply_filters( 'woocommerce_cart_item_name', sprintf( '<a href="%s">%s</a>', esc_url( $product_permalink ), truncateString( $_product->get_name(), 15 ) ), $cart_item, $cart_item_key ) );
 						}
 						?>
 					</p>
@@ -669,39 +676,3 @@ function add_modal_to_footer() {
 	</div>
 	<?php
 }
-
-add_action( 'wp_footer', 'add_modal_to_footer' );
-
-function test() {
-	$product_id = $_POST['product_id'];
-	global $product;
-	$product    = wc_get_product( $product_id );
-
-	if ( $product ) { // Check if the product exists
-		ob_start();
-
-		// Output your product data here. For example:
-		echo '<h2>' . $product->get_name() . '</h2>';
-		echo $product->get_description();
-		echo $product->get_price_html();
-
-		// If the product is a variable product, output the variations form
-		if ( $product->is_type( 'variable' ) ) {
-			woocommerce_variable_add_to_cart();
-		} else {
-			woocommerce_simple_add_to_cart();
-		}
-
-		$output = ob_get_clean();
-
-		echo $output;
-	} else {
-		echo 'Product not found';
-	}
-
-	wp_die();
-}
-
-add_action( 'wp_ajax_test', 'test' );
-add_action( 'wp_ajax_nopriv_test', 'test' );
-//
